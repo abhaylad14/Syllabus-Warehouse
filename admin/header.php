@@ -117,10 +117,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </ul>
                             </li>-->
                             <li class="nav-item">
-                                <a href="adduser.php" class="nav-link">
+                                <a href="addfaculty.php" class="nav-link">
                                     <i class="nav-icon fas fa-users"></i>
                                     <p>
-                                        Add User
+                                        Add Faculty
                                     </p>
                                 </a>
                             </li>
@@ -137,6 +137,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <i class="nav-icon fas fa-user-shield"></i>
                                     <p>
                                         Deleted Faculty
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="addstudent.php" class="nav-link">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        Add Student
                                     </p>
                                 </a>
                             </li>

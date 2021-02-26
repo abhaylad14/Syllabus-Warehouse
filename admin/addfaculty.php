@@ -15,12 +15,12 @@ require '../vendor/autoload.php';
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Add User</h1>
+                    <h1 class="m-0">Add Faculty</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
-                        <li class="breadcrumb-item active">Add User</li>
+                        <li class="breadcrumb-item active">Add Faculty</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->

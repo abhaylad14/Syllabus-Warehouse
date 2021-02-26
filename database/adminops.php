@@ -279,4 +279,38 @@ function ChangePassword($pass, $id){
     return $status;
 }
 
+class Student {
+
+    public function addStudents($file) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        if ($file['name']) {
+            $filename = explode(".", $file['name']);
+            if ($filename[1] == 'csv') {
+                $handle = fopen($file['tmp_name'], "r");
+                while ($data = fgetcsv($handle)) {
+                    $enro = $data[0];
+                    $email = $data[1];
+                    $name = $data[2];
+                    $pass = rand(11111111, 99999999);
+                    $query = "INSERT into tbl_students(Enro, Username, Password, FullName) values(:enro, :email, :pass, :name)";
+                    $stmt = $con->prepare($query);
+                    try {
+                        $status = $stmt->execute(["enro" => $enro, "email" => $email, "pass" => $pass, "name" => $name]);
+                    } catch (Exception $ex) {
+                        echo $ex;
+                        return 0;
+                    }
+                }
+                fclose($handle);
+            }
+            $objcon->disconnect();
+            return $status;
+        }
+    }
+
+}
+
+
+
 ?>
