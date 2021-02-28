@@ -29,7 +29,7 @@ if (empty($_SESSION["userId"]) && empty($_SESSION["userType"])) {
     }
 </style>
 <div class="h-100 container">
-    <div class="col-sm-6 mx-auto">
+    <div class="col-md-6 mx-auto">
         <div class="card shadow mb-5 bg-white rounded" style="margin-top:100px; margin-bottom: 100px;">
             <img class="border-1" src="Images/SyllabusWarehouse.png" height="200" alt="image error" />
             <div class="card-body col-sm-10 mx-auto ">

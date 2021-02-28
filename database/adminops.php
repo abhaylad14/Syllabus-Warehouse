@@ -27,6 +27,7 @@ class User {
         $objcon->disconnect();
         return $result;
     }
+
     public function displayDeletedUsers() {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -36,7 +37,7 @@ class User {
         return $result;
     }
 
-    public function updateUser($id,$name, $email,$contact,$gender) {
+    public function updateUser($id, $name, $email, $contact, $gender) {
         $objcon = new connection();
         $con = $objcon->connect();
         $sql = "update tbl_users set FullName = :name, Username = :email, Contact = :contact, Gender = :gender where id = :id";
@@ -49,6 +50,7 @@ class User {
         $objcon->disconnect();
         return $status;
     }
+
     public function deleteUser($id) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -62,6 +64,7 @@ class User {
         $objcon->disconnect();
         return $status;
     }
+
     public function restoreUser($id) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -75,7 +78,8 @@ class User {
         $objcon->disconnect();
         return $status;
     }
-    public function changeUserStatus($id,$ustatus) {
+
+    public function changeUserStatus($id, $ustatus) {
         $objcon = new connection();
         $con = $objcon->connect();
         $sql = "update tbl_users set Status = :status where id = :id";
@@ -232,6 +236,55 @@ class Subject {
 
 }
 
+class Student {
+
+    public function addStudents($file) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        if ($file['name']) {
+            $filename = explode(".", $file['name']);
+            if ($filename[1] == 'csv') {
+                $handle = fopen($file['tmp_name'], "r");
+                while ($data = fgetcsv($handle)) {
+                    $enro = $data[0];
+                    $email = $data[1];
+                    $name = $data[2];
+                    $pass = rand(11111111, 99999999);
+                    $query = "INSERT into tbl_students(Enro, Username, Password, FullName) values(:enro, :email, :pass, :name)";
+                    $stmt = $con->prepare($query);
+                    try {
+                        $status = $stmt->execute(["enro" => $enro, "email" => $email, "pass" => $pass, "name" => $name]);
+                    } catch (Exception $ex) {
+                        if ($con->errorCode() == "00000") {
+                            return 2;
+                        }
+                        return 0;
+                    }
+                }
+                fclose($handle);
+            }
+            $objcon->disconnect();
+            return $status;
+        }
+    }
+
+    public function addSingleStudent($enro, $name, $email) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "insert into tbl_students(Enro,Username,Password,FullName) values(:enro,:email,:pass,:name)";
+        $stmt = $con->prepare($sql);
+        $pass = rand(11111111, 99999999);
+        try {
+            $status = $stmt->execute(["enro" => $enro, "name" => $name, "email" => $email, "pass" => $pass]);
+        } catch (Exception $e) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+}
+
 function getAdminEmail($id) {
     $objcon = new connection();
     $con = $objcon->connect();
@@ -247,7 +300,8 @@ function getAdminEmail($id) {
     $objcon->disconnect();
     return $status;
 }
-function checkPassword($pass, $id){
+
+function checkPassword($pass, $id) {
     $objcon = new connection();
     $con = $objcon->connect();
     $pass = hash("sha256", $pass);
@@ -255,7 +309,7 @@ function checkPassword($pass, $id){
     $stmt = $con->prepare($sql);
     $status = 0;
     try {
-        $status = $stmt->execute(["id" => $id , "pass" => $pass]);
+        $status = $stmt->execute(["id" => $id, "pass" => $pass]);
         $status = $stmt->fetchColumn();
     } catch (Exception $ex) {
         return 0;
@@ -263,7 +317,8 @@ function checkPassword($pass, $id){
     $objcon->disconnect();
     return $status;
 }
-function ChangePassword($pass, $id){
+
+function ChangePassword($pass, $id) {
     $objcon = new connection();
     $con = $objcon->connect();
     $pass = hash("sha256", $pass);
@@ -271,7 +326,7 @@ function ChangePassword($pass, $id){
     $stmt = $con->prepare($sql);
     $status = 0;
     try {
-        $status = $stmt->execute(["pass" => $pass ,"id" => $id]);
+        $status = $stmt->execute(["pass" => $pass, "id" => $id]);
     } catch (Exception $ex) {
         return 0;
     }
