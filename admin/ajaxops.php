@@ -54,9 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "error";
         }
     } else if (isset($_POST["action"]) && $_POST["action"] == "updateuser") {
-        if (!empty($_POST["id"]) && isset($_POST["id"]) && !empty($_POST["uname"]) && isset($_POST["uname"]) 
-                && !empty($_POST["ucontact"]) && isset($_POST["ucontact"]) && !empty($_POST["uemail"]) && isset($_POST["uemail"])
-                && !empty($_POST["ugender"]) && isset($_POST["ugender"])) {
+        if (!empty($_POST["id"]) && isset($_POST["id"]) && !empty($_POST["uname"]) && isset($_POST["uname"]) && !empty($_POST["ucontact"]) && isset($_POST["ucontact"]) && !empty($_POST["uemail"]) && isset($_POST["uemail"]) && !empty($_POST["ugender"]) && isset($_POST["ugender"])) {
             $id = $_POST["id"];
             $name = $_POST["uname"];
             $email = $_POST["uemail"];
@@ -72,8 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "error";
         }
-    } 
-    else if (isset($_POST["action"]) && $_POST["action"] == "restoreuser") {
+    } else if (isset($_POST["action"]) && $_POST["action"] == "restoreuser") {
         if (!empty($_POST["id"]) && isset($_POST["id"])) {
             $id = $_POST["id"];
             $admin = new User();
@@ -86,8 +83,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "error";
         }
-    }
-    else {
+    } else if (isset($_POST["action"]) && $_POST["action"] == "subjectlist1") {
+        if (!empty($_POST["academicyear"]) && isset($_POST["academicyear"]) && !empty($_POST["sem"]) && isset($_POST["sem"])) {
+            $ayear = $_POST["academicyear"];
+            $sem = $_POST["sem"];
+            $admin = new Subject();
+            $status = $admin->ViewSubjectList1($ayear, $sem);
+            if ($status != null) {
+                $json = json_encode($status);
+                echo $json;
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "error";
+        }
+    } else if (isset($_POST["action"]) && $_POST["action"] == "subjectlist1append") {
+            $data = $_POST["data"];
+            $admin = new Subject();
+            $status = $admin->ViewSubjectList1Append($data);
+            if ($status != null) {
+                $json = json_encode($status);
+                echo $json;
+            } else {
+                echo "error";
+            }
+    } else if (isset($_POST["action"]) && $_POST["action"] == "subjectlist2") {
+        $admin = new Subject();
+        $status = $admin->ViewSubjectList2();
+        if ($status != null) {
+            $json = json_encode($status);
+            echo $json;
+        } else {
+            echo "error";
+        }
+    } else {
         echo "error";
     }
 }

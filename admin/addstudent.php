@@ -87,7 +87,10 @@
                 $status = $admin->addSingleStudent($enro, $name, $email);
                 if ($status == 1) {
                     displaymessage("success", "Student Added!", "Student has been added successfully!");
-                } else {
+                }else if ($status == 2) {
+                    displaymessage("error", "Duplicate Entry!", "Student has been already added!");
+                }  
+                else {
                     displaymessage("error", "Error!", "Somthing went wrong!");
                 }
             } else {

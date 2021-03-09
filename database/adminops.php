@@ -234,6 +234,70 @@ class Subject {
         return $status;
     }
 
+    public function ViewSubjectList1($academicyear, $sem) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $tempyear = explode("-", $academicyear);
+        $sql = "select count(*) from tbl_syllabus_config_master where AcademicYear like :year and Sem = :sem";
+        $stmt = $con->prepare($sql);
+        $status = 0;
+        try {
+            $result = $stmt->execute(["year" => $tempyear[0] - 1 . "%", "sem" => $sem]);
+            $result = $stmt->fetchColumn();
+            if ($result < 1) {
+                $sql = "SELECT Id,SubjectCode,SubjectName,EffectiveYear FROM tbl_subjects WHERE EffectiveYear not like :year";
+                $stmt = $con->prepare($sql);
+                $status = $stmt->execute(["year" => date("Y") . "%"]);
+                $status = $stmt->fetchAll(PDO::FETCH_NUM);
+            } else {
+                $sql = "SELECT s.Id,s.SubjectCode, s.SubjectName, s.EffectiveYear from tbl_subjects s INNER JOIN "
+                        . "tbl_syllabus_config_transaction t on s.Id = t.SubjectId INNER JOIN tbl_syllabus_config_master m "
+                        . "on t.ConfigId = m.Id where m.AcademicYear like :year and m.Sem = :sem";
+                $stmt = $con->prepare($sql);
+                $status = $stmt->execute(["year" => $tempyear[0] - 1 . "%", "sem" => $sem]);
+                $status = $stmt->fetchAll(PDO::FETCH_NUM);
+            }
+        } catch (Exception $ex) {
+            
+        }
+        return $status;
+    }
+
+    public function ViewSubjectList1Append($data) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $data = implode(",", $data);
+        $data = trim($data,'\'"');
+        $status = 0;
+        try {
+            $sql = "SELECT Id, SubjectCode, SubjectName, EffectiveYear from tbl_subjects where Id not in ($data) and EffectiveYear not like :year";
+            $stmt = $con->prepare($sql);
+            $stmt->execute(["year" => date("Y") . "%"]);
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+//            $sql = "SELECT Id, SubjectCode, SubjectName, EffectiveYear from tbl_subjects";
+//            $stmt = $con->prepare($sql);
+//            $stmt->execute();
+//            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        }
+        return $status;
+    }
+
+    public function ViewSubjectList2() {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "SELECT Id,SubjectCode,SubjectName,EffectiveYear FROM tbl_subjects WHERE EffectiveYear like :year";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["year" => date("Y") . "%"]);
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            return 0;
+        }
+        return $status;
+    }
+
 }
 
 class Student {
@@ -277,6 +341,9 @@ class Student {
         try {
             $status = $stmt->execute(["enro" => $enro, "name" => $name, "email" => $email, "pass" => $pass]);
         } catch (Exception $e) {
+            if ($con->errorCode() == "00000") {
+                return 2;
+            }
             $status = 0;
         }
         $objcon->disconnect();
