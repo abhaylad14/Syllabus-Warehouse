@@ -297,7 +297,34 @@ class Subject {
         }
         return $status;
     }
-
+    public function config1($ayear,$sem,$pid, $data) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "select count(*) from tbl_syllabus_config_master where AcademicYear = :ayear and sem = :sem and ProgramId = :pid";
+        $stmt = $con->prepare($sql);
+        $status = 0;
+//        try {
+            $result = $stmt->execute(["ayear" => $ayear, "sem" => $sem, "pid" => $pid]);
+            $result = $stmt->fetchColumn();
+            if ($result >= 1) {
+                return 2;
+            }
+            else{ 
+                $sql = "insert into tbl_syllabus_config_master(AcademicYear,sem,ProgramId) values(:ayear,:sem,:pid)";
+                $stmt = $con->prepare($sql);
+                $status = $stmt->execute(["ayear" => $ayear, "sem" => $sem, "pid" => $pid]);
+                if($status != 1){
+                    return 0;
+                }
+                else{
+                    
+                }
+            }
+//        } catch (Exception $e){
+//            $status =     0;
+//        }
+        return $status;
+    }
 }
 
 class Student {

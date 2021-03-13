@@ -99,21 +99,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "error";
         }
     } else if (isset($_POST["action"]) && $_POST["action"] == "subjectlist1append") {
-            $data = $_POST["data"];
-            $admin = new Subject();
-            $status = $admin->ViewSubjectList1Append($data);
-            if ($status != null) {
-                $json = json_encode($status);
-                echo $json;
-            } else {
-                echo "error";
-            }
+        $data = $_POST["data"];
+        $admin = new Subject();
+        $status = $admin->ViewSubjectList1Append($data);
+        if ($status != null) {
+            $json = json_encode($status);
+            echo $json;
+        } else {
+            echo "error";
+        }
     } else if (isset($_POST["action"]) && $_POST["action"] == "subjectlist2") {
         $admin = new Subject();
         $status = $admin->ViewSubjectList2();
         if ($status != null) {
             $json = json_encode($status);
             echo $json;
+        } else {
+            echo "error";
+        }
+    } else if (isset($_POST["action"]) && $_POST["action"] == "config1") {
+        if (!empty($_POST["ayear"]) && isset($_POST["ayear"]) && !empty($_POST["sem"]) && isset($_POST["sem"]) && $_POST["pid"] != null ) {
+            $ayear = $_POST["ayear"];
+            $sem = $_POST["sem"];
+            $pid = $_POST["pid"];
+            $data = $_POST["subjects"];
+            $admin = new Subject();
+            $status = $admin->config1($ayear, $sem, $pid, $data);
+            if ($status == 1) {
+                echo "done";
+            } else if($status == 2) {
+                echo "exists";
+            }
+            else{
+                echo "error";
+            }
         } else {
             echo "error";
         }
