@@ -182,7 +182,6 @@
 
                         let x = document.getElementById("tbody1");
                         x.innerHTML = html;
-                        //displaymessage("success", "Success!", "User restored successfully!");
                         $.ajax({
                             type: "POST",
                             url: "ajaxops.php",
@@ -211,7 +210,6 @@
                                         "scrollCollapse": true,
                                         "paging": false,
                                     });
-//                        displaymessage("success", "Success!", "User successfully!");
                                 } else {
                                     displaymessage("error", "Error!", "Something went wrong!");
                                 }
@@ -261,7 +259,7 @@
                     x.selectedIndex = 0;
                     x.disabled = true;
                 }
-            })
+            });
         }
 
         $(document).ready(function () {
@@ -303,7 +301,6 @@
 
                         let x = document.getElementById("tbody2");
                         x.innerHTML = html;
-                        // displaymessage("success", "Success!", "User restored successfully!");
                         $('#tbl2').DataTable({
                             "scrollY": "300px",
                             "scrollCollapse": true,
@@ -318,58 +315,62 @@
 
         });
         $("#btnconfigure").click(function () {
-        let academicyear = $("#ayear").val();
-                let csem = $("#sem").val();
-                let cpid = "";
-                let chkint = document.getElementById("chkint");
-                let chkbsc = document.getElementById("chkbsc");
-                let chkmsc = document.getElementById("chkmsc");
-                if (chkint.checked && chkbsc.checked) {
-        cpid = 3;
-        } else if (chkint.checked && chkmsc.checked) {
-        cpid = 4;
-        } else if (chkint.checked) {
-        cpid = '0';
-        } else if (chkbsc.checked) {
-        cpid = 1;
-        } else if (chkmsc.checked) {
-        cpid = 2;
-        }
-        let data = [];
-                let iselective;
-                let tbl = document.getElementById("tbody3");
-                for (let i = 0; i < tbl.childElementCount; i++) {
-        data[i][0] = tbl.children[i].children[0].children[0].id;
+            let academicyear = $("#ayear").val();
+            let csem = $("#sem").val();
+            let cpid = "";
+            let chkint = document.getElementById("chkint");
+            let chkbsc = document.getElementById("chkbsc");
+            let chkmsc = document.getElementById("chkmsc");
+            if (chkint.checked && chkbsc.checked) {
+                cpid = 3;
+            } else if (chkint.checked && chkmsc.checked) {
+                cpid = 4;
+            } else if (chkint.checked) {
+                cpid = '0';
+            } else if (chkbsc.checked) {
+                cpid = 1;
+            } else if (chkmsc.checked) {
+                cpid = 2;
+            }
+            let sdata = {
+                id: [],
+                iselective: [],
+                egroup: []
+            };
+            let iselective;
+            let tbl = document.getElementById("tbody3");
+            for (let i = 0; i < tbl.childElementCount; i++) {
+                sdata["id"][i] = tbl.children[i].children[0].children[0].id;
                 if (tbl.children[i].children[4].children[0].checked) {
-        iselective = 1;
-        } else {
-        iselective = 0;
-        }
-        data[i][1] = iselective;
-                data[i][2] = tbl.children[i].children[5].children[0].value;
-        }
+                    iselective = 1;
+                } else {
+                    iselective = 0;
+                }
+                sdata["iselective"][i] = iselective;
+                sdata["egroup"][i] = tbl.children[i].children[5].children[0].value;
+            }
+            console.log(sdata);
             $.ajax({
                 type: "POST",
-                url : "ajaxops.php",
-               data: {
+                url: "ajaxops.php",
+                data: {
                     ayear: academicyear,
                     sem: csem,
                     pid: cpid,
-                    subjects: data,
+                    subjects: sdata,
                     action: "config1"
                 },
                 success: function (result) {
-                    alert(cpid)
-                    if (result =="done") {
+                    alert(result);
+                    if (result == "done") {
                         displaymessage("success", "Syllabus added!", "Syllabus added successfully!");
-                    }
-                    else if(result == "exists"){
+                    } else if (result == "exists") {
                         displaymessage("error", "Record already exists!", "");
-                    }
-                    else {
+                    } else {
                         displaymessage("error", "Error!", "Something went wrong!");
                     }
                 }
             });
+        });
     </script>
     <?php require("footer.php"); ?>

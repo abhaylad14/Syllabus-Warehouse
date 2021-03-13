@@ -267,7 +267,7 @@ class Subject {
         $objcon = new connection();
         $con = $objcon->connect();
         $data = implode(",", $data);
-        $data = trim($data,'\'"');
+        $data = trim($data, '\'"');
         $status = 0;
         try {
             $sql = "SELECT Id, SubjectCode, SubjectName, EffectiveYear from tbl_subjects where Id not in ($data) and EffectiveYear not like :year";
@@ -297,34 +297,45 @@ class Subject {
         }
         return $status;
     }
-    public function config1($ayear,$sem,$pid, $data) {
+
+    public function config1($ayear, $sem, $pid, $data) {
         $objcon = new connection();
         $con = $objcon->connect();
         $sql = "select count(*) from tbl_syllabus_config_master where AcademicYear = :ayear and sem = :sem and ProgramId = :pid";
         $stmt = $con->prepare($sql);
         $status = 0;
 //        try {
-            $result = $stmt->execute(["ayear" => $ayear, "sem" => $sem, "pid" => $pid]);
-            $result = $stmt->fetchColumn();
-            if ($result >= 1) {
-                return 2;
-            }
-            else{ 
-                $sql = "insert into tbl_syllabus_config_master(AcademicYear,sem,ProgramId) values(:ayear,:sem,:pid)";
+        $result = $stmt->execute(["ayear" => $ayear, "sem" => $sem, "pid" => $pid]);
+        $result = $stmt->fetchColumn();
+        if ($result >= 1) {
+            return 2;
+        } else {
+            $sql = "insert into tbl_syllabus_config_master(AcademicYear,sem,ProgramId) values(:ayear,:sem,:pid)";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["ayear" => $ayear, "sem" => $sem, "pid" => $pid]);
+            if ($status != 1) {
+                return 0;
+            } else {
+                $sql = "select Id from tbl_syllabus_config_master ORDER by Id desc limit 1";
                 $stmt = $con->prepare($sql);
-                $status = $stmt->execute(["ayear" => $ayear, "sem" => $sem, "pid" => $pid]);
-                if($status != 1){
+                $result = $stmt->execute();
+                $result = $stmt->fetchColumn();
+                $sql = "insert into tbl_syllabus_config_transaction(ConfigId,SubjectId,IsElective,ElectiveGroup) values(:cid,:sid,:elective,:egroup)";
+                for($i = 0; $i <count($data["id"]); $i++) {
+                    $stmt = $con->prepare($sql);
+                    $status = $stmt->execute(["cid" => $result, "sid" => $data["id"][$i], "elective" => $data["iselective"][$i], "egroup" => $data["egroup"][$i]]);
+                }
+                if ($status != 1) {
                     return 0;
                 }
-                else{
-                    
-                }
             }
+        }
 //        } catch (Exception $e){
 //            $status =     0;
 //        }
         return $status;
     }
+
 }
 
 class Student {
