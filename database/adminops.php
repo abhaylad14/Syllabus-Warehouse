@@ -233,6 +233,16 @@ class Subject {
         $objcon->disconnect();
         return $status;
     }
+    public function displaysubjects(){
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "select * from tbl_subjects";
+        $stmt = $con->prepare($sql);
+        $stmt->execute();
+        $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        $objcon->disconnect();
+        return $status;
+    }
 
     public function ViewSubjectList1($academicyear, $sem) {
         $objcon = new connection();
@@ -260,6 +270,7 @@ class Subject {
         } catch (Exception $ex) {
             
         }
+        $objcon->disconnect();
         return $status;
     }
 
@@ -275,11 +286,9 @@ class Subject {
             $stmt->execute(["year" => date("Y") . "%"]);
             $status = $stmt->fetchAll(PDO::FETCH_NUM);
         } catch (Exception $ex) {
-//            $sql = "SELECT Id, SubjectCode, SubjectName, EffectiveYear from tbl_subjects";
-//            $stmt = $con->prepare($sql);
-//            $stmt->execute();
-//            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+            
         }
+        $objcon->disconnect();
         return $status;
     }
 
@@ -295,6 +304,7 @@ class Subject {
         } catch (Exception $ex) {
             return 0;
         }
+        $objcon->disconnect();
         return $status;
     }
 
@@ -304,7 +314,7 @@ class Subject {
         $sql = "select count(*) from tbl_syllabus_config_master where AcademicYear = :ayear and sem = :sem and ProgramId = :pid";
         $stmt = $con->prepare($sql);
         $status = 0;
-//        try {
+        try {
         $result = $stmt->execute(["ayear" => $ayear, "sem" => $sem, "pid" => $pid]);
         $result = $stmt->fetchColumn();
         if ($result >= 1) {
@@ -320,8 +330,10 @@ class Subject {
                 $stmt = $con->prepare($sql);
                 $result = $stmt->execute();
                 $result = $stmt->fetchColumn();
+
+
                 $sql = "insert into tbl_syllabus_config_transaction(ConfigId,SubjectId,IsElective,ElectiveGroup) values(:cid,:sid,:elective,:egroup)";
-                for($i = 0; $i <count($data["id"]); $i++) {
+                for ($i = 0; $i < count($data["id"]); $i++) {
                     $stmt = $con->prepare($sql);
                     $status = $stmt->execute(["cid" => $result, "sid" => $data["id"][$i], "elective" => $data["iselective"][$i], "egroup" => $data["egroup"][$i]]);
                 }
@@ -330,9 +342,10 @@ class Subject {
                 }
             }
         }
-//        } catch (Exception $e){
-//            $status =     0;
-//        }
+        } catch (Exception $e){
+            $status =     0;
+        }
+        $objcon->disconnect();
         return $status;
     }
 
@@ -437,6 +450,16 @@ function ChangePassword($pass, $id) {
     }
     $objcon->disconnect();
     return $status;
+}
+
+function array_group(array $data, $by_column) {
+    $result = [];
+    foreach ($data as $item) {
+        $column = $item[$by_column];
+        unset($item[$by_column]);
+        $result[$column][] = $item;
+    }
+    return $result;
 }
 
 ?>

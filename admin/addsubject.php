@@ -25,7 +25,7 @@ require("header.php");
     <div class="content">
         <div class="card col-sm-10 mx-auto">
             <div class="card-body">
-                <form method="post">
+                <form method="post" enctype="multipart/form-data">
                     <div class="form-row">
                         <div class="col-sm-3">
                             <label for="subcode" class="form-label">Subject Code</label>
@@ -47,7 +47,7 @@ require("header.php");
                         </div>
                         <div class="col-sm-4">
                             <label for="pfile" class="form-label">Syllabus File PDF</label>
-                            <input type="file" class="form-control" id="pfile" name="pfile">
+                            <input type="file" class="form-control" id="pfile" name="pfile" accept=".PDF, .pdf">
                         </div>
                     </div>
                     <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
@@ -231,11 +231,50 @@ require("header.php");
             $subcode = trim($_POST["subcode"]);
             $subname = trim($_POST["subname"]);
             $eyear = trim($_POST["eyear"]);
-            $sfile = $_POST["sfile"];
-            $pfile = $_POST["pfile"];
+            $sfile = $_FILES["sfile"]["name"];
+            $pfile = $_FILES["pfile"]["name"];
             $sfile = dashfornull($sfile);
             $pfile = dashfornull($pfile);
             $addsubject = new Subject();
+            $now = new DateTime();
+
+            if ($sfile != "-" && $pfile != "-") {
+                $extension = explode(".", $sfile);
+                $extension = $extension[1];
+                $sfile = $now->getTimestamp() . "." . $extension;
+                $target_dir = "../syllabusfiles/";
+                $target_file = $target_dir . basename($_FILES["sfile"]["name"]);
+                move_uploaded_file($_FILES["sfile"]["tmp_name"], $target_file);
+                rename("../syllabusfiles/" . $_FILES["sfile"]["name"], "../syllabusfiles/" . $sfile);
+                $sfile = "../syllabusfiles/" . $sfile;
+                
+                $extension = explode(".", $pfile);
+                $extension = $extension[1];
+                $pfile = $now->getTimestamp() . "." . $extension;
+                $target_dir = "../syllabusfiles/";
+                $target_file = $target_dir . basename($_FILES["pfile"]["name"]);
+                move_uploaded_file($_FILES["pfile"]["tmp_name"], $target_file);
+                rename("../syllabusfiles/" . $_FILES["pfile"]["name"], "../syllabusfiles/" . $pfile);
+                $pfile = "../syllabusfiles/" . $pfile;
+            } else if ($sfile != "-") {
+                $extension = explode(".", $sfile);
+                $extension = $extension[1];
+                $sfile = $now->getTimestamp() . "." . $extension;
+                $target_dir = "../syllabusfiles/";
+                $target_file = $target_dir . basename($_FILES["sfile"]["name"]);
+                move_uploaded_file($_FILES["sfile"]["tmp_name"], $target_file);
+                rename("../syllabusfiles/" . $_FILES["sfile"]["name"], "../syllabusfiles/" . $sfile);
+                $sfile = "../syllabusfiles/" . $sfile;
+            } else if ($pfile != "-") {
+                $extension = explode(".", $pfile);
+                $extension = $extension[1];
+                $pfile = $now->getTimestamp() . "." . $extension;
+                $target_dir = "../syllabusfiles/";
+                $target_file = $target_dir . basename($_FILES["pfile"]["name"]);
+                move_uploaded_file($_FILES["pfile"]["tmp_name"], $target_file);
+                rename("../syllabusfiles/" . $_FILES["pfile"]["name"], "../syllabusfiles/" . $pfile);
+                $pfile = "../syllabusfiles/" . $pfile;
+            }
             if (isset($_POST["btnsubmit1"])) {
 
 
@@ -253,7 +292,7 @@ require("header.php");
                 if ($status == 1) {
                     displaymessage("success", "Success", "Subject added successfully!");
                 } else if ($status == 2) {
-                    displaymessage("error", "Error", "Suject is already added!");
+                    displaymessage("error", "Error", "Subject is already added!");
                 } else {
                     displaymessage("error", "Error", "Something went wrong!");
                 }
@@ -376,13 +415,13 @@ require("header.php");
                 $('#pfile').val("");
             }
         });
-        $("#home-tab").keyup(function(){
+        $("#home-tab").keyup(function () {
             this.click();
         });
-        $("#profile-tab").keyup(function(){
+        $("#profile-tab").keyup(function () {
             this.click();
         });
-        $("#contact-tab").keyup(function(){
+        $("#contact-tab").keyup(function () {
             this.click();
         });
     </script>

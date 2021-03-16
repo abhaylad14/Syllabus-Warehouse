@@ -130,6 +130,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else if($status == 2) {
                 echo "exists";
             }
+            else if($status == 3) {
+                echo "nomatch";
+            }
             else{
                 echo "error";
             }

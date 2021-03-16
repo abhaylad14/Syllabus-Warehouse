@@ -361,12 +361,15 @@
                     action: "config1"
                 },
                 success: function (result) {
-                    alert(result);
+//                    alert(result);
                     if (result == "done") {
                         displaymessage("success", "Syllabus added!", "Syllabus added successfully!");
                     } else if (result == "exists") {
                         displaymessage("error", "Record already exists!", "");
-                    } else {
+                    }else if (result == "nomatch") {
+                        displaymessage("error", "Invalid Elective Subjects!", "Please select elective subjects having same details");
+                    } 
+                    else {
                         displaymessage("error", "Error!", "Something went wrong!");
                     }
                 }

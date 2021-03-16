@@ -5,8 +5,13 @@
         <group>
             <file>file:/C:/xampp/htdocs/Project/admin/dashboard.php</file>
             <file>file:/C:/xampp/htdocs/Project/admin/configuresyllabus.php</file>
+            <file>file:/C:/xampp/htdocs/Project/admin/addsubject.php</file>
+            <file>file:/C:/xampp/htdocs/Project/admin/managesubject.php</file>
             <file>file:/C:/xampp/htdocs/Project/database/adminops.php</file>
+            <file>file:/C:/xampp/htdocs/Project/admin/addfaculty.php</file>
             <file>file:/C:/xampp/htdocs/Project/admin/ajaxops.php</file>
+            <file>file:/C:/xampp/htdocs/Project/admin/deletedfaculty.php</file>
+            <file>file:/C:/xampp/htdocs/Project/admin/header.php</file>
         </group>
     </open-files>
 </project-private>
