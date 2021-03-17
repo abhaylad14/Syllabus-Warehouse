@@ -174,7 +174,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../underconstruction.php" class="nav-link">
+                                <a href="syllabusrevision.php" class="nav-link">
                                     <i class="nav-icon fas fa-cogs"></i>
                                     <p>
                                         Syllabus Revision

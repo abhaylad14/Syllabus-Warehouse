@@ -75,9 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($utype == 2) {
                     //faculty
                     header("Location: faculty/dashboard.php");
-                } else if ($utype == 4) {
-                    //students
-                    header("Location: student/dashboard.php");
                 } else if ($utype == 3) {
                     //director
                     header("Location: director/dashboard.php");
@@ -89,7 +86,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 displaymessage("success", "Login success!", "");
             } else {
-                displaymessage("error", "Invalid Credentials!", "Please enter valid Username and Password!");
+                $result = checkstudentlogin($username, $password);
+                if ($result == 1) {
+                    $id = getStudentId($username);
+                    $_SESSION["userId"] = $id;
+                    $_SESSION["userType"] = 4;
+                    //students
+                    header("Location: student/dashboard.php");
+                } else {
+                    displaymessage("error", "Invalid Credentials!", "Please enter valid Username and Password!");
+                }
             }
         } else {
             displaymessage("error", "Empty form!", "Please fill the required details!");

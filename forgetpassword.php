@@ -32,9 +32,6 @@ require 'vendor/autoload.php';
     </div>
 </div>
 <?php
-
-
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($_POST["email"]) && isset($_POST["email"])) {
         $email = trim($_POST["email"]);
@@ -43,17 +40,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $otp = rand(100000, 999999);
             $subject = "Syllabus Warehouse";
             $message = "Your OTP for change password is: $otp Please do not share your OTP with anyone else.";
-
-
             $status = sendEmail($email, $subject, $message);
             if ($status == 1) {
                 $_SESSION["otp"] = $otp;
                 $_SESSION["email"] = $email;
+                $_SESSION["utype"] = "user";
                 header("Location: verifyotp.php");
             } else {
                 displaymessage("error", "Error!", "Something went wrong while sending email!");
             }
         } else {
+            $result = checkStudentEmail($email);
+            if ($result == 1) {
+                $otp = rand(100000, 999999);
+                $subject = "Syllabus Warehouse";
+                $message = "Your OTP for change password is: $otp Please do not share your OTP with anyone else.";
+                $status = sendEmail($email, $subject, $message);
+                if ($status == 1) {
+                    $_SESSION["otp"] = $otp;
+                    $_SESSION["email"] = $email;
+                    $_SESSION["utype"] = "student";
+                    header("Location: verifyotp.php");
+                } else {
+                    displaymessage("error", "Error!", "Something went wrong while sending email!");
+                }
+            }
             displaymessage("error", "Invalid Email!", "Your Email is not registered!");
         }
     } else {

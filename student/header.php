@@ -4,7 +4,7 @@ if (!$_SESSION["userId"] || $_SESSION["userType"] != 4) {
     header("Location: ../index.php");
 }
 include_once("../database/openops.php");
-$data = getUserData($_SESSION["userId"]);
+$data = getStudentData($_SESSION["userId"]);
 ?>
 <!doctype html>
 <html lang="en">

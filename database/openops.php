@@ -11,7 +11,7 @@ function checklogin($username, $password) {
     $objcon = new connection();
     $con = $objcon->connect();
     $password = hash('sha256', $password);
-    $sql = "select count(*) from tbl_users where Username = :uname and Password = :pass and Status = 0 or Status = 9";
+    $sql = "select count(*) from tbl_users where Username = :uname and Password = :pass and Status = 0";
     $stmt = $con->prepare($sql);
     $status = 0;
     try {
@@ -23,7 +23,37 @@ function checklogin($username, $password) {
     $objcon->disconnect();
     return $status;
 }
-
+function checkstudentlogin($username, $password) {
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $password = hash('sha256', $password);
+    $sql = "select count(*) from tbl_students where Username = :uname and Password = :pass and Status = 0";
+    $stmt = $con->prepare($sql);
+    $status = 0;
+    try {
+        $status = $stmt->execute(["uname" => $username, "pass" => $password]);
+        $status = $stmt->fetchColumn();
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+    return $status;
+}
+function getStudentId($email) {
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $sql = "select Id from tbl_students where Username = :email";
+    $stmt = $con->prepare($sql);
+    $status = 0;
+    try {
+        $status = $stmt->execute(["email" => $email]);
+        $status = $stmt->fetchColumn();
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+    return $status;
+}
 function getUserId($email) {
     $objcon = new connection();
     $con = $objcon->connect();
@@ -71,6 +101,21 @@ function checkEmail($email) {
     $objcon->disconnect();
     return $status;
 }
+function checkStudentEmail($email) {
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $sql = "select count(*) from tbl_students where Username = :email";
+    $stmt = $con->prepare($sql);
+    $status = 0;
+    try {
+        $status = $stmt->execute(["email" => $email]);
+        $status = $stmt->fetchColumn();
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+    return $status;
+}
 function sendEmail($email, $subject, $message) {
     $mail = new PHPMailer(true);
     //Server settings                    // Enable verbose debug output
@@ -100,7 +145,12 @@ function resetPassword($email,$pass){
     $objcon = new connection();
     $con = $objcon->connect();
     $pass = hash("sha256", $pass);
+    if($_SESSION["utype"] == "user"){
     $sql = "update tbl_users set Password = :pass where Username = :email";
+    }
+    else if($_SESSION["utype"] == "student"){
+        $sql = "update tbl_students set Password = :pass where Username = :email";
+    }
     $stmt = $con->prepare($sql);
     $status = 0;
     try {
@@ -115,6 +165,21 @@ function getUserData($id){
     $objcon = new connection();
     $con = $objcon->connect();
     $sql = "select * from tbl_users where Id = :id";
+    $stmt = $con->prepare($sql);
+    $status = 0;
+    try {
+        $status = $stmt->execute(["id" => $id]);
+        $status = $stmt->fetch(PDO::FETCH_NUM);
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+    return $status;
+}
+function getStudentData($id){
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $sql = "select * from tbl_students where Id = :id";
     $stmt = $con->prepare($sql);
     $status = 0;
     try {
