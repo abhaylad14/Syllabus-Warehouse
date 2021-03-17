@@ -587,5 +587,59 @@ function ChangePassword($pass, $id) {
     $objcon->disconnect();
     return $status;
 }
+function count_subject(){
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $sql = "select count(*) from tbl_subjects";
+    $stmt = $con->prepare($sql);
+    $status = 0;
+     try {
+        $status = $stmt->execute();
+          $status = $stmt->fetch(PDO::FETCH_NUM);
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+   
+    return $status;
+   
+}
+
+function count_faculty(){
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $sql = "select count(*) from tbl_users where UserType='2'";
+    $stmt = $con->prepare($sql);
+    $status = 0;
+     try {
+        $status = $stmt->execute();
+          $status = $stmt->fetch(PDO::FETCH_NUM);
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+   
+    return $status;
+   
+}
+
+
+function count_student(){
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $sql = "select count(*) from tbl_users where UserType='4'";
+    $stmt = $con->prepare($sql);
+    $status = 0;
+     try {
+        $status = $stmt->execute();
+          $status = $stmt->fetch(PDO::FETCH_NUM);
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+   
+    return $status;
+   
+}
 
 ?>
