@@ -233,13 +233,43 @@ class Subject {
         $objcon->disconnect();
         return $status;
     }
-    public function displaysubjects(){
+
+    public function displaysubjects() {
         $objcon = new connection();
         $con = $objcon->connect();
-        $sql = "select * from tbl_subjects";
+        $sql = "select * from tbl_subjects where Isactive = '0'";
         $stmt = $con->prepare($sql);
         $stmt->execute();
         $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function getSubjectById($id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "select  *  from tbl_subjects where Id = :id";
+        $stmt = $con->prepare($sql);
+        try {
+            $stmt->execute(["id" => $id]);
+            $status = $stmt->fetch(PDO::FETCH_NUM);
+        } catch (Exception $e) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function deleteSubject($id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "update tbl_subjects set Isactive = '1' where id = :id";
+        $stmt = $con->prepare($sql);
+        try {
+            $status = $stmt->execute(["id" => $id]);
+        } catch (Exception $e) {
+            $status = 0;
+        }
         $objcon->disconnect();
         return $status;
     }
@@ -308,6 +338,112 @@ class Subject {
         return $status;
     }
 
+    public function UpdateSubject1($subcode, $subname, $eyear, $sfile, $pfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cie, $id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "UPDATE tbl_subjects SET SubjectCode= :subcode,SubjectName=:subname,EffectiveYear=:eyear,TheoryCredit=:tcredit,"
+                . "PracticalCredit=:pcredit,TheoryHour=:thour,PracticalHour=:phour,DocText=:sfile,DocPdf=:pfile,TheoryMarksInt=:tmarksint,"
+                . "TheoryMarksExt=:tmarksext,Cie=:cie,CieInt='-',CieExt='-' where Id = :id";
+        $stmt = $con->prepare($sql);
+        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear,
+            "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, "sfile" => $sfile, "pfile" => $pfile,
+            "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cie" => $cie, "id" => $id]);
+        $objcon->disconnect();
+        return $status;
+    }
+    public function xUpdateSubject1($subcode, $subname, $eyear,$tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cie, $id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "UPDATE tbl_subjects SET SubjectCode= :subcode,SubjectName=:subname,EffectiveYear=:eyear,TheoryCredit=:tcredit,"
+                . "PracticalCredit=:pcredit,TheoryHour=:thour,PracticalHour=:phour,TheoryMarksInt=:tmarksint,"
+                . "TheoryMarksExt=:tmarksext,Cie=:cie,CieInt='-',CieExt='-' where Id = :id";
+        $stmt = $con->prepare($sql);
+        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear,
+            "tcredit" => $tcredit,"p"
+            . "credit" => $pcredit, "thour" => $thour, "phour" => $phour,
+            "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cie" => $cie, "id" => $id]);
+        $objcon->disconnect();
+        return $status;
+    }
+    public function x1UpdateSubject1($subcode, $subname, $eyear, $sfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cie, $id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "UPDATE tbl_subjects SET SubjectCode= :subcode,SubjectName=:subname,EffectiveYear=:eyear,TheoryCredit=:tcredit,"
+                . "PracticalCredit=:pcredit,TheoryHour=:thour,PracticalHour=:phour,DocText=:sfile,TheoryMarksInt=:tmarksint,"
+                . "TheoryMarksExt=:tmarksext,Cie=:cie,CieInt='-',CieExt='-' where Id = :id";
+        $stmt = $con->prepare($sql);
+        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear,
+            "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, "sfile" => $sfile, 
+            "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cie" => $cie, "id" => $id]);
+        $objcon->disconnect();
+        return $status;
+    }
+    public function x2UpdateSubject1($subcode, $subname, $eyear, $pfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cie, $id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "UPDATE tbl_subjects SET SubjectCode= :subcode,SubjectName=:subname,EffectiveYear=:eyear,TheoryCredit=:tcredit,"
+                . "PracticalCredit=:pcredit,TheoryHour=:thour,PracticalHour=:phour,DocPdf=:pfile,TheoryMarksInt=:tmarksint,"
+                . "TheoryMarksExt=:tmarksext,Cie=:cie,CieInt='-',CieExt='-' where Id = :id";
+        $stmt = $con->prepare($sql);
+        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear,
+            "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, "pfile" => $pfile,
+            "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cie" => $cie, "id" => $id]);
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function UpdateSubject2($subcode, $subname, $eyear, $sfile, $pfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cieint, $cieext, $id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "UPDATE tbl_subjects SET SubjectCode= :subcode,SubjectName=:subname,EffectiveYear=:eyear,TheoryCredit=:tcredit,"
+                . "PracticalCredit=:pcredit,TheoryHour=:thour,PracticalHour=:phour,DocText=:sfile,DocPdf=:pfile,TheoryMarksInt=:tmarksint,"
+                . "TheoryMarksExt=:tmarksext,CieInt=:cieint,CieExt=:cieext,Cie='-' where Id = :id";
+        $stmt = $con->prepare($sql);
+        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear, 
+            "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, "sfile" => $sfile, "pfile" => $pfile,
+            "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cieint" => $cieint, "cieext" => $cieext, "id" => $id]);
+        $objcon->disconnect();
+        return $status;
+    }
+    public function xUpdateSubject2($subcode, $subname, $eyear, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cieint, $cieext, $id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "UPDATE tbl_subjects SET SubjectCode= :subcode,SubjectName=:subname,EffectiveYear=:eyear,TheoryCredit=:tcredit,"
+                . "PracticalCredit=:pcredit,TheoryHour=:thour,PracticalHour=:phour,TheoryMarksInt=:tmarksint,"
+                . "TheoryMarksExt=:tmarksext,CieInt=:cieint,CieExt=:cieext,Cie='-' where Id = :id";
+        $stmt = $con->prepare($sql);
+        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear, 
+            "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, 
+            "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cieint" => $cieint, "cieext" => $cieext, "id" => $id]);
+        $objcon->disconnect();
+        return $status;
+    }
+    public function x1UpdateSubject2($subcode, $subname, $eyear, $sfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cieint, $cieext, $id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "UPDATE tbl_subjects SET SubjectCode= :subcode,SubjectName=:subname,EffectiveYear=:eyear,TheoryCredit=:tcredit,"
+                . "PracticalCredit=:pcredit,TheoryHour=:thour,PracticalHour=:phour,DocText=:sfile,TheoryMarksInt=:tmarksint,"
+                . "TheoryMarksExt=:tmarksext,CieInt=:cieint,CieExt=:cieext,Cie='-' where Id = :id";
+        $stmt = $con->prepare($sql);
+        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear, 
+            "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, "sfile" => $sfile,
+            "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cieint" => $cieint, "cieext" => $cieext, "id" => $id]);
+        $objcon->disconnect();
+        return $status;
+    }
+    public function x2UpdateSubject2($subcode, $subname, $eyear, $pfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cieint, $cieext, $id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "UPDATE tbl_subjects SET SubjectCode= :subcode,SubjectName=:subname,EffectiveYear=:eyear,TheoryCredit=:tcredit,"
+                . "PracticalCredit=:pcredit,TheoryHour=:thour,PracticalHour=:phour,DocPdf=:pfile,TheoryMarksInt=:tmarksint,"
+                . "TheoryMarksExt=:tmarksext,CieInt=:cieint,CieExt=:cieext,Cie='-' where Id = :id";
+        $stmt = $con->prepare($sql);
+        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear, 
+            "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, "pfile" => $pfile,
+            "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cieint" => $cieint, "cieext" => $cieext, "id" => $id]);
+        $objcon->disconnect();
+        return $status;
+    }
     public function config1($ayear, $sem, $pid, $data) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -315,35 +451,35 @@ class Subject {
         $stmt = $con->prepare($sql);
         $status = 0;
         try {
-        $result = $stmt->execute(["ayear" => $ayear, "sem" => $sem, "pid" => $pid]);
-        $result = $stmt->fetchColumn();
-        if ($result >= 1) {
-            return 2;
-        } else {
-            $sql = "insert into tbl_syllabus_config_master(AcademicYear,sem,ProgramId) values(:ayear,:sem,:pid)";
-            $stmt = $con->prepare($sql);
-            $status = $stmt->execute(["ayear" => $ayear, "sem" => $sem, "pid" => $pid]);
-            if ($status != 1) {
-                return 0;
+            $result = $stmt->execute(["ayear" => $ayear, "sem" => $sem, "pid" => $pid]);
+            $result = $stmt->fetchColumn();
+            if ($result >= 1) {
+                return 2;
             } else {
-                $sql = "select Id from tbl_syllabus_config_master ORDER by Id desc limit 1";
+                $sql = "insert into tbl_syllabus_config_master(AcademicYear,sem,ProgramId) values(:ayear,:sem,:pid)";
                 $stmt = $con->prepare($sql);
-                $result = $stmt->execute();
-                $result = $stmt->fetchColumn();
-
-
-                $sql = "insert into tbl_syllabus_config_transaction(ConfigId,SubjectId,IsElective,ElectiveGroup) values(:cid,:sid,:elective,:egroup)";
-                for ($i = 0; $i < count($data["id"]); $i++) {
-                    $stmt = $con->prepare($sql);
-                    $status = $stmt->execute(["cid" => $result, "sid" => $data["id"][$i], "elective" => $data["iselective"][$i], "egroup" => $data["egroup"][$i]]);
-                }
+                $status = $stmt->execute(["ayear" => $ayear, "sem" => $sem, "pid" => $pid]);
                 if ($status != 1) {
                     return 0;
+                } else {
+                    $sql = "select Id from tbl_syllabus_config_master ORDER by Id desc limit 1";
+                    $stmt = $con->prepare($sql);
+                    $result = $stmt->execute();
+                    $result = $stmt->fetchColumn();
+
+
+                    $sql = "insert into tbl_syllabus_config_transaction(ConfigId,SubjectId,IsElective,ElectiveGroup) values(:cid,:sid,:elective,:egroup)";
+                    for ($i = 0; $i < count($data["id"]); $i++) {
+                        $stmt = $con->prepare($sql);
+                        $status = $stmt->execute(["cid" => $result, "sid" => $data["id"][$i], "elective" => $data["iselective"][$i], "egroup" => $data["egroup"][$i]]);
+                    }
+                    if ($status != 1) {
+                        return 0;
+                    }
                 }
             }
-        }
-        } catch (Exception $e){
-            $status =     0;
+        } catch (Exception $e) {
+            $status = 0;
         }
         $objcon->disconnect();
         return $status;
@@ -450,16 +586,6 @@ function ChangePassword($pass, $id) {
     }
     $objcon->disconnect();
     return $status;
-}
-
-function array_group(array $data, $by_column) {
-    $result = [];
-    foreach ($data as $item) {
-        $column = $item[$by_column];
-        unset($item[$by_column]);
-        $result[$column][] = $item;
-    }
-    return $result;
 }
 
 ?>

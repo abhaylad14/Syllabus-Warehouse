@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 if(!$_SESSION["userId"] || $_SESSION["userType"] != 1){
     header("Location: ../index.php");

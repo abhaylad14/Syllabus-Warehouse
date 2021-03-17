@@ -139,7 +139,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "error";
         }
-    } else {
+    }
+    else if (isset($_POST["action"]) && $_POST["action"] == "deletesubject") {
+        if (!empty($_POST["id"]) && isset($_POST["id"])) {
+            $id = $_POST["id"];
+            $admin = new Subject();
+            $status = $admin->deleteSubject($id);
+            if ($status == 1) {
+                echo "done";
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "error";
+        }
+    }
+    else {
         echo "error";
     }
 }
