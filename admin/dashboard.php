@@ -30,8 +30,7 @@
                     <div class="info-box-content">
                         <span class="info-box-text">Subjects</span>
                         <span class="info-box-number">
-                            10
-                            <small>%</small>
+                           <?php $count= count_subject(); echo $count[0]; ?>                           
                         </span>
                     </div>
                     <!-- /.info-box-content -->
@@ -45,7 +44,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">Faculties</span>
-                        <span class="info-box-number">41,410</span>
+                        <span class="info-box-number">  <?php $count= count_faculty(); echo $count[0]; ?>   </span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -62,7 +61,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">Reports Generated</span>
-                        <span class="info-box-number">760</span>
+                        <span class="info-box-number">  <?php $count= count_student(); echo $count[0]; ?>   </span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
