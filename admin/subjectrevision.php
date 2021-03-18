@@ -6,12 +6,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Syllabus Revision</h1>
+                    <h1 class="m-0">Subject  Revision</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
-                        <li class="breadcrumb-item active">Syllabus Revision</li>
+                        <li class="breadcrumb-item active">Subject Revision</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -41,7 +41,7 @@
                         <div class="col-sm-2">
                             <label for="selectnum" class="form-label">Members</label>
                             <select class="form-control" id="selectnum" name="selectnum" required >
-                            <option selected disabled value="">---</option>
+                                <option selected disabled value="">---</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -73,33 +73,82 @@
                                 <tr>
                                     <th scope="row">#</th>
                                     <td><?php echo $row[4]; ?></td>
-                                    <td><input type="checkbox" class="chkfaculty" name="chkfaculty[]" /></td>
-                                    <td><input type="radio" name="isleader" /></td>
+                                    <td><input type="checkbox" value="<?php echo $row[0]; ?>" class="chkfaculty" name="chkfaculty[]" /></td>
+                                    <td><input type="radio" value="<?php echo $row[0]; ?>" class="isleader" name="isleader" /></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
                     </table>
-
+                    <div class="text-center">
+                        <button type="submit" id="btnsubmit" name="btnsubmit" class="btn btn-primary mt-2">Assign</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
+    <!-- /.content -->
+    <?php 
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        if(isset($_POST["btnsubmit"])){
+            if(isset($_POST["selectsub"]) && isset($_POST["chkfaculty"]) && isset($_POST["isleader"])){
+                $subid = $_POST["selectsub"];
+                $facid = $_POST["chkfaculty"];
+                $isleader = $_POST["isleader"]; 
+                $admin = new Subject();
+                $status = $admin->assignSubject($subid, $facid, $isleader);
+                if($status == 1){
+                    displaymessage("success", "Subject Assigned", "Subject has been assigned!");
+                }
+                else if($status == 2){
+                    displaymessage("error", "Assigned already", "This subject has been already added for revision");
+                }
+                else{
+                    displaymessage("error", "Error!", "Something went wrong!");
+                }
+            }
+            else if(isset($_POST["selectsub"]) && isset($_POST["chkfaculty"]) && !isset($_POST["isleader"])){
+                displaymessage("error", "No leader is selected", "Please select a leader");
+            }
+            else{
+                displaymessage("error", "Invalid Form", "Please fill in required details");
+            }
+        }
+        else{
+            displaymessage("error", "Invalid Request", "");
+        }
+    }
+    ?>
     <script>
         $(document).ready(function () {
             $('.table').DataTable({
-                "scrollY": "300px",
+                "scrollY": "200px",
                 "scrollCollapse": true,
                 "paging": false,
             });
+            $("#btnsubmit").prop('disabled', true);
+            $(".isleader").prop('disabled', true);
         });
         let num = 0;
-        $("#selectnum").change(function (){
-            num = this.val();
+        $("#selectnum").change(function () {
+            num = $("#selectnum").val();
         });
-        $(".chkfaculty").change(function(){
+
+        $(".chkfaculty").change(function () {
+            let count = 0;
+            this.parentElement.parentElement.children[3].children[0].disabled = false;
             let x = document.getElementsByClassName("chkfaculty");
-            
-        })
+            for (let i = 0; i < x.length; i++) {
+                if (x[i].checked) {
+                    count++;
+                } else {
+                    x[i].parentElement.parentElement.children[3].children[0].disabled = true;
+                }
+            }
+            if (count == num) {
+                $("#btnsubmit").prop('disabled', false);
+            } else {
+                $("#btnsubmit").prop('disabled', true);
+            }
+        });
     </script>
-    <!-- /.content -->
     <?php require './footer.php'; ?>

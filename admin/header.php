@@ -174,10 +174,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="syllabusrevision.php" class="nav-link">
+                                <a href="subjectrevision.php" class="nav-link">
                                     <i class="nav-icon fas fa-cogs"></i>
                                     <p>
-                                        Syllabus Revision
+                                        Subject Revision
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="assignedsubjects.php" class="nav-link">
+                                    <i class="nav-icon fas fa-cogs"></i>
+                                    <p>
+                                        Assigned Subjects
                                     </p>
                                 </a>
                             </li>

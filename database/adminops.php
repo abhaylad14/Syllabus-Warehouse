@@ -274,6 +274,42 @@ class Subject {
         return $status;
     }
 
+    public function assignSubject($subid, $facid, $leader) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        try {
+            $sql = "select count(*) from tbl_syllabus_config_assign where SubjectId = :subid and VerifyDate is null";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["subid" => $subid]);
+            $count = $stmt->fetchColumn();
+            if ($count == 0) {
+                $sql = "insert into tbl_syllabus_config_assign (SubjectId, UserId,AssignDate) values(:subid, :facid,CURDATE())";
+                $stmt = $con->prepare($sql);
+                for ($i = 0; $i < count($facid); $i++) {
+                    $status = $stmt->execute(["subid" => $subid, "facid" => $facid[$i]]);
+                }
+                if ($status == 1) {
+                    $sql = "select Id from tbl_syllabus_config_assign where SubjectId = :subid and UserId = :facid";
+                    $stmt = $con->prepare($sql);
+                    $status = $stmt->execute(["subid" => $subid, "facid" => $leader]);
+                    $result = $stmt->fetchColumn();
+                    $sql = "update tbl_syllabus_config_assign set Isleader = '1' where Id = :id";
+                    $stmt = $con->prepare($sql);
+                    $status = $stmt->execute(["id" => $result]);
+                } else {
+                    return 0;
+                }
+            } else {
+                $status = 2;
+            }
+        } catch (Exception $e) {
+            $status = 0;
+        }
+
+        $objcon->disconnect();
+        return $status;
+    }
+
     public function ViewSubjectList1($academicyear, $sem) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -299,6 +335,37 @@ class Subject {
             }
         } catch (Exception $ex) {
             
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function viewAssignedSubjects() {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        try {
+            $sql = "select a.Id, s.SubjectCode, s.SubjectName, s.EffectiveYear, u.FullName, a.AssignDate, a.VerifyDate, "
+                    . "a.Status, a.DocText, a.SubjectId from tbl_syllabus_config_assign a INNER JOIN tbl_subjects s on a.SubjectId = s.Id INNER JOIN "
+                    . "tbl_users u on a.UserId = u.Id where a.Isleader = '1' order by AssignDate";
+            $stmt = $con->prepare($sql);
+            $stmt->execute();
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+    public function viewMembers($subid) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        try {
+            $sql = "select u.FullName from tbl_users u INNER JOIN tbl_syllabus_config_assign a on a.UserId = u.Id where SubjectId = :subid";
+            $stmt = $con->prepare($sql);
+            $stmt->execute(["subid" => $subid]);
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            $status = 0;
         }
         $objcon->disconnect();
         return $status;
@@ -351,7 +418,8 @@ class Subject {
         $objcon->disconnect();
         return $status;
     }
-    public function xUpdateSubject1($subcode, $subname, $eyear,$tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cie, $id) {
+
+    public function xUpdateSubject1($subcode, $subname, $eyear, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cie, $id) {
         $objcon = new connection();
         $con = $objcon->connect();
         $sql = "UPDATE tbl_subjects SET SubjectCode= :subcode,SubjectName=:subname,EffectiveYear=:eyear,TheoryCredit=:tcredit,"
@@ -359,12 +427,13 @@ class Subject {
                 . "TheoryMarksExt=:tmarksext,Cie=:cie,CieInt='-',CieExt='-' where Id = :id";
         $stmt = $con->prepare($sql);
         $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear,
-            "tcredit" => $tcredit,"p"
+            "tcredit" => $tcredit, "p"
             . "credit" => $pcredit, "thour" => $thour, "phour" => $phour,
             "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cie" => $cie, "id" => $id]);
         $objcon->disconnect();
         return $status;
     }
+
     public function x1UpdateSubject1($subcode, $subname, $eyear, $sfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cie, $id) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -373,11 +442,12 @@ class Subject {
                 . "TheoryMarksExt=:tmarksext,Cie=:cie,CieInt='-',CieExt='-' where Id = :id";
         $stmt = $con->prepare($sql);
         $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear,
-            "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, "sfile" => $sfile, 
+            "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, "sfile" => $sfile,
             "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cie" => $cie, "id" => $id]);
         $objcon->disconnect();
         return $status;
     }
+
     public function x2UpdateSubject1($subcode, $subname, $eyear, $pfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cie, $id) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -399,12 +469,13 @@ class Subject {
                 . "PracticalCredit=:pcredit,TheoryHour=:thour,PracticalHour=:phour,DocText=:sfile,DocPdf=:pfile,TheoryMarksInt=:tmarksint,"
                 . "TheoryMarksExt=:tmarksext,CieInt=:cieint,CieExt=:cieext,Cie='-' where Id = :id";
         $stmt = $con->prepare($sql);
-        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear, 
+        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear,
             "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, "sfile" => $sfile, "pfile" => $pfile,
             "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cieint" => $cieint, "cieext" => $cieext, "id" => $id]);
         $objcon->disconnect();
         return $status;
     }
+
     public function xUpdateSubject2($subcode, $subname, $eyear, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cieint, $cieext, $id) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -412,12 +483,13 @@ class Subject {
                 . "PracticalCredit=:pcredit,TheoryHour=:thour,PracticalHour=:phour,TheoryMarksInt=:tmarksint,"
                 . "TheoryMarksExt=:tmarksext,CieInt=:cieint,CieExt=:cieext,Cie='-' where Id = :id";
         $stmt = $con->prepare($sql);
-        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear, 
-            "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, 
+        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear,
+            "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour,
             "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cieint" => $cieint, "cieext" => $cieext, "id" => $id]);
         $objcon->disconnect();
         return $status;
     }
+
     public function x1UpdateSubject2($subcode, $subname, $eyear, $sfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cieint, $cieext, $id) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -425,12 +497,13 @@ class Subject {
                 . "PracticalCredit=:pcredit,TheoryHour=:thour,PracticalHour=:phour,DocText=:sfile,TheoryMarksInt=:tmarksint,"
                 . "TheoryMarksExt=:tmarksext,CieInt=:cieint,CieExt=:cieext,Cie='-' where Id = :id";
         $stmt = $con->prepare($sql);
-        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear, 
+        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear,
             "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, "sfile" => $sfile,
             "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cieint" => $cieint, "cieext" => $cieext, "id" => $id]);
         $objcon->disconnect();
         return $status;
     }
+
     public function x2UpdateSubject2($subcode, $subname, $eyear, $pfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cieint, $cieext, $id) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -438,12 +511,13 @@ class Subject {
                 . "PracticalCredit=:pcredit,TheoryHour=:thour,PracticalHour=:phour,DocPdf=:pfile,TheoryMarksInt=:tmarksint,"
                 . "TheoryMarksExt=:tmarksext,CieInt=:cieint,CieExt=:cieext,Cie='-' where Id = :id";
         $stmt = $con->prepare($sql);
-        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear, 
+        $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear,
             "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, "pfile" => $pfile,
             "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cieint" => $cieint, "cieext" => $cieext, "id" => $id]);
         $objcon->disconnect();
         return $status;
     }
+
     public function config1($ayear, $sem, $pid, $data) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -587,59 +661,56 @@ function ChangePassword($pass, $id) {
     $objcon->disconnect();
     return $status;
 }
-function count_subject(){
+
+function count_subject() {
     $objcon = new connection();
     $con = $objcon->connect();
     $sql = "select count(*) from tbl_subjects";
     $stmt = $con->prepare($sql);
     $status = 0;
-     try {
+    try {
         $status = $stmt->execute();
-          $status = $stmt->fetch(PDO::FETCH_NUM);
+        $status = $stmt->fetch(PDO::FETCH_NUM);
     } catch (Exception $ex) {
         return 0;
     }
     $objcon->disconnect();
-   
+
     return $status;
-   
 }
 
-function count_faculty(){
+function count_faculty() {
     $objcon = new connection();
     $con = $objcon->connect();
     $sql = "select count(*) from tbl_users where UserType='2'";
     $stmt = $con->prepare($sql);
     $status = 0;
-     try {
+    try {
         $status = $stmt->execute();
-          $status = $stmt->fetch(PDO::FETCH_NUM);
+        $status = $stmt->fetch(PDO::FETCH_NUM);
     } catch (Exception $ex) {
         return 0;
     }
     $objcon->disconnect();
-   
+
     return $status;
-   
 }
 
-
-function count_student(){
+function count_student() {
     $objcon = new connection();
     $con = $objcon->connect();
     $sql = "select count(*) from tbl_users where UserType='4'";
     $stmt = $con->prepare($sql);
     $status = 0;
-     try {
+    try {
         $status = $stmt->execute();
-          $status = $stmt->fetch(PDO::FETCH_NUM);
+        $status = $stmt->fetch(PDO::FETCH_NUM);
     } catch (Exception $ex) {
         return 0;
     }
     $objcon->disconnect();
-   
+
     return $status;
-   
 }
 
 ?>

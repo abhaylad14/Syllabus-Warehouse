@@ -154,6 +154,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "error";
         }
     }
+    else if (isset($_POST["action"]) && $_POST["action"] == "viewmembers") {
+        if (!empty($_POST["id"]) && isset($_POST["id"])) {
+            $id = $_POST["id"];
+            $admin = new Subject();
+            $status = $admin->viewMembers($id);
+            if ($status >= 1) {
+                $json = json_encode($status);
+                echo $json;
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "error";
+        }
+    }
     else {
         echo "error";
     }
