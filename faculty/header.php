@@ -1,6 +1,7 @@
-<?php 
+<?php
+ob_start();
 session_start();
-if(!$_SESSION["userId"] || $_SESSION["userType"] != 2){
+if (!$_SESSION["userId"] || $_SESSION["userType"] != 2) {
     header("Location: ../index.php");
 }
 ?>
@@ -84,8 +85,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <!-- Sidebar user panel (optional) -->
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
-                          <img src="<?php echo $data[7]; ?>" class="img-circle elevation-2" alt="User Image">
-                            <!--<i class="fas fa-user-circle fa-2x img-circle elevation-2 text-light"></i>-->
+                            <img src="<?php echo $data[7]; ?>" class="img-circle elevation-2" alt="User Image">
+                              <!--<i class="fas fa-user-circle fa-2x img-circle elevation-2 text-light"></i>-->
                         </div>
                         <div class="info">
                             <a href="#" class="d-block"><?php echo $data[4]; ?></a>
@@ -96,85 +97,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <ul class="nav nav-pills nav-sidebar flex-column nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
                             <!-- Add icons to the links using the .nav-icon class
                                  with font-awesome or any other icon font library -->
-                            <!--                            <li class="nav-item menu-open">
-                                                            <a href="#" class="nav-link active">
-                                                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                                                <p>
-                                                                    Starter Pages
-                                                                    <i class="right fas fa-angle-left"></i>
-                                                                </p>
-                                                            </a>
-                                                            <ul class="nav nav-treeview">
-                                                                <li class="nav-item">
-                                                                    <a href="#" class="nav-link active">
-                                                                        <i class="far fa-circle nav-icon"></i>
-                                                                        <p>Active Page</p>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="nav-item">
-                                                                    <a href="#" class="nav-link">
-                                                                        <i class="far fa-circle nav-icon"></i>
-                                                                        <p>Inactive Page</p>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a href="adduser.php" class="nav-link">
-                                                                <i class="nav-icon fas fa-users"></i>
-                                                                <p>
-                                                                    Add User
-                                                                </p>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a href="manageusers.php" class="nav-link">
-                                                                <i class="nav-icon fas fa-users-cog"></i>
-                                                                <p>
-                                                                    Manage Users
-                                                                </p>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a href="addsubject.php" class="nav-link">
-                                                                <i class="nav-icon fas fa-book"></i>
-                                                                <p>
-                                                                    Add Subject
-                                                                </p>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a href="configuresyllabus.php" class="nav-link">
-                                                                <i class="nav-icon fas fa-book-reader"></i>
-                                                                <p>
-                                                                    Configure Syllabus
-                                                                </p>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a href="../underconstruction.php" class="nav-link">
-                                                                <i class="nav-icon fas fa-cogs"></i>
-                                                                <p>
-                                                                    Syllabus Revision
-                                                                </p>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a href="../underconstruction.php" class="nav-link">
-                                                                <i class="nav-icon fas fa-file-alt"></i>
-                                                                <p>
-                                                                    Generate Reports
-                                                                </p>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a href="../underconstruction.php" class="nav-link">
-                                                                <i class="nav-icon fas fa-file-excel"></i>
-                                                                <p>
-                                                                    Generate TES
-                                                                </p>
-                                                            </a>
-                                                        </li>-->
+
+                            <li class="nav-item">
+                                <a href="subjectrevision.php" class="nav-link">
+                                    <i class="nav-icon fas fa-cogs"></i>
+                                    <p>
+                                        Subject Revision
+                                    </p>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->

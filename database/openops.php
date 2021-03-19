@@ -1,7 +1,9 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+
 require_once("connection.php");
 ?>
 
@@ -23,6 +25,7 @@ function checklogin($username, $password) {
     $objcon->disconnect();
     return $status;
 }
+
 function checkstudentlogin($username, $password) {
     $objcon = new connection();
     $con = $objcon->connect();
@@ -39,6 +42,7 @@ function checkstudentlogin($username, $password) {
     $objcon->disconnect();
     return $status;
 }
+
 function getStudentId($email) {
     $objcon = new connection();
     $con = $objcon->connect();
@@ -54,6 +58,7 @@ function getStudentId($email) {
     $objcon->disconnect();
     return $status;
 }
+
 function getUserId($email) {
     $objcon = new connection();
     $con = $objcon->connect();
@@ -101,6 +106,7 @@ function checkEmail($email) {
     $objcon->disconnect();
     return $status;
 }
+
 function checkStudentEmail($email) {
     $objcon = new connection();
     $con = $objcon->connect();
@@ -116,6 +122,7 @@ function checkStudentEmail($email) {
     $objcon->disconnect();
     return $status;
 }
+
 function sendEmail($email, $subject, $message) {
     $mail = new PHPMailer(true);
     //Server settings                    // Enable verbose debug output
@@ -141,14 +148,14 @@ function sendEmail($email, $subject, $message) {
     }
     return $status;
 }
-function resetPassword($email,$pass){
+
+function resetPassword($email, $pass) {
     $objcon = new connection();
     $con = $objcon->connect();
     $pass = hash("sha256", $pass);
-    if($_SESSION["utype"] == "user"){
-    $sql = "update tbl_users set Password = :pass where Username = :email";
-    }
-    else if($_SESSION["utype"] == "student"){
+    if ($_SESSION["utype"] == "user") {
+        $sql = "update tbl_users set Password = :pass where Username = :email";
+    } else if ($_SESSION["utype"] == "student") {
         $sql = "update tbl_students set Password = :pass where Username = :email";
     }
     $stmt = $con->prepare($sql);
@@ -161,7 +168,8 @@ function resetPassword($email,$pass){
     $objcon->disconnect();
     return $status;
 }
-function getUserData($id){
+
+function getUserData($id) {
     $objcon = new connection();
     $con = $objcon->connect();
     $sql = "select * from tbl_users where Id = :id";
@@ -176,7 +184,8 @@ function getUserData($id){
     $objcon->disconnect();
     return $status;
 }
-function getStudentData($id){
+
+function getStudentData($id) {
     $objcon = new connection();
     $con = $objcon->connect();
     $sql = "select * from tbl_students where Id = :id";
@@ -191,7 +200,8 @@ function getStudentData($id){
     $objcon->disconnect();
     return $status;
 }
-function updateProfile($id,$name,$contact,$gender){
+
+function updateProfile($id, $name, $contact, $gender) {
     $objcon = new connection();
     $con = $objcon->connect();
     $sql = "update tbl_users set Fullname = :name, Contact = :contact, Gender = :gender where Id = :id";
@@ -205,7 +215,8 @@ function updateProfile($id,$name,$contact,$gender){
     $objcon->disconnect();
     return $status;
 }
-function updateProfilePicture($id,$profile){
+
+function updateProfilePicture($id, $profile) {
     $objcon = new connection();
     $con = $objcon->connect();
     $sql = "update tbl_users set ProfileImage = :profile where Id = :id";
@@ -219,5 +230,38 @@ function updateProfilePicture($id,$profile){
     }
     $objcon->disconnect();
     return $status;
+}
+
+function acceptSubject($id) {
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $sql = "update tbl_syllabus_config_assign set Status = '1', Comments ='',VerifyDate=CURDATE() where SubjectId = :id";
+    $stmt = $con->prepare($sql);
+    $status = 0;
+    try {
+        $status = $stmt->execute(["id" => $id]);
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+    return $status;
+}
+
+function rejectSubject($id, $comments) {
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $sql = "update tbl_syllabus_config_assign set Status = '2', Comments=:comments where SubjectId = :id";
+    $stmt = $con->prepare($sql);
+    $status = 0;
+    try {
+        $status = $stmt->execute(["id" => $id, "comments" => $comments]);
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+    return $status;
+}
+function reloadSyllabusFiles(){
+    
 }
 ?>

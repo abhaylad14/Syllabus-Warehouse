@@ -234,6 +234,20 @@ class Subject {
         return $status;
     }
 
+    public function uploadSubjectRevision($sid, $sfile) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "update tbl_syllabus_config_assign set DocText = :sfile where SubjectId = :sid";
+        $stmt = $con->prepare($sql);
+        try {
+            $status = $stmt->execute(["sid" => $sid, "sfile" => $sfile]);
+        } catch (Exception $e) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
     public function displaysubjects() {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -349,6 +363,23 @@ class Subject {
                     . "tbl_users u on a.UserId = u.Id where a.Isleader = '1' order by AssignDate";
             $stmt = $con->prepare($sql);
             $stmt->execute();
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+    
+    public function viewAssignedSubjectsFacultyWise($id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        try {
+            $sql = "select a.Id, s.SubjectCode, s.SubjectName, s.EffectiveYear, a.Isleader, a.AssignDate, a.VerifyDate, "
+                    . "a.Status, a.DocText, a.SubjectId, a.Comments from tbl_syllabus_config_assign a INNER JOIN tbl_subjects s on a.SubjectId = s.Id INNER JOIN "
+                    . "tbl_users u on a.UserId = u.Id where a.UserId = :id order by AssignDate";
+            $stmt = $con->prepare($sql);
+            $stmt->execute(["id" => $id]);
             $status = $stmt->fetchAll(PDO::FETCH_NUM);
         } catch (Exception $ex) {
             

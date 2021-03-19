@@ -247,7 +247,7 @@ require("header.php");
                 move_uploaded_file($_FILES["sfile"]["tmp_name"], $target_file);
                 rename("../syllabusfiles/" . $_FILES["sfile"]["name"], "../syllabusfiles/" . $sfile);
                 $sfile = "../syllabusfiles/" . $sfile;
-                
+
                 $extension = explode(".", $pfile);
                 $extension = $extension[1];
                 $pfile = $now->getTimestamp() . "." . $extension;
@@ -277,114 +277,141 @@ require("header.php");
             }
             if (isset($_POST["btnsubmit1"])) {
 
+                if (isset($_POST["tcredit1"]) && $_POST["tcredit1"] != "" && isset($_POST["thour1"]) && $_POST["thour1"] != "" &&
+                        isset($_POST["tmarksint1"]) && $_POST["tmarksint1"] != "" && isset($_POST["tmarksext1"]) && $_POST["tmarksext1"] != "") {
+                    $tc = trim($_POST["tcredit1"]);
+                    $th = trim($_POST["thour1"]);
+                    $tmi = trim($_POST["tmarksint1"]);
+                    $tme = trim($_POST["tmarksext1"]);
 
-                $tc = trim($_POST["tcredit1"]);
-                $th = trim($_POST["thour1"]);
-                $tmi = trim($_POST["tmarksint1"]);
-                $tme = trim($_POST["tmarksext1"]);
+                    $tcredit = dashfornull($tc);
+                    $thour = dashfornull($th);
+                    $tmarksint = dashfornull($tmi);
+                    $tmarksext = dashfornull($tme);
 
-                $tcredit = dashfornull($tc);
-                $thour = dashfornull($th);
-                $tmarksint = dashfornull($tmi);
-                $tmarksext = dashfornull($tme);
-
-                $status = $addsubject->addsubject1($subcode, $subname, $eyear, $sfile, $pfile, $tcredit, $thour, $tmarksint, $tmarksext);
-                if ($status == 1) {
-                    displaymessage("success", "Success", "Subject added successfully!");
-                } else if ($status == 2) {
-                    displaymessage("error", "Error", "Subject is already added!");
+                    $status = $addsubject->addsubject1($subcode, $subname, $eyear, $sfile, $pfile, $tcredit, $thour, $tmarksint, $tmarksext);
+                    if ($status == 1) {
+                        displaymessage("success", "Success", "Subject added successfully!");
+                    } else if ($status == 2) {
+                        displaymessage("error", "Error", "Subject is already added!");
+                    } else {
+                        displaymessage("error", "Error", "Something went wrong!");
+                    }
                 } else {
-                    displaymessage("error", "Error", "Something went wrong!");
+                    displaymessage("error", "Empty Form!", "Please fill all the required details for Theory Subject!");
                 }
             } else if (isset($_POST["btnsubmit2"])) {
-                $pc = trim($_POST["pcredit2"]);
-                $ph = trim($_POST["phour2"]);
-                $cie = trim($_POST["ciemarks2"]);
+                if (isset($_POST["pcredit2"]) && $_POST["pcredit2"] != "" && isset($_POST["phour2"]) && $_POST["phour2"] != "" && isset($_POST["ciemarks2"]) && $_POST["ciemarks2"] != "") {
+                    $pc = trim($_POST["pcredit2"]);
+                    $ph = trim($_POST["phour2"]);
+                    $cie = trim($_POST["ciemarks2"]);
 
-                $pcredit = dashfornull($pc);
-                $phour = dashfornull($ph);
-                $ciemarks = dashfornull($cie);
+                    $pcredit = dashfornull($pc);
+                    $phour = dashfornull($ph);
+                    $ciemarks = dashfornull($cie);
 
-                $addsubject2 = new Subject();
-                $status = $addsubject->addsubject2($subcode, $subname, $eyear, $sfile, $pfile, $pcredit, $phour, $ciemarks);
-                if ($status == 1) {
-                    displaymessage("success", "Success", "Subject added successfully!");
-                } else if ($status == 2) {
-                    displaymessage("error", "Error", "Subject is already added!");
+                    $addsubject2 = new Subject();
+                    $status = $addsubject->addsubject2($subcode, $subname, $eyear, $sfile, $pfile, $pcredit, $phour, $ciemarks);
+                    if ($status == 1) {
+                        displaymessage("success", "Success", "Subject added successfully!");
+                    } else if ($status == 2) {
+                        displaymessage("error", "Error", "Subject is already added!");
+                    } else {
+                        displaymessage("error", "Error", "Something went wrong!");
+                    }
                 } else {
-                    displaymessage("error", "Error", "Something went wrong!");
+                    displaymessage("error", "Empty Form!", "Please fill all the required details for Practical Subject!");
                 }
             } else if (isset($_POST["btnsubmit3"])) {
-                $pc = trim($_POST["pcredit2"]);
-                $ph = trim($_POST["phour2"]);
-                $cieint = trim($_POST["cieint3"]);
-                $cieext = trim($_POST["cieext3"]);
+                if (isset($_POST["pcredit2"]) && $_POST["pcredit2"] != "" && isset($_POST["phour2"]) && $_POST["phour2"] != "" &&
+                        isset($_POST["cieint3"]) && $_POST["cieint3"] != "" && isset($_POST["cieext3"]) && $_POST["cieext3"] != "") {
+                    $pc = trim($_POST["pcredit2"]);
+                    $ph = trim($_POST["phour2"]);
+                    $cieint = trim($_POST["cieint3"]);
+                    $cieext = trim($_POST["cieext3"]);
 
-                $pcredit = dashfornull($pc);
-                $phour = dashfornull($ph);
-                $cieint3 = dashfornull($cieint);
-                $cieext3 = dashfornull($cieext);
+                    $pcredit = dashfornull($pc);
+                    $phour = dashfornull($ph);
+                    $cieint3 = dashfornull($cieint);
+                    $cieext3 = dashfornull($cieext);
 
-                $addsubject3 = new Subject();
-                $status = $addsubject->addsubject3($subcode, $subname, $eyear, $sfile, $pfile, $pcredit, $phour, $cieint3, $cieext3);
-                if ($status == 1) {
-                    displaymessage("success", "Success", "Subject added successfully!");
-                } else if ($status == 2) {
-                    displaymessage("error", "Error", "Subject is already added!");
+                    $addsubject3 = new Subject();
+                    $status = $addsubject->addsubject3($subcode, $subname, $eyear, $sfile, $pfile, $pcredit, $phour, $cieint3, $cieext3);
+                    if ($status == 1) {
+                        displaymessage("success", "Success", "Subject added successfully!");
+                    } else if ($status == 2) {
+                        displaymessage("error", "Error", "Subject is already added!");
+                    } else {
+                        displaymessage("error", "Error", "Something went wrong!");
+                    }
                 } else {
-                    displaymessage("error", "Error", "Something went wrong!");
+                    displaymessage("error", "Empty Form!", "Please fill all the required details for Practical Subject!");
                 }
             } else if (isset($_POST["btnsubmit4"])) {
-                $tc = trim($_POST["tcredit4"]);
-                $th = trim($_POST["thour4"]);
-                $tmi = trim($_POST["tmarksint4"]);
-                $tme = trim($_POST["tmarksext4"]);
-                $pc = trim($_POST["pcredit4"]);
-                $ph = trim($_POST["phour4"]);
-                $cie = trim($_POST["ciemarks4"]);
+                if (isset($_POST["tcredit4"]) && $_POST["tcredit4"] != "" && isset($_POST["thour4"]) && $_POST["thour4"] != "" &&
+                        isset($_POST["tmarksint4"]) && $_POST["tmarksint4"] != "" && isset($_POST["tmarksext4"]) && $_POST["tmarksext4"] != "" &&
+                        isset($_POST["pcredit4"]) && $_POST["pcredit4"] != "" && isset($_POST["phour4"]) && $_POST["phour4"] != "" &&
+                        isset($_POST["ciemarks4"]) && $_POST["ciemarks4"] != "") {
+                    $tc = trim($_POST["tcredit4"]);
+                    $th = trim($_POST["thour4"]);
+                    $tmi = trim($_POST["tmarksint4"]);
+                    $tme = trim($_POST["tmarksext4"]);
+                    $pc = trim($_POST["pcredit4"]);
+                    $ph = trim($_POST["phour4"]);
+                    $cie = trim($_POST["ciemarks4"]);
 
-                $tcredit = dashfornull($tc);
-                $thour = dashfornull($th);
-                $tmarksint = dashfornull($tmi);
-                $tmarksext = dashfornull($tme);
-                $pcredit = dashfornull($pc);
-                $phour = dashfornull($ph);
-                $ciemarks = dashfornull($cie);
-
-                $status = $addsubject->addsubject4($subcode, $subname, $eyear, $sfile, $pfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $ciemarks);
-                if ($status == 1) {
-                    displaymessage("success", "Success", "Subject added successfully!");
-                } else if ($status == 2) {
-                    displaymessage("error", "Error", "Suject is already added!");
+                    $tcredit = dashfornull($tc);
+                    $thour = dashfornull($th);
+                    $tmarksint = dashfornull($tmi);
+                    $tmarksext = dashfornull($tme);
+                    $pcredit = dashfornull($pc);
+                    $phour = dashfornull($ph);
+                    $ciemarks = dashfornull($cie);
+                    $status = $addsubject->addsubject4($subcode, $subname, $eyear, $sfile, $pfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $ciemarks);
+                    if ($status == 1) {
+                        displaymessage("success", "Success", "Subject added successfully!");
+                    } else if ($status == 2) {
+                        displaymessage("error", "Error", "Suject is already added!");
+                    } else {
+                        displaymessage("error", "Error", "Something went wrong!");
+                    }
                 } else {
-                    displaymessage("error", "Error", "Something went wrong!");
+                    displaymessage("error", "Empty Form!", "Please fill all the required details for Subject!");
                 }
             } else if (isset($_POST["btnsubmit5"])) {
-                $tc = trim($_POST["tcredit4"]);
-                $th = trim($_POST["thour4"]);
-                $tmi = trim($_POST["tmarksint4"]);
-                $tme = trim($_POST["tmarksext4"]);
-                $pc = trim($_POST["pcredit4"]);
-                $ph = trim($_POST["phour4"]);
-                $cieint = trim($_POST["cieint5"]);
-                $cieext = trim($_POST["cieext5"]);
+                if (isset($_POST["tcredit4"]) && $_POST["tcredit4"] != "" && isset($_POST["thour4"]) && $_POST["thour4"] != "" &&
+                        isset($_POST["tmarksint4"]) && $_POST["tmarksint4"] != "" && isset($_POST["tmarksext4"]) && $_POST["tmarksext4"] != "" &&
+                        isset($_POST["pcredit4"]) && $_POST["pcredit4"] != "" && isset($_POST["phour4"]) && $_POST["phour4"] != "" &&
+                        isset($_POST["cieint5"]) && $_POST["cieint5"] != "" && isset($_POST["cieext5"]) && $_POST["cieext5"] != "") {
+                    $tc = trim($_POST["tcredit4"]);
+                    $th = trim($_POST["thour4"]);
+                    $tmi = trim($_POST["tmarksint4"]);
+                    $tme = trim($_POST["tmarksext4"]);
+                    $pc = trim($_POST["pcredit4"]);
+                    $ph = trim($_POST["phour4"]);
+                    $cieint = trim($_POST["cieint5"]);
+                    $cieext = trim($_POST["cieext5"]);
 
-                $tcredit = dashfornull($tc);
-                $thour = dashfornull($th);
-                $tmarksint = dashfornull($tmi);
-                $tmarksext = dashfornull($tme);
-                $pcredit = dashfornull($pc);
-                $phour = dashfornull($ph);
-                $cieint5 = dashfornull($cieint);
-                $cieext5 = dashfornull($cieext);
+                    $tcredit = dashfornull($tc);
+                    $thour = dashfornull($th);
+                    $tmarksint = dashfornull($tmi);
+                    $tmarksext = dashfornull($tme);
+                    $pcredit = dashfornull($pc);
+                    $phour = dashfornull($ph);
+                    $cieint5 = dashfornull($cieint);
+                    $cieext5 = dashfornull($cieext);
 
-                $status = $addsubject->addsubject5($subcode, $subname, $eyear, $sfile, $pfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cieint5, $cieext5);
-                if ($status == 1) {
-                    displaymessage("success", "Success", "Subject added successfully!");
-                } else if ($status == 2) {
-                    displaymessage("error", "Error", "Suject is already added!");
-                } else {
-                    displaymessage("error", "Error", "Something went wrong!");
+                    $status = $addsubject->addsubject5($subcode, $subname, $eyear, $sfile, $pfile, $tcredit, $thour, $tmarksint, $tmarksext, $pcredit, $phour, $cieint5, $cieext5);
+                    if ($status == 1) {
+                        displaymessage("success", "Success", "Subject added successfully!");
+                    } else if ($status == 2) {
+                        displaymessage("error", "Error", "Suject is already added!");
+                    } else {
+                        displaymessage("error", "Error", "Something went wrong!");
+                    }
+                }
+                else{
+                    displaymessage("error", "Empty Form!", "Please fill all the required details for Subject!");
                 }
             }
         } else {

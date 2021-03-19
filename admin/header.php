@@ -1,7 +1,7 @@
 <?php
 ob_start();
 session_start();
-if(!$_SESSION["userId"] || $_SESSION["userType"] != 1){
+if (!$_SESSION["userId"] || $_SESSION["userType"] != 1) {
     header("Location: ../index.php");
 }
 ?>
@@ -16,8 +16,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Admin</title>
         <link rel="icon" href="../images/favicon.ico" sizes="16x16">
-        <?php require_once("../notify.php");
-        require_once("../database/adminops.php");   
+        <?php
+        require_once("../notify.php");
+        require_once("../database/adminops.php");
         ?> 
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -26,7 +27,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Theme style -->
         <link rel="stylesheet" href="../dist/css/adminlte.min.css">
         <link rel="stylesheet" href="//cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"/>
-        
+
         <link rel="stylesheet" href="../lobibox-master/dist/css/lobibox.min.css"/>
         <!-- REQUIRED SCRIPTS -->
 
@@ -94,29 +95,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <ul class="nav nav-pills nav-sidebar flex-column nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
                             <!-- Add icons to the links using the .nav-icon class
                                  with font-awesome or any other icon font library -->
-<!--                            <li class="nav-item menu-open">
-                                <a href="#" class="nav-link active">
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                                    <p>
-                                        Starter Pages
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link active">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Active Page</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Inactive Page</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>-->
+                            <!--                            <li class="nav-item menu-open">
+                                                            <a href="#" class="nav-link active">
+                                                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                                                <p>
+                                                                    Starter Pages
+                                                                    <i class="right fas fa-angle-left"></i>
+                                                                </p>
+                                                            </a>
+                                                            <ul class="nav nav-treeview">
+                                                                <li class="nav-item">
+                                                                    <a href="#" class="nav-link active">
+                                                                        <i class="far fa-circle nav-icon"></i>
+                                                                        <p>Active Page</p>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    <a href="#" class="nav-link">
+                                                                        <i class="far fa-circle nav-icon"></i>
+                                                                        <p>Inactive Page</p>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </li>-->
                             <li class="nav-item">
                                 <a href="addfaculty.php" class="nav-link">
                                     <i class="nav-icon fas fa-users"></i>
@@ -186,6 +187,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <i class="nav-icon fas fa-cogs"></i>
                                     <p>
                                         Assigned Subjects
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="addbosdetails.php" class="nav-link">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        Add BOS Details
                                     </p>
                                 </a>
                             </li>

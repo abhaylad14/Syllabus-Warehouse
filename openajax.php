@@ -42,5 +42,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "empty";
         }
     }
+    else if(isset($_POST["action"]) && $_POST["action"] == "acceptsubject"){
+        if(isset($_POST["id"]) && !empty($_POST["id"])){
+            $id = $_POST["id"];
+            $status = acceptSubject($id);
+            if($status == 1){
+                echo "done";
+            }
+            else{
+                echo "error";
+            }
+        }
+        else{
+            echo "error";
+        }
+    }
+    else if(isset($_POST["action"]) && $_POST["action"] == "rejectsubject"){
+        if(isset($_POST["id"]) && !empty($_POST["id"]) && isset($_POST["comments"]) && !empty($_POST["comments"])){
+            $id = $_POST["id"];
+            $comments = trim($_POST["comments"]);
+            $status = rejectSubject($id, $comments);
+            if($status == 1){
+                echo "done";
+            }
+            else{
+                echo "error";
+            }
+        }
+        else{
+            echo "error";
+        }
+    }
 }
 ?>
