@@ -25,7 +25,7 @@
     <div class="content">
         <div class="card">
             <div class="card-body">
-                <table class="table">
+                <table class="table table-responsive-sm">
                     <thead class="table-secondary">
                         <tr>
                             <th scope="col">Profile</th>
@@ -171,7 +171,7 @@
                 },
                 success: function (result) {
                     if (result == "done") {
-                        displaymessage("success", "Success!", "User deleted successfully!");
+                        displaymessage("success", "Success!", "User updated successfully!");
                         block.children[1].innerText = name;
                         block.children[2].innerText = email;
                         block.children[3].innerText = contact;

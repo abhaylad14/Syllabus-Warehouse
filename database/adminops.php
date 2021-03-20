@@ -370,7 +370,7 @@ class Subject {
         $objcon->disconnect();
         return $status;
     }
-    
+
     public function viewAssignedSubjectsFacultyWise($id) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -387,6 +387,7 @@ class Subject {
         $objcon->disconnect();
         return $status;
     }
+
     public function viewMembers($subid) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -545,6 +546,112 @@ class Subject {
         $status = $stmt->execute(["subcode" => $subcode, "subname" => $subname, "eyear" => $eyear,
             "tcredit" => $tcredit, "pcredit" => $pcredit, "thour" => $thour, "phour" => $phour, "pfile" => $pfile,
             "tmarksint" => $tmarksint, "tmarksext" => $tmarksext, "cieint" => $cieint, "cieext" => $cieext, "id" => $id]);
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function addBOS($mname, $mvenue, $mdate, $magenda, $szip, $teszip) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "insert into tbl_bos(MeetingName,MeetingVenue,MeetingDate,MeetingAgenda,SyllabusZip,TesZip) "
+                . "values(:mname,:mvenue,:mdate,:magenda,:szip,:teszip)";
+        $stmt = $con->prepare($sql);
+        try {
+            $status = $stmt->execute(["mname" => $mname, "mvenue" => $mvenue, "mdate" => $mdate, "magenda" => $magenda, "szip" => $szip, "teszip" => $teszip]);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function viewBOSdetails() {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "SELECT * from tbl_bos where Status = '0'";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute();
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            return 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function updateBOSdetails($id, $mname, $mvenue, $mdate) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "update tbl_bos set MeetingName = :name, MeetingVenue = :venue, MeetingDate = :date where Id = :id";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["name" => $mname, "venue" => $mvenue, "date" => $mdate, "id" => $id]);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function deleteBOSdetails($id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "update tbl_bos set Status = '1' where Id = :id";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["id" => $id]);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function updateBOSagenda($id, $agenda) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "update tbl_bos set MeetingAgenda = :agenda where Id = :id";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["id" => $id, "agenda" => $agenda]);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function updateBOSszip($id, $szip) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "update tbl_bos set SyllabusZip = :szip where Id = :id";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["id" => $id, "szip" => $szip]);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function updateBOSteszip($id, $teszip) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "update tbl_bos set TesZip = :teszip where Id = :id";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["id" => $id, "teszip" => $teszip]);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
         $objcon->disconnect();
         return $status;
     }

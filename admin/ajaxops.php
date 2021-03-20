@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "error";
         }
     } else if (isset($_POST["action"]) && $_POST["action"] == "config1") {
-        if (!empty($_POST["ayear"]) && isset($_POST["ayear"]) && !empty($_POST["sem"]) && isset($_POST["sem"]) && $_POST["pid"] != null ) {
+        if (!empty($_POST["ayear"]) && isset($_POST["ayear"]) && !empty($_POST["sem"]) && isset($_POST["sem"]) && $_POST["pid"] != null) {
             $ayear = $_POST["ayear"];
             $sem = $_POST["sem"];
             $pid = $_POST["pid"];
@@ -127,20 +127,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $status = $admin->config1($ayear, $sem, $pid, $data);
             if ($status == 1) {
                 echo "done";
-            } else if($status == 2) {
+            } else if ($status == 2) {
                 echo "exists";
-            }
-            else if($status == 3) {
+            } else if ($status == 3) {
                 echo "nomatch";
-            }
-            else{
+            } else {
                 echo "error";
             }
         } else {
             echo "error";
         }
-    }
-    else if (isset($_POST["action"]) && $_POST["action"] == "deletesubject") {
+    } else if (isset($_POST["action"]) && $_POST["action"] == "deletesubject") {
         if (!empty($_POST["id"]) && isset($_POST["id"])) {
             $id = $_POST["id"];
             $admin = new Subject();
@@ -153,8 +150,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "error";
         }
-    }
-    else if (isset($_POST["action"]) && $_POST["action"] == "viewmembers") {
+    } else if (isset($_POST["action"]) && $_POST["action"] == "viewmembers") {
         if (!empty($_POST["id"]) && isset($_POST["id"])) {
             $id = $_POST["id"];
             $admin = new Subject();
@@ -168,8 +164,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "error";
         }
-    }
-    else {
+    } else if (isset($_POST["action"]) && $_POST["action"] == "updateBOS") {
+        if (!empty($_POST["id"]) && isset($_POST["id"]) && !empty($_POST["name"]) && isset($_POST["name"]) &&
+                !empty($_POST["venue"]) && isset($_POST["venue"]) && !empty($_POST["date"]) && isset($_POST["date"])) {
+            $id = $_POST["id"];
+            $mname = trim($_POST["name"]);
+            $mvenue = trim($_POST["venue"]);
+            $mdate = $_POST["date"];
+            $admin = new Subject();
+            $status = $admin->updateBOSdetails($id, $mname, $mvenue, $mdate);
+            if ($status >= 1) {
+                echo "done";
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "empty";
+        }
+    } else if (isset($_POST["action"]) && $_POST["action"] == "deleteBOS") {
+        if (!empty($_POST["id"]) && isset($_POST["id"])) {
+            $id = $_POST["id"];
+            $admin = new Subject();
+            $status = $admin->deleteBOSdetails($id);
+            if ($status >= 1) {
+                echo "done";
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "error";
+        }
+    } else {
         echo "error";
     }
 }
