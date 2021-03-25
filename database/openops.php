@@ -201,6 +201,7 @@ function getStudentData($id) {
     return $status;
 }
 
+
 function updateProfile($id, $name, $contact, $gender) {
     $objcon = new connection();
     $con = $objcon->connect();
@@ -261,7 +262,52 @@ function rejectSubject($id, $comments) {
     $objcon->disconnect();
     return $status;
 }
-function reloadSyllabusFiles(){
-    
+
+function displayAnnouncements() {
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $sql = "select a.id, a.Title, a.Message, a.AnnounceDate, a.attachment, u.FullName, a.Status "
+            . "from tbl_announcements a INNER JOIN tbl_users u on a.UserId = u.Id where a.Status = 0 "
+            . "order by Id desc";
+    $stmt = $con->prepare($sql);
+    try {
+        $stmt->execute();
+        $status = $stmt->fetchAll(PDO::FETCH_NUM);
+    } catch (Exception $ex) {
+        $status = 0;
+    }
+    $objcon->disconnect();
+    return $status;
+}
+function checkStudentPassword($pass, $id) {
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $pass = hash("sha256", $pass);
+    $sql = "select count(*) from tbl_students where id = :id and Password = :pass";
+    $stmt = $con->prepare($sql);
+    $status = 0;
+    try {
+        $status = $stmt->execute(["id" => $id, "pass" => $pass]);
+        $status = $stmt->fetchColumn();
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+    return $status;
+}
+function ChangeStudentPassword($pass, $id) {
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $pass = hash("sha256", $pass);
+    $sql = "update tbl_students set Password = :pass where id = :id";
+    $stmt = $con->prepare($sql);
+    $status = 0;
+    try {
+        $status = $stmt->execute(["pass" => $pass, "id" => $id]);
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+    return $status;
 }
 ?>

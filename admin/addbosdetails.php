@@ -61,6 +61,7 @@
             </div>
         </div>
     </div>
+    <!-- /.content -->
     <script>
         $('#magenda').on('change', function () {
             myfile = $(this).val();
@@ -94,7 +95,7 @@
         });
 
     </script>
-    <!-- /.content -->
+
 
     <?php
 
@@ -164,9 +165,9 @@
                     $teszip = "";
                 }
                 $status = $admin->addBOS($mname, $mvenue, $mdate, $magenda, $szip, $teszip);
-                if($status == 1){
+                if ($status == 1) {
                     displaymessage("success", "BOS details Added!", "BOS details has been added successfully!");
-                }else{
+                } else {
                     displaymessage("error", "Error!", "Something went wrong!");
                 }
             } else {

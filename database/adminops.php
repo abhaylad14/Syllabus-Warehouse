@@ -22,7 +22,7 @@ class User {
     public function displayUsers() {
         $objcon = new connection();
         $con = $objcon->connect();
-        $sql = "select * from tbl_users where UserType = '2'and Status != '2'";
+        $sql = "select * from tbl_users where UserType = '2'and Status != '2' order by Id desc";
         $result = $con->query($sql);
         $objcon->disconnect();
         return $result;
@@ -87,6 +87,97 @@ class User {
         try {
             $status = $stmt->execute(["id" => $id, "status" => $ustatus]);
         } catch (Exception $e) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function createAnnouncement($uid, $title, $message, $attachment) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "insert into tbl_announcements(UserId,Title,Message,Attachment) values(:id,:title,:message,:attachment)";
+        $stmt = $con->prepare($sql);
+        try {
+            $status = $stmt->execute(["id" => $uid, "title" => $title, "message" => $message, "attachment" => $attachment]);
+        } catch (Exception $e) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function displayAllAnnouncements() {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "select a.id, a.Title, a.Message, a.AnnounceDate, a.attachment, u.FullName, a.Status "
+                . "from tbl_announcements a INNER JOIN tbl_users u on a.UserId = u.Id where a.Status = 0 "
+                . "order by Id desc";
+        $stmt = $con->prepare($sql);
+        try {
+            $stmt->execute();
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function displayAnnouncements($id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "select a.id, a.Title, a.Message, a.AnnounceDate, a.attachment, u.FullName, a.Status "
+                . "from tbl_announcements a INNER JOIN tbl_users u on a.UserId = u.Id where a.Status = 0 and a.UserId = :id "
+                . "order by Id desc";
+        $stmt = $con->prepare($sql);
+        try {
+            $stmt->execute(["id" => $id]);
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function deleteAnnouncement($id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "update tbl_announcements set Status = '1' where id = :id";
+        $stmt = $con->prepare($sql);
+        try {
+            $status = $stmt->execute(["id" => $id]);
+        } catch (Exception $e) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function updateAnnouncement($id, $title, $message) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "update tbl_announcements set Title = :title, Message = :message where id = :id";
+        $stmt = $con->prepare($sql);
+        try {
+            $status = $stmt->execute(["id" => $id, "title" => $title, "message" => $message]);
+        } catch (Exception $e) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function updateAnnouncementFile($id, $afile) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "update tbl_announcements set Attachment = :afile where Id = :id";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["id" => $id, "afile" => $afile]);
+        } catch (Exception $ex) {
             $status = 0;
         }
         $objcon->disconnect();
@@ -251,7 +342,7 @@ class Subject {
     public function displaysubjects() {
         $objcon = new connection();
         $con = $objcon->connect();
-        $sql = "select * from tbl_subjects where Isactive = '0'";
+        $sql = "select * from tbl_subjects where Isactive = '0' order by Id desc";
         $stmt = $con->prepare($sql);
         $stmt->execute();
         $status = $stmt->fetchAll(PDO::FETCH_NUM);
@@ -570,7 +661,7 @@ class Subject {
         $con = $objcon->connect();
         $status = 0;
         try {
-            $sql = "SELECT * from tbl_bos where Status = '0'";
+            $sql = "SELECT * from tbl_bos where Status = '0' order by Id desc";
             $stmt = $con->prepare($sql);
             $status = $stmt->execute();
             $status = $stmt->fetchAll(PDO::FETCH_NUM);
@@ -701,6 +792,57 @@ class Subject {
 
 class Student {
 
+    public function deleteStudent($id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "update tbl_students set Status = '2' where id = :id";
+        $stmt = $con->prepare($sql);
+        try {
+            $status = $stmt->execute(["id" => $id]);
+        } catch (Exception $e) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function updateStudent($id, $name, $email, $enro) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "update tbl_students set FullName = :name, Username = :email, Enro = :enro where id = :id";
+        $stmt = $con->prepare($sql);
+        try {
+            $status = $stmt->execute(["id" => $id, "name" => $name, "email" => $email, "enro" => $enro]);
+        } catch (Exception $e) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function changeStudentStatus($id, $ustatus) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "update tbl_students set Status = :status where id = :id";
+        $stmt = $con->prepare($sql);
+        try {
+            $status = $stmt->execute(["id" => $id, "status" => $ustatus]);
+        } catch (Exception $e) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function displayStudents() {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "select * from tbl_students where Status != '2' order by Id desc";
+        $result = $con->query($sql);
+        $objcon->disconnect();
+        return $result;
+    }
+
     public function addStudents($file) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -803,7 +945,7 @@ function ChangePassword($pass, $id) {
 function count_subject() {
     $objcon = new connection();
     $con = $objcon->connect();
-    $sql = "select count(*) from tbl_subjects";
+    $sql = "select count(*) from tbl_subjects where Isactive = '0'";
     $stmt = $con->prepare($sql);
     $status = 0;
     try {
@@ -820,7 +962,7 @@ function count_subject() {
 function count_faculty() {
     $objcon = new connection();
     $con = $objcon->connect();
-    $sql = "select count(*) from tbl_users where UserType='2'";
+    $sql = "select count(*) from tbl_users where UserType='2' and Status = '0'";
     $stmt = $con->prepare($sql);
     $status = 0;
     try {
@@ -837,7 +979,7 @@ function count_faculty() {
 function count_student() {
     $objcon = new connection();
     $con = $objcon->connect();
-    $sql = "select count(*) from tbl_users where UserType='4'";
+    $sql = "select count(*) from tbl_students where Status = '0';";
     $stmt = $con->prepare($sql);
     $status = 0;
     try {

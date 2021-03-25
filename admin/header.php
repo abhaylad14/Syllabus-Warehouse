@@ -39,6 +39,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <script src="../dist/js/adminlte.min.js"></script>
         <script src="../lobibox-master/dist/js/lobibox.min.js"></script>
         <script src="//cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+        
     </head>
     <body class="hold-transition sidebar-mini sidebar-collapse">
         <div class="wrapper">
@@ -151,6 +152,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="managestudents.php" class="nav-link">
+                                    <i class="nav-icon fas fa-users-cog"></i>
+                                    <p>
+                                        Manage Students
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="addsubject.php" class="nav-link">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p>
@@ -207,10 +216,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../underconstruction.php" class="nav-link">
+                                <a href="announcements.php" class="nav-link">
+                                    <i class="nav-icon fas fa-bullhorn"></i>
+                                    <p>
+                                        Announcements
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="createannouncement.php" class="nav-link">
+                                    <i class="nav-icon fas fa-bullhorn"></i>
+                                    <p>
+                                        Create Announcement
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="viewannouncements.php" class="nav-link">
+                                    <i class="nav-icon fas fa-bullhorn"></i>
+                                    <p>
+                                        View Announcements
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="reports.php" class="nav-link">
                                     <i class="nav-icon fas fa-file-alt"></i>
                                     <p>
-                                        Generate Reports
+                                        Reports
                                     </p>
                                 </a>
                             </li>

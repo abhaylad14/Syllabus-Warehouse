@@ -3,7 +3,8 @@ session_start();
 if (!$_SESSION["userId"] || $_SESSION["userType"] != 4) {
     header("Location: ../index.php");
 }
-include_once("../database/openops.php");
+require_once ("../database/openops.php");
+require '../notify.php';
 $data = getStudentData($_SESSION["userId"]);
 ?>
 <!doctype html>
@@ -17,8 +18,11 @@ $data = getStudentData($_SESSION["userId"]);
         <!-- Bootstrap CSS -->
         <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="../plugins/jquery/jquery.min.js"></script>
         <script src="../bootstrap/js/bootstrap.bundle.min.js" ></script>
         <link rel="icon" href="../images/favicon.ico" sizes="16x16">
+        <link rel="stylesheet" href="../lobibox-master/dist/css/lobibox.min.css"/>
+        <script src="../lobibox-master/dist/js/lobibox.min.js"></script>
 
         <title>Student</title>
     </head>
@@ -45,10 +49,9 @@ $data = getStudentData($_SESSION["userId"]);
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"> Logout</i></a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog"> Profile</i></a></li>
                                     </ul>
                                 </li>
-
+                            </ul>
                         </span>
                     </div>
                 </div>

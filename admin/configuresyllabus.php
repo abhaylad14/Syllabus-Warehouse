@@ -90,7 +90,7 @@
                             <table class="table" id="tbl1">
                                 <thead class="table-secondary">
                                     <tr>
-                                        <th scope="col">#</th>
+                                        <th scope="col"><input type="checkbox" id="checkall"></th>
                                         <th scope="col">Code</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Effective Year</th>
@@ -192,7 +192,9 @@
                             success: function (result) {
 //                                alert(result);
                                 if (result) {
-                                    let r = JSON.parse(result);
+                                    try{
+                                    let r;
+                                    r = JSON.parse(result);
                                     let html = "";
                                     for (let i = 0; i < r.length; i++) {
 
@@ -210,6 +212,14 @@
                                         "scrollCollapse": true,
                                         "paging": false,
                                     });
+                                }catch(err){
+                                    x.innerHTML += html;
+                                    $('#tbl1').DataTable({
+                                        "scrollY": "300px",
+                                        "scrollCollapse": true,
+                                        "paging": false,
+                                    });
+                                }
                                 } else {
                                     displaymessage("error", "Error!", "Something went wrong!");
                                 }
@@ -287,29 +297,34 @@
                 success: function (result) {
 
                     if (result) {
-                        let r = JSON.parse(result);
-                        let html = "";
-                        for (let i = 0; i < r.length; i++) {
+                        try {
+                            let r = JSON.parse(result);
 
-                            html += `<tr><th scope="row">
+                            let html = "";
+                            for (let i = 0; i < r.length; i++) {
+
+                                html += `<tr><th scope="row">
                                         <input type="checkbox" onclick='docheck()' class="subcheck" name="${r[i][0]}" value="${r[i][0]}" id="${r[i][0]}"></th>
                                         <td>${r[i][1]}</td>
                                         <td>${r[i][2]}</td>
                                         <td>${r[i][3]}</td>
                                         </tr>`;
-                        }
+                            }
 
-                        let x = document.getElementById("tbody2");
-                        x.innerHTML = html;
-                        $('#tbl2').DataTable({
-                            "scrollY": "300px",
-                            "scrollCollapse": true,
-                            "paging": false,
-                            "searching": false
-                        });
+                            let x = document.getElementById("tbody2");
+                            x.innerHTML = html;
+                            $('#tbl2').DataTable({
+                                "scrollY": "300px",
+                                "scrollCollapse": true,
+                                "paging": false,
+                                "searching": false
+                            });
+                        } catch (err) {
+                        }
                     } else {
                         displaymessage("error", "Error!", "Something went wrong!");
                     }
+
                 }
             });
 
@@ -366,14 +381,27 @@
                         displaymessage("success", "Syllabus added!", "Syllabus added successfully!");
                     } else if (result == "exists") {
                         displaymessage("error", "Record already exists!", "");
-                    }else if (result == "nomatch") {
+                    } else if (result == "nomatch") {
                         displaymessage("error", "Invalid Elective Subjects!", "Please select elective subjects having same details");
-                    } 
-                    else {
+                    } else {
                         displaymessage("error", "Error!", "Something went wrong!");
                     }
                 }
             });
+        });
+        $("#checkall").change(function () {
+            let x = document.getElementsByClassName("subcheck");
+            if (this.checked) {
+                for (let i = 0; i < x.length; i++) {
+                    x[i].checked = true;
+                }
+                docheck();
+            } else {
+                for (let i = 0; i < x.length; i++) {
+                    x[i].checked = false;
+                }
+                docheck();
+            }
         });
     </script>
     <?php require("footer.php"); ?>

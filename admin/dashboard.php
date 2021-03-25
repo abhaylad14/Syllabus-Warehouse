@@ -57,10 +57,10 @@
 
             <div class="col-12 col-sm-6 col-md-3">
                 <div class="info-box mb-3">
-                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-copy"></i></span>
+                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-users"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text">Reports Generated</span>
+                        <span class="info-box-text">Students</span>
                         <span class="info-box-number">  <?php $count= count_student(); echo $count[0]; ?>   </span>
                     </div>
                     <!-- /.info-box-content -->
@@ -70,11 +70,11 @@
             <!-- /.col -->
             <div class="col-12 col-sm-6 col-md-3">
                 <div class="info-box mb-3">
-                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-table"></i></span>
+                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-copy"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text">Tasks</span>
-                        <span class="info-box-number">2,000</span>
+                        <span class="info-box-text">Reports</span>
+                        <span class="info-box-number">0</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>

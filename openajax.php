@@ -73,5 +73,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "error";
         }
     }
+    else if (isset($_POST["action"]) && $_POST["action"] == "changeStudentPassword") {
+        if (!empty($_POST["opass"]) && isset($_POST["opass"]) && !empty($_POST["pass1"]) && isset($_POST["pass1"]) && !empty($_POST["pass2"]) && isset($_POST["pass2"])) {
+            $pass1 = $_POST["pass1"];
+            $pass2 = $_POST["pass2"];
+            $opass = $_POST["opass"];
+            $result = checkStudentPassword($opass, $_SESSION["userId"]);
+            if ($result == 1) {
+                if ($pass1 == $pass2) {
+                    $status = ChangeStudentPassword($pass1, $_SESSION["userId"]);
+                    if ($status == 1) {
+                        echo "done";
+                    } else {
+                        echo "error";
+                    }
+                } else {
+                    echo "err2";
+                }
+            } else {
+                echo "err3";
+            }
+        } else {
+            echo "empty";
+        }
+    }
 }
 ?>

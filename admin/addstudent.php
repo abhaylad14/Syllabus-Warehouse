@@ -28,6 +28,7 @@
                         <label for="data" class="col-sm-3">Upload via CSV: </label>
                         <input class="form-control col-sm-6" type="file" name="data" id="data" required />
                         <input type="submit" value="Submit"  name="submitcsv" class="btn btn-primary ml-2 col-sm-2" >
+                        <i id="info" class="fas fa-info-circle mt-2 ml-4 text-info"></i>
                     </div>
                 </form>
             </div>
@@ -100,3 +101,22 @@
     }
     ?>
     <!-- /.content -->
+    <div class="modal fade" id="infomodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">CSV Format</h5>
+                    <button type="button" class="fas fa-times bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img <script src="../images/democsv.PNG" class="img-responsive" width="450" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    $("#info").click(function (){
+       $('#infomodal').modal('toggle');
+    });
+    </script>
+    <?php require 'footer.php'; ?>

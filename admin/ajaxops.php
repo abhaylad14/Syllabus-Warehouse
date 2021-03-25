@@ -194,6 +194,77 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "error";
         }
+    } else if (isset($_POST["action"]) && $_POST["action"] == "changeStudentstatus") {
+        if (!empty($_POST["id"]) && isset($_POST["id"])) {
+            $id = $_POST["id"];
+            $ustatus = $_POST["ustatus"];
+            $admin = new Student();
+            $status = $admin->changeStudentStatus($id, $ustatus);
+            if ($status == 1) {
+                echo "done";
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "error";
+        }
+    } else if (isset($_POST["action"]) && $_POST["action"] == "updateStudent") {
+        if (!empty($_POST["id"]) && isset($_POST["id"]) && !empty($_POST["uname"]) && isset($_POST["uname"]) && !empty($_POST["uenro"]) && isset($_POST["uenro"]) && !empty($_POST["uemail"]) && isset($_POST["uemail"])) {
+            $id = $_POST["id"];
+            $name = $_POST["uname"];
+            $email = $_POST["uemail"];
+            $enro = $_POST["uenro"];
+            $admin = new Student();
+            $status = $admin->updateStudent($id, $name, $email, $enro);
+            if ($status == 1) {
+                echo "done";
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "empty";
+        }
+    } else if (isset($_POST["action"]) && $_POST["action"] == "deleteStudent") {
+        if (!empty($_POST["id"]) && isset($_POST["id"])) {
+            $id = $_POST["id"];
+            $admin = new Student();
+            $status = $admin->deleteStudent($id);
+            if ($status == 1) {
+                echo "done";
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "error";
+        }
+    } else if (isset($_POST["action"]) && $_POST["action"] == "deleteAnnouncement") {
+        if (!empty($_POST["id"]) && isset($_POST["id"])) {
+            $id = $_POST["id"];
+            $admin = new User();
+            $status = $admin->deleteAnnouncement($id);
+            if ($status >= 1) {
+                echo "done";
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "error";
+        }
+    } else if (isset($_POST["action"]) && $_POST["action"] == "updateAnnouncement") {
+        if (!empty($_POST["id"]) && isset($_POST["id"]) && !empty($_POST["title"]) && isset($_POST["title"]) && !empty($_POST["message"]) && isset($_POST["message"]) ) {
+            $id = $_POST["id"];
+            $title = $_POST["title"];
+            $message = $_POST["message"];
+            $admin = new User();
+            $status = $admin->updateAnnouncement($id, $title, $message);
+            if ($status == 1) {
+                echo "done";
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "empty";
+        }
     } else {
         echo "error";
     }

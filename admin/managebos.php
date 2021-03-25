@@ -307,7 +307,6 @@
             let mname = $("#mname").val();
             let mvenue = $("#mvenue").val();
             let mdate = $("#mdate").val();
-            let gender = "";
             $.ajax({
                 type: "POST",
                 url: "ajaxops.php",
