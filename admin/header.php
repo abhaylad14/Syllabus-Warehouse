@@ -176,6 +176,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="manageconfiguredsyllabus.php" class="nav-link">
+                                    <i class="nav-icon fas fa-book"></i>
+                                    <p>
+                                        Manage Configured Syllabus
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="configuresyllabus.php" class="nav-link">
                                     <i class="nav-icon fas fa-book-reader"></i>
                                     <p>

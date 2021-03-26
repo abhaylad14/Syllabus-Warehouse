@@ -30,7 +30,14 @@
                             <label for="ayear" class="form-label">Academic Year</label>
                             <select id="ayear" class="form-control" name="ayear" required >
                                 <option value="" selected disabled>---Select Year---</option>
-                                <option value="<?php
+                                <?php 
+                                $y = date("Y");
+                                for($i = 2010; $i < $y + 3; $i++){
+                                    $x = strval($i + 1) ;
+                                    echo "<option value='$i-$x[2]$x[3]' >$i-$x[2]$x[3]</option>";
+                                }
+                                ?>
+<!--                                <option value="<?php
                                 $y = date("Y");
                                 $y1 = $y - 1;
                                 $year = $y1 . "-" . $y[2] . $y[3];
@@ -45,6 +52,7 @@
                                 $year = $y . "-" . $y1[2] . $y1[3];
                                 echo $year;
                                 ?>"><?php echo $year; ?></option>
+                                
                                 <option value="<?php
                                 $y = date("Y") + 1;
                                 $y1 = $y + 1;
@@ -52,9 +60,7 @@
                                 // $y1 = explode(".", $y1);
                                 $year = $y . "-" . $y1[2] . $y1[3];
                                 echo $year;
-                                ?>"><?php echo $year; ?></option>
-
-
+                                ?>"><?php echo $year; ?></option>-->
                             </select>
                         </div>
                         <div class="col-sm-3">

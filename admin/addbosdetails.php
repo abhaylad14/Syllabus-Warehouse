@@ -41,7 +41,11 @@
                         </div>
                         <div class="col-md-4">
                             <label for="magenda" class="form-label">Meeting Agenda</label>
-                            <input type="file" class="form-control" id="magenda" name="magenda" accept=".doc, .docx">
+                            <input type="file" class="form-control" id="magenda" name="magenda" accept=".pdf, .doc, .docx">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="minutes" class="form-label">Minutes</label>
+                            <input type="file" class="form-control" id="minutes" name="minutes" accept=".pdf, .doc, .docx">
                         </div>
                     </div>
                     <div class="row mt-2 justify-content-center">
@@ -63,10 +67,20 @@
     </div>
     <!-- /.content -->
     <script>
+        $('#minutes').on('change', function () {
+            myfile = $(this).val();
+            var ext = myfile.split('.').pop();
+            if (ext == "docx" || ext == "doc" || ext == "DOCX" || ext == "DOC" || ext == "pdf" || ext == "PDF") {
+                //no comments
+            } else {
+                alert("Please upload a document file only");
+                $('#minutes').val("");
+            }
+        });
         $('#magenda').on('change', function () {
             myfile = $(this).val();
             var ext = myfile.split('.').pop();
-            if (ext == "docx" || ext == "doc" || ext == "DOCX" || ext == "DOC") {
+            if (ext == "docx" || ext == "doc" || ext == "DOCX" || ext == "DOC" || ext == "pdf" || ext == "PDF") {
                 //no comments
             } else {
                 alert("Please upload a document file only");
@@ -98,7 +112,6 @@
 
 
     <?php
-
     function savesfile($sfile, $now) {
         $extension = explode(".", $sfile);
         $extension = $extension[1];
@@ -110,7 +123,17 @@
         $sfile = "../syllabusfiles/bos/agenda/" . $sfile;
         return $sfile;
     }
-
+    function saveminutes($minutes, $now) {
+        $extension = explode(".", $minutes);
+        $extension = $extension[1];
+        $minutes = $now->getTimestamp() . "." . $extension;
+        $target_dir = "../syllabusfiles/bos/minutes/";
+        $target_file = $target_dir . basename($_FILES["minutes"]["name"]);
+        move_uploaded_file($_FILES["minutes"]["tmp_name"], $target_file);
+        rename("../syllabusfiles/bos/minutes/" . $_FILES["minutes"]["name"], "../syllabusfiles/bos/minutes/" . $minutes);
+        $minutes = "../syllabusfiles/bos/minutes/" . $minutes;
+        return $minutes;
+    }
     function saveszip($zipfile, $now) {
         $extension = explode(".", $zipfile);
         $extension = $extension[1];
@@ -118,7 +141,7 @@
         $target_dir = "../syllabusfiles/bos/syllabus/";
         $target_file = $target_dir . basename($_FILES["szip"]["name"]);
         move_uploaded_file($_FILES["szip"]["tmp_name"], $target_file);
-        rename("../syllabusfiles/bos/syllabus/" . $_FILES["szip"]["name"], "../syllabusfiles/bos/syllabus/" . $zipfile);
+        rename("../syllabusfiles/bos/syllabus/" . $_FILES["szip"]["name"] , "../syllabusfiles/bos/syllabus/" . $zipfile);
         $zipfile = "../syllabusfiles/bos/syllabus/" . $zipfile;
         return $zipfile;
     }
@@ -145,6 +168,7 @@
                 $magenda = $_FILES["magenda"];
                 $szip = $_FILES["szip"];
                 $teszip = $_FILES["teszip"];
+                $minutes = $_FILES["minutes"];
 
                 $admin = new Subject();
                 $now = new DateTime();
@@ -160,11 +184,16 @@
                     $szip = "";
                 }
                 if ($teszip["name"] != "") {
-                    $teszip = saveszip($teszip["name"], $now);
+                    $teszip = saveteszip($teszip["name"], $now);
                 } else {
                     $teszip = "";
                 }
-                $status = $admin->addBOS($mname, $mvenue, $mdate, $magenda, $szip, $teszip);
+                if ($minutes["name"] != "") {
+                    $minutes = saveminutes($minutes["name"], $now);
+                } else {
+                    $minutes = "";
+                }
+                $status = $admin->addBOS($mname, $mvenue, $mdate, $magenda, $szip, $teszip,$minutes);
                 if ($status == 1) {
                     displaymessage("success", "BOS details Added!", "BOS details has been added successfully!");
                 } else {

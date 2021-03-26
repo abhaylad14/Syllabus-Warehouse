@@ -33,6 +33,7 @@
                             <th scope="col">Meeting Venue</th>
                             <th scope="col">Date</th>
                             <th scope="col">Agenda</th>
+                            <th scope="col">Minutes</th>
                             <th scope="col">Syllabus Zip</th>
                             <th scope="col">TES Zip</th>
                             <th scope="col">Action</th>
@@ -61,6 +62,15 @@
                                 <td><?php
                                     if ($row[5] != "") {
                                         echo "<a href='$row[5]'>View </a>"
+                                        . "<button id='$row[0]' class='btn btn-outline-success btn-sm fas fa-edit border-0 btn-minutes'></button>";
+                                    } else {
+                                        echo "Not Uploaded "
+                                        . "<button id='$row[0]' class='btn btn-outline-success btn-sm fas fa-edit border-0 btn-minutes'></button>";
+                                    }
+                                    ?></td>
+                                <td><?php
+                                    if ($row[6] != "") {
+                                        echo "<a href='$row[6]'>View </a>"
                                         . "<button id='$row[0]' class='btn btn-outline-success btn-sm fas fa-edit border-0 btn-szip'></button>";
                                     } else {
                                         echo "Not Uploaded "
@@ -68,8 +78,8 @@
                                     }
                                     ?></td>
                                 <td><?php
-                                    if ($row[6] != "") {
-                                        echo "<a href='$row[6]'>View </a>"
+                                    if ($row[7] != "") {
+                                        echo "<a href='$row[7]'>View </a>"
                                         . "<button id='$row[0]' class='btn btn-outline-success btn-sm fas fa-edit border-0 btn-teszip'></button>";
                                     } else {
                                         echo "Not Uploaded "
@@ -136,6 +146,27 @@
             </div>
         </div>
     </div>
+    <!-- Update Minutes Modal -->
+    <div class="modal fade" id="updateminutesfile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Upload File</h5>
+                        <button type="button" class="fas fa-times bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id4" id="id4" value='' >
+                        <input type="file" class="form-control" id="minutes" name="minutes" required accept=".docx, .doc, .pdf"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" name="btnupdateminutes" class="btn btn-success" >Update Minutes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> 
     <!-- Update Agenda Modal -->
     <div class="modal fade" id="updatesfile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -147,7 +178,7 @@
                     </div>
                     <div class="modal-body">
                         <input type="hidden" name="id1" id="id1" value='' >
-                        <input type="file" class="form-control" id="magenda" name="magenda" required accept=".docx, .doc"/>
+                        <input type="file" class="form-control" id="magenda" name="magenda" required accept=".docx, .doc, .pdf"/>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -236,6 +267,17 @@
         $zipfile = "../syllabusfiles/bos/tes/" . $zipfile;
         return $zipfile;
     }
+    function saveminutes($mfile, $now) {
+        $extension = explode(".", $mfile);
+        $extension = $extension[1];
+        $mfile = $now->getTimestamp() . "." . $extension;
+        $target_dir = "../syllabusfiles/bos/minutes/";
+        $target_file = $target_dir . basename($_FILES["minutes"]["name"]);
+        move_uploaded_file($_FILES["minutes"]["tmp_name"], $target_file);
+        rename("../syllabusfiles/bos/minutes/" . $_FILES["minutes"]["name"], "../syllabusfiles/bos/minutes/" . $mfile);
+        $mfile = "../syllabusfiles/bos/minutes/" . $mfile;
+        return $mfile;
+    }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST["btnsavesfile"])) {
@@ -282,6 +324,24 @@
                 $status = $admin->updateBOSteszip($id, $teszip);
                 if ($status == 1) {
                     displaymessage("success", "TES zip Uploaded!", "New TES zip file has been uploaded successfully!");
+                    echo "<script>setTimeout(function(){ location.reload(); }, 3000);</script>";
+                } else {
+                    displaymessage("error", "Error!", "Something went wrong!");
+                }
+            } else {
+                displaymessage("error", "Empty Form!", "Please upload a file!");
+            }
+        }
+        else if (isset($_POST["btnupdateminutes"])) {
+            if ($_FILES["minutes"]["name"] != "" && isset($_FILES["minutes"]) && !empty($_POST["id4"])) {
+                $id = $_POST["id4"];
+                $minutes = $_FILES["minutes"];
+                $admin = new Subject();
+                $now = new DateTime();
+                $minutes = saveminutes($minutes["name"], $now);
+                $status = $admin->updateBOSminutes($id, $minutes);
+                if ($status == 1) {
+                    displaymessage("success", "Minutes updated!", "New minutes file has been uploaded successfully!");
                     echo "<script>setTimeout(function(){ location.reload(); }, 3000);</script>";
                 } else {
                     displaymessage("error", "Error!", "Something went wrong!");
@@ -359,6 +419,11 @@
             $("#id1").val(id);
             $('#updatesfile').modal('toggle');
         });
+        $(".btn-minutes").click(function () {
+            id = this.id;
+            $("#id4").val(id);
+            $('#updateminutesfile').modal('toggle');
+        });
         $(".btn-szip").click(function () {
             id = this.id;
             $("#id2").val(id);
@@ -372,13 +437,23 @@
         $(document).ready(function () {
             $('.table').DataTable();
         });
+        $('#minutes').on('change', function () {
+            myfile = $(this).val();
+            var ext = myfile.split('.').pop();
+            if (ext == "docx" || ext == "doc" || ext == "DOCX" || ext == "DOC" || ext == "PDF" || ext == "pdf") {
+                //no comments
+            } else {
+                alert("Please upload a document or pdf file only");
+                $('#minutes').val("");
+            }
+        });
         $('#magenda').on('change', function () {
             myfile = $(this).val();
             var ext = myfile.split('.').pop();
-            if (ext == "docx" || ext == "doc" || ext == "DOCX" || ext == "DOC") {
+            if (ext == "docx" || ext == "doc" || ext == "DOCX" || ext == "DOC" || ext == "PDF" || ext == "pdf") {
                 //no comments
             } else {
-                alert("Please upload a document file only");
+                alert("Please upload a document or pdf file only");
                 $('#magenda').val("");
             }
         });

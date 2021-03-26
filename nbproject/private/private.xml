@@ -3,13 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/Project/admin/reports.php</file>
-            <file>file:/C:/xampp/htdocs/Project/student/dashboard.php</file>
+            <file>file:/C:/xampp/htdocs/Project/admin/addbosdetails.php</file>
             <file>file:/C:/xampp/htdocs/Project/database/adminops.php</file>
-            <file>file:/C:/xampp/htdocs/Project/admin/announcements.php</file>
-            <file>file:/C:/xampp/htdocs/Project/database/openops.php</file>
-            <file>file:/C:/xampp/htdocs/Project/admin/generatereports.php</file>
-            <file>file:/C:/xampp/htdocs/Project/admin/header.php</file>
+            <file>file:/C:/xampp/htdocs/Project/admin/managebos.php</file>
+            <file>file:/C:/xampp/htdocs/Project/admin/addfaculty.php</file>
+            <file>file:/C:/xampp/htdocs/Project/admin/addstudent.php</file>
         </group>
     </open-files>
 </project-private>

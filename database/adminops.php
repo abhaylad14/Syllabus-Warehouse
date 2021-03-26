@@ -641,14 +641,15 @@ class Subject {
         return $status;
     }
 
-    public function addBOS($mname, $mvenue, $mdate, $magenda, $szip, $teszip) {
+    public function addBOS($mname, $mvenue, $mdate, $magenda, $szip, $teszip, $minutes) {
         $objcon = new connection();
         $con = $objcon->connect();
-        $sql = "insert into tbl_bos(MeetingName,MeetingVenue,MeetingDate,MeetingAgenda,SyllabusZip,TesZip) "
-                . "values(:mname,:mvenue,:mdate,:magenda,:szip,:teszip)";
+        $sql = "insert into tbl_bos(MeetingName,MeetingVenue,MeetingDate,MeetingAgenda,Minutes,SyllabusZip,TesZip) "
+                . "values(:mname,:mvenue,:mdate,:magenda,:minutes,:szip,:teszip)";
         $stmt = $con->prepare($sql);
         try {
-            $status = $stmt->execute(["mname" => $mname, "mvenue" => $mvenue, "mdate" => $mdate, "magenda" => $magenda, "szip" => $szip, "teszip" => $teszip]);
+            $status = $stmt->execute(["mname" => $mname, "mvenue" => $mvenue, "mdate" => $mdate, "magenda" => $magenda, 
+                "szip" => $szip, "teszip" => $teszip, "minutes"=>$minutes]);
         } catch (Exception $ex) {
             $status = 0;
         }
@@ -710,6 +711,20 @@ class Subject {
             $sql = "update tbl_bos set MeetingAgenda = :agenda where Id = :id";
             $stmt = $con->prepare($sql);
             $status = $stmt->execute(["id" => $id, "agenda" => $agenda]);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+    public function updateBOSminutes($id, $minutes) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "update tbl_bos set Minutes = :minutes where Id = :id";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["id" => $id, "minutes" => $minutes]);
         } catch (Exception $ex) {
             $status = 0;
         }
@@ -855,15 +870,18 @@ class Student {
                     $email = $data[1];
                     $name = $data[2];
                     $pass = rand(11111111, 99999999);
+                    $pass1 = hash("sha256", $pass);
                     $query = "INSERT into tbl_students(Enro, Username, Password, FullName) values(:enro, :email, :pass, :name)";
                     $stmt = $con->prepare($query);
+                    $status = 1;
+                    $mailflag = 1;
                     try {
-                        $status = $stmt->execute(["enro" => $enro, "email" => $email, "pass" => $pass, "name" => $name]);
+                        $status = $stmt->execute(["enro" => $enro, "email" => $email, "pass" => $pass1, "name" => $name]);
+                        $mailflag = sendEmail($email, "Syllabus Warehouse", "Your password is: " . $pass);
                     } catch (Exception $ex) {
                         if ($con->errorCode() == "00000") {
-                            return 2;
+                            continue;
                         }
-                        return 0;
                     }
                 }
                 fclose($handle);
@@ -879,8 +897,16 @@ class Student {
         $sql = "insert into tbl_students(Enro,Username,Password,FullName) values(:enro,:email,:pass,:name)";
         $stmt = $con->prepare($sql);
         $pass = rand(11111111, 99999999);
+        $pass1 = hash("sha256", $pass);
         try {
-            $status = $stmt->execute(["enro" => $enro, "name" => $name, "email" => $email, "pass" => $pass]);
+            $status = $stmt->execute(["enro" => $enro, "name" => $name, "email" => $email, "pass" => $pass1]);
+            $mailflag = sendEmail($email, "Syllabus Warehouse", "Your password is: " . $pass);
+            if($status == 1 && $mailflag == 1){
+                return $status;
+            }
+            else{
+                return 3;
+            }
         } catch (Exception $e) {
             if ($con->errorCode() == "00000") {
                 return 2;
@@ -891,6 +917,40 @@ class Student {
         return $status;
     }
 
+}
+class Reports{
+    public function Report1() {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                    . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute();
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            return 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+    public function Report2($ayear) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                    . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.AcademicYear = :ayear";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["ayear" => $ayear]);
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            return 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
 }
 
 function getAdminEmail($id) {

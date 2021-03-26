@@ -1,4 +1,12 @@
-<?php require("header.php"); ?>
+<?php require("header.php");
+ require '../database/openops.php';
+ use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+// Load Composer's autoloader
+require '../vendor/autoload.php';
+?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -90,6 +98,9 @@
                     displaymessage("success", "Student Added!", "Student has been added successfully!");
                 }else if ($status == 2) {
                     displaymessage("error", "Duplicate Entry!", "Student has been already added!");
+                }  
+                else if ($status == 3) {
+                    displaymessage("error", "Cannot send Email!", "Password is not sent via Email!");
                 }  
                 else {
                     displaymessage("error", "Error!", "Somthing went wrong!");

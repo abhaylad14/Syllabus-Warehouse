@@ -24,10 +24,10 @@
         <div class="container overflow-hidden">
             <div class="row gy-5">
                 <div class="col-sm-6 mt-4">
-                    <button class="p-3 border border-primary bg-light btn-block">All configured subjects</button>
+                    <a href="report1.php" class="p-3 border border-primary bg-light btn-block text-center">All configured subjects</a>
                 </div>
                 <div class="col-sm-6 mt-4">
-                    <button class="p-3 border border-primary bg-light btn-block">Academic year wise configured subjects</button>
+                    <a href="report2.php" class="p-3 border border-primary bg-light btn-block text-center">Academic year wise configured subjects</a>
                 </div>
                 <div class="col-sm-6 mt-4">
                     <button class="p-3 border border-primary bg-light btn-block">Semester wise configured subjects</button>
