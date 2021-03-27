@@ -1,10 +1,12 @@
 <?php
 require "header.php";
-if(!isset($_POST["ayear"])){
+if (!isset($_POST["ayear"])) {
     $_POST["ayear"] = "";
+    $_POST["sem"] = "";
 }
-if(empty($_SESSION["ayear"])){
+if (empty($_SESSION["ayear"]) || empty($_SESSION["sem"])) {
     $_SESSION["ayear"] = "";
+    $_SESSION["sem"] = "";
 }
 ?>
 <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -17,12 +19,12 @@ if(empty($_SESSION["ayear"])){
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Academic year wise configured subjects</h1>
+                    <h1 class="m-0">Academic year + Semester wise configured subjects</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
-                        <li class="breadcrumb-item active">Academic year wise configured subjects</li>
+                        <li class="breadcrumb-item active">Academic year + Semester wise configured subjects</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -32,11 +34,11 @@ if(empty($_SESSION["ayear"])){
     <!-- /.content-header -->
     <!-- Main content -->
     <div class="content">
-        <div class="card col-sm-5 mx-auto">
+        <div class="card col-sm-6 mx-auto">
             <div class="card-body">
                 <form method="post">
                     <div class="form-row">
-                        <div class="col-sm-9">
+                        <div class="col-sm-5">
                             <label for="selectyear">Select Academic Year</label>
                             <select id="ayear" class="form-control" id="ayear" name="ayear" required >
                                 <option value="" selected disabled>---Select Year---</option>
@@ -48,7 +50,23 @@ if(empty($_SESSION["ayear"])){
                                 }
                                 ?></select>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-5">
+                            <label for="sem" class="form-label">Semester</label>
+                            <select id="sem" name="sem" class="form-control" required>
+                                <option selected disabled value="">---Select Semester---</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                        <div class="col">
                             <br/>
                             <button class="btn btn-primary mt-2" type="submit" id="btnsubmit" name="btnsubmit" >Submit</button>
                         </div>
@@ -56,10 +74,10 @@ if(empty($_SESSION["ayear"])){
                 </form>
                 <?php
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    if (isset($_POST["btnsubmit"]) && isset($_POST["ayear"])) {
+                    if (isset($_POST["btnsubmit"]) && isset($_POST["ayear"]) && isset($_POST["sem"])) {
                         $_SESSION["ayear"] = $_POST["ayear"];
-                    }
-                    else{
+                        $_SESSION["sem"] = $_POST["sem"];
+                    } else {
                         displaymessage("error", "Error!", "Something went wrong!");
                     }
                 }
@@ -84,7 +102,7 @@ if(empty($_SESSION["ayear"])){
                         <?php
                         $i = 1;
                         $admin = new Reports();
-                        $result = $admin->Report2($_POST["ayear"]);
+                        $result = $admin->Report5($_POST["ayear"],$_POST["sem"]);
                         foreach ($result as $row) {
                             ?>
                             <tr>
@@ -93,23 +111,25 @@ if(empty($_SESSION["ayear"])){
                                 <td scope="row"><?php echo $row[12]; ?></td>
                                 <td scope="row"><?php echo $row[2]; ?></td>
                                 <td scope="row"><?php
-                                    if ($row[3] == 0) {
-                                        echo 'Integrated M.Sc.IT';
-                                    } else if ($row[3] == 1) {
-                                        echo 'B.Sc.IT';
-                                    } else if ($row[3] == 2) {
-                                        echo 'M.Sc.IT';
-                                    } else if ($row[3] == 3) {
-                                        echo 'Integrated M.Sc.IT, B.Sc.IT';
-                                    } else if ($row[3] == 4) {
-                                        echo 'Integrated M.Sc.IT, M.Sc.IT';
-                                    }
-                                    ?></td>
+                        if ($row[3] == 0) {
+                            echo 'Integrated M.Sc.IT';
+                        } else if ($row[3] == 1) {
+                            echo 'B.Sc.IT';
+                        } else if ($row[3] == 2) {
+                            echo 'M.Sc.IT';
+                        } else if ($row[3] == 3) {
+                            echo 'Integrated M.Sc.IT, B.Sc.IT';
+                        } else if ($row[3] == 4) {
+                            echo 'Integrated M.Sc.IT, M.Sc.IT';
+                        }
+                            ?></td>
                                 <td scope="row"><?php $x = explode("-", $row[13]);
-                                echo $x[0]; ?></td>
+                                echo $x[0];
+                                ?></td>
                                 <td scope="row"><?php echo $row[1]; ?></td>
                             </tr>
-                            <?php $i++;
+                            <?php
+                            $i++;
                         }
                         ?>
                     </tbody>
@@ -141,23 +161,23 @@ if(empty($_SESSION["ayear"])){
                     {
                         extend: 'excel',
                         title: "Babu Madhav Institute of Information Technology",
-                        messageTop: 'Academic year wise configured subjects Report \t\t Academic Year:' + '<?php echo $_SESSION["ayear"]; ?>',
+                        messageTop: 'AAcademic year + Semester wise configured subjects Report \t\t Academic Year:<?php echo $_SESSION["ayear"]; ?> Semester: <?php echo $_SESSION["sem"]; ?>',
                         messageBottom: 'The information in this table is copyright to Babu Madhav Institute of Information Technology.',
-                        filename: "Academic year wise configured subjects Report_year" + '<?php echo $_SESSION["ayear"]; ?>',
+                        filename: 'Academic year + Semester wise configured subjects Report_year<?php echo $_SESSION["ayear"]; ?>_sem<?php echo $_SESSION["sem"]; ?>',
                     },
                     {
                         extend: 'pdf',
                         title: "Babu Madhav Institute of Information Technology",
-                        messageTop: 'Academic year wise configured subjects Report \t\t Academic Year:' + '<?php echo $_SESSION["ayear"]; ?>',
+                        messageTop: 'Academic year + Semester wise configured subjects Report \t\t Academic Year:<?php echo $_SESSION["ayear"]; ?> Semester: <?php echo $_SESSION["sem"]; ?>',
                         messageBottom: 'The information in this table is copyright to Babu Madhav Institute of Information Technology.',
-                        filename: "Academic year wise configured subjects Report_year" + '<?php echo $_SESSION["ayear"]; ?>',
+                        filename: 'Academic year + Semester wise configured subjects Report_year<?php echo $_SESSION["ayear"]; ?>_sem<?php echo $_SESSION["sem"]; ?>',
                     },
                     {
                         extend: 'print',
                         title: "Babu Madhav Institute of Information Technology",
-                        messageTop: 'Academic year wise configured subjects Report \t\t Academic Year:' + '<?php echo $_SESSION["ayear"]; ?>',
+                        messageTop: 'Academic year + Semester wise configured subjects Report \t\t Academic Year:<?php echo $_SESSION["ayear"]; ?> Semester: <?php echo $_SESSION["sem"]; ?>',
                         messageBottom: 'The information in this table is copyright to Babu Madhav Institute of Information Technology.',
-                        filename: "Academic year wise configured subjects Report_year" + '<?php echo $_SESSION["ayear"]; ?>',
+                        filename: 'Academic year + Semester wise configured subjects Report_year<?php echo $_SESSION["ayear"]; ?>_sem<?php echo $_SESSION["sem"]; ?>',
                     },
                     'colvis'
                 ]

@@ -1,10 +1,10 @@
 <?php
 require "header.php";
-if(!isset($_POST["ayear"])){
-    $_POST["ayear"] = "";
+if(!isset($_POST["batch"])){
+    $_POST["batch"] = date("Y");
 }
-if(empty($_SESSION["ayear"])){
-    $_SESSION["ayear"] = "";
+if(empty($_SESSION["batch"])){
+    $_SESSION["batch"] = "";
 }
 ?>
 <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -17,12 +17,12 @@ if(empty($_SESSION["ayear"])){
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Academic year wise configured subjects</h1>
+                    <h1 class="m-0">Batch wise configured subjects</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
-                        <li class="breadcrumb-item active">Academic year wise configured subjects</li>
+                        <li class="breadcrumb-item active">Batch wise configured subjects</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -37,14 +37,13 @@ if(empty($_SESSION["ayear"])){
                 <form method="post">
                     <div class="form-row">
                         <div class="col-sm-9">
-                            <label for="selectyear">Select Academic Year</label>
-                            <select id="ayear" class="form-control" id="ayear" name="ayear" required >
-                                <option value="" selected disabled>---Select Year---</option>
+                            <label for="batch">Select Batch Year</label>
+                            <select id="batch" class="form-control" id="batch" name="batch" required >
+                                <option value="" selected disabled>---Select Batch---</option>
                                 <?php
                                 $y = date("Y");
                                 for ($i = 2010; $i < $y + 3; $i++) {
-                                    $x = strval($i + 1);
-                                    echo "<option value='$i-$x[2]$x[3]' >$i-$x[2]$x[3]</option>";
+                                    echo "<option value='$i' >$i</option>";
                                 }
                                 ?></select>
                         </div>
@@ -56,8 +55,8 @@ if(empty($_SESSION["ayear"])){
                 </form>
                 <?php
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    if (isset($_POST["btnsubmit"]) && isset($_POST["ayear"])) {
-                        $_SESSION["ayear"] = $_POST["ayear"];
+                    if (isset($_POST["btnsubmit"]) && isset($_POST["batch"])) {
+                        $_SESSION["batch"] = $_POST["batch"];
                     }
                     else{
                         displaymessage("error", "Error!", "Something went wrong!");
@@ -84,7 +83,7 @@ if(empty($_SESSION["ayear"])){
                         <?php
                         $i = 1;
                         $admin = new Reports();
-                        $result = $admin->Report2($_POST["ayear"]);
+                        $result = $admin->Report7($_POST["batch"]);
                         foreach ($result as $row) {
                             ?>
                             <tr>
@@ -141,23 +140,23 @@ if(empty($_SESSION["ayear"])){
                     {
                         extend: 'excel',
                         title: "Babu Madhav Institute of Information Technology",
-                        messageTop: 'Academic year wise configured subjects Report \t\t Academic Year:' + '<?php echo $_SESSION["ayear"]; ?>',
+                        messageTop: 'Batch wise configured subjects Report \t\t Batch Year:' + '<?php echo $_SESSION["batch"]; ?>',
                         messageBottom: 'The information in this table is copyright to Babu Madhav Institute of Information Technology.',
-                        filename: "Academic year wise configured subjects Report_year" + '<?php echo $_SESSION["ayear"]; ?>',
+                        filename: "Batch wise configured subjects Report_year" + '<?php echo $_SESSION["batch"]; ?>',
                     },
                     {
                         extend: 'pdf',
                         title: "Babu Madhav Institute of Information Technology",
-                        messageTop: 'Academic year wise configured subjects Report \t\t Academic Year:' + '<?php echo $_SESSION["ayear"]; ?>',
+                        messageTop: 'Batch wise configured subjects Report \t\t Batch Year:' + '<?php echo $_SESSION["batch"]; ?>',
                         messageBottom: 'The information in this table is copyright to Babu Madhav Institute of Information Technology.',
-                        filename: "Academic year wise configured subjects Report_year" + '<?php echo $_SESSION["ayear"]; ?>',
+                        filename: "Batch wise configured subjects Report_year" + '<?php echo $_SESSION["batch"]; ?>',
                     },
                     {
                         extend: 'print',
                         title: "Babu Madhav Institute of Information Technology",
-                        messageTop: 'Academic year wise configured subjects Report \t\t Academic Year:' + '<?php echo $_SESSION["ayear"]; ?>',
+                        messageTop: 'Batch wise configured subjects Report \t\t Batch Year:' + '<?php echo $_SESSION["batch"]; ?>',
                         messageBottom: 'The information in this table is copyright to Babu Madhav Institute of Information Technology.',
-                        filename: "Academic year wise configured subjects Report_year" + '<?php echo $_SESSION["ayear"]; ?>',
+                        filename: "Batch wise configured subjects Report_year" + '<?php echo $_SESSION["batch"]; ?>',
                     },
                     'colvis'
                 ]

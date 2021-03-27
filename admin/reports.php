@@ -21,7 +21,7 @@
     <!-- /.content-header -->
     <!-- Main content -->
     <div class="content">
-        <div class="container overflow-hidden">
+        <div class="container col-sm-8 overflow-hidden">
             <div class="row gy-5">
                 <div class="col-sm-6 mt-4">
                     <a href="report1.php" class="p-3 border border-primary bg-light btn-block text-center">All configured subjects</a>
@@ -30,22 +30,22 @@
                     <a href="report2.php" class="p-3 border border-primary bg-light btn-block text-center">Academic year wise configured subjects</a>
                 </div>
                 <div class="col-sm-6 mt-4">
-                    <button class="p-3 border border-primary bg-light btn-block">Semester wise configured subjects</button>
+                    <a href="report3.php" class="p-3 border border-primary bg-light btn-block text-center">Semester wise configured subjects</a>
                 </div>
                 <div class="col-sm-6 mt-4">
-                    <button class="p-3 border border-primary bg-light btn-block">Term wise configured subjects</button>
+                    <a href="report4.php" class="p-3 border border-primary bg-light btn-block text-center">Term wise configured subjects</a>
                 </div>
                 <div class="col-sm-6 mt-4">
-                    <button class="p-3 border border-primary bg-light btn-block">Academic year + Semester wise configured subjects</button>
+                    <a href="report5.php" class="p-3 border border-primary bg-light btn-block text-center">Academic year + Semester wise configured subjects</a>
                 </div>
                 <div class="col-sm-6 mt-4">
-                    <button class="p-3 border border-primary bg-light btn-block">Academic year + Term wise configured subjects</button>
+                    <a href="report6.php" class="p-3 border border-primary bg-light btn-block text-center">Academic year + Term wise configured subjects</a>
                 </div>
                 <div class="col-sm-6 mt-4">
-                    <button class="p-3 border border-primary bg-light btn-block">Batch wise configured subjects</button>
+                    <a href="report7.php" class="p-3 border border-primary bg-light btn-block text-center">Batch wise configured subjects</a>
                 </div>
                 <div class="col-sm-6 mt-4">
-                    <button class="p-3 border border-primary bg-light btn-block">Common Subjects for different Programs</button>
+                     <a href="report8.php" class="p-3 border border-primary bg-light btn-block text-center">Common Subjects for different Programs</a>
                 </div>
             </div>
         </div>

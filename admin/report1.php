@@ -104,18 +104,21 @@
                         title: "Babu Madhav Institute of Information Technology",
                         messageTop: 'All Configured Subjects Report',
                         messageBottom: 'The information in this table is copyright to Babu Madhav Institute of Information Technology.',
+                        filename: "All configured subjects Report",
                     },
                     {
                         extend: 'pdf',
                         title: "Babu Madhav Institute of Information Technology",
                         messageTop: 'All Configured Subjects Report',
                         messageBottom: 'The information in this table is copyright to Babu Madhav Institute of Information Technology.',
+                        filename: "All configured subjects Report",
                     },
                     {
                         extend: 'print',
                         title: "Babu Madhav Institute of Information Technology",
                         messageTop: 'All Configured Subjects Report',
                         messageBottom: 'The information in this table is copyright to Babu Madhav Institute of Information Technology.',
+                        filename: "All configured subjects Report",
                     },
                     'colvis'
                 ]

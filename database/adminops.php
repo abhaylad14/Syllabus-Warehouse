@@ -648,8 +648,8 @@ class Subject {
                 . "values(:mname,:mvenue,:mdate,:magenda,:minutes,:szip,:teszip)";
         $stmt = $con->prepare($sql);
         try {
-            $status = $stmt->execute(["mname" => $mname, "mvenue" => $mvenue, "mdate" => $mdate, "magenda" => $magenda, 
-                "szip" => $szip, "teszip" => $teszip, "minutes"=>$minutes]);
+            $status = $stmt->execute(["mname" => $mname, "mvenue" => $mvenue, "mdate" => $mdate, "magenda" => $magenda,
+                "szip" => $szip, "teszip" => $teszip, "minutes" => $minutes]);
         } catch (Exception $ex) {
             $status = 0;
         }
@@ -717,6 +717,7 @@ class Subject {
         $objcon->disconnect();
         return $status;
     }
+
     public function updateBOSminutes($id, $minutes) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -901,10 +902,9 @@ class Student {
         try {
             $status = $stmt->execute(["enro" => $enro, "name" => $name, "email" => $email, "pass" => $pass1]);
             $mailflag = sendEmail($email, "Syllabus Warehouse", "Your password is: " . $pass);
-            if($status == 1 && $mailflag == 1){
+            if ($status == 1 && $mailflag == 1) {
                 return $status;
-            }
-            else{
+            } else {
                 return 3;
             }
         } catch (Exception $e) {
@@ -918,7 +918,9 @@ class Student {
     }
 
 }
-class Reports{
+
+class Reports {
+
     public function Report1() {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -935,6 +937,7 @@ class Reports{
         $objcon->disconnect();
         return $status;
     }
+
     public function Report2($ayear) {
         $objcon = new connection();
         $con = $objcon->connect();
@@ -951,6 +954,148 @@ class Reports{
         $objcon->disconnect();
         return $status;
     }
+
+    public function Report3($sem) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                    . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.Sem = :sem";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["sem" => $sem]);
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            return 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function Report4($term) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        if ($term == 1) {
+            $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                    . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.Sem = '1' or m.Sem = '3' or "
+                    . "m.Sem = '5' or m.Sem = '7' or m.Sem = '9'";
+        } else if ($term == 2) {
+            $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                    . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.Sem = '2' or m.Sem = '4' or "
+                    . "m.Sem = '6' or m.Sem = '8' or m.Sem = '10'";
+        }
+        $stmt = $con->prepare($sql);
+        try {
+            $status = $stmt->execute();
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            return 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function Report5($ayear, $sem) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                    . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.AcademicYear = :ayear "
+                    . "and m.Sem = :sem";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["ayear" => $ayear, "sem" => $sem]);
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            return 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function Report6($ayear, $term) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        $sql = "";
+        try {
+            if ($term == 1) {
+                $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                        . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.AcademicYear = :ayear and (m.Sem = '1' or m.Sem = '3' or "
+                        . "m.Sem = '5' or m.Sem = '7' or m.Sem = '9')";
+            } else if ($term == 2) {
+                $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                        . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.AcademicYear = :ayear and (m.Sem = '2' or m.Sem = '4' or "
+                        . "m.Sem = '6' or m.Sem = '8' or m.Sem = '10')";
+            }
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["ayear" => $ayear]);
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            return 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function Report7($batch) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $year1 = $batch;
+        $year2 = intval($batch + 1);
+        $year3 = intval($batch + 2);
+        $year4 = intval($batch + 3);
+        $year5 = intval($batch + 4);
+        $status = 0;
+        try {
+            $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on m.Id = t.ConfigId "
+                    . "INNER JOIN tbl_subjects s on t.SubjectId = s.Id where (m.Sem = '1' and m.AcademicYear like :year1) or "
+                    . "(m.Sem = '2' and m.AcademicYear like :year1) or (m.Sem = '3' and m.AcademicYear like :year2) or "
+                    . "(m.Sem = '4' and m.AcademicYear like :year2) or (m.Sem = '5' and m.AcademicYear like :year3) or "
+                    . "(m.Sem = '6' and m.AcademicYear like :year3) or (m.Sem = '7' and m.AcademicYear like :year4) or "
+                    . "(m.Sem = '8' and m.AcademicYear like :year4) or (m.Sem = '9' and m.AcademicYear like :year5) or "
+                    . "(m.Sem = '10' and m.AcademicYear like :year5)";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["year1" => $year1 . "%", "year2" => $year2 . "%", "year3" => $year3 . "%",
+                "year4" => $year4 . "%", "year5" => $year5 . "%"]);
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            return 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
+    public function Report8($pid) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        if ($pid == 0) {
+            $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                    . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.ProgramId = '0' or "
+                    . "m.ProgramId = '3' or m.ProgramId = '4'";
+        } else if ($pid == 1) {
+            $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                    . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.ProgramId = '1' or "
+                    . "m.ProgramId = '3'";
+            
+        } else if ($pid == 2) {
+            $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                    . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.ProgramId = '2' or "
+                    . "m.ProgramId = '4'";
+        }
+        try {
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute();
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            return 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+
 }
 
 function getAdminEmail($id) {
