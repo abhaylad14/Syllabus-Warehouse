@@ -37,9 +37,9 @@ if(empty($_SESSION["pid"])){
                 <form method="post">
                     <div class="form-row">
                         <div class="col-sm-9">
-                            <label for="pid">Select Batch Year</label>
+                            <label for="pid">Select Programme</label>
                             <select id="pid" class="form-control" id="pid" name="pid" required >
-                                <option value="" selected disabled>---Select Batch---</option>
+                                <option value="" selected disabled>---Select Programme---</option>
                                 <option value="0">5 years Integrated M.Sc. IT</option>
                                 <option value="1">B.Sc. IT</option>
                                 <option value="2">M.Sc. IT</option>
