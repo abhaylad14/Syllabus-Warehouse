@@ -656,6 +656,51 @@ class Subject {
         $objcon->disconnect();
         return $status;
     }
+    public function viewConfiguredSyllabus() {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        try {
+            $sql = "select * from tbl_syllabus_config_master";
+            $stmt = $con->prepare($sql);
+            $stmt->execute();
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+    public function deleteConfig($id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "delete from tbl_syllabus_config_master where Id = :id";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["id" => $id]);
+            $sql = "delete from tbl_syllabus_config_transaction where ConfigId = :id";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["id" => $id]);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+    public function publishConfig($id) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $status = 0;
+        try {
+            $sql = "update tbl_syllabus_config_master set PublishedOn=CURDATE() where Id = :id";
+            $stmt = $con->prepare($sql);
+            $status = $stmt->execute(["id" => $id]);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
 
     public function viewBOSdetails() {
         $objcon = new connection();

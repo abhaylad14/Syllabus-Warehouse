@@ -23,63 +23,47 @@
     <div class="content">
         <div class="card">
             <div class="card-body">
-                <table class="table table-responsive">
+                <table class="table table-responsive-md">
                     <thead class="table-secondary">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Subject Code</th>
-                            <th scope="col">Subject Name</th>
-                            <th scope="col">Effective Year</th>
-                            <th scope="col">Theory Credit</th>
-                            <th scope="col">Practical Credit</th>
-                            <th scope="col">Theory Hours</th>
-                            <th scope="col">Practical Hours</th>
-                            <th scope="col">Syllabus (Word)</th>
-                            <th scope="col">Syllabus (PDF)</th>
-                            <th scope="col">Theory Marks (Internal)</th>
-                            <th scope="col">Theory Marks (External)</th>
-                            <th scope="col">CIE</th>
-                            <th scope="col">Practical Marks (Internal)</th>
-                            <th scope="col">Practical Marks (External)</th>
+                            <th scope="col">Academic Year</th>
+                            <th scope="col">Sem</th>
+                            <th scope="col">Programme</th>
+                            <th scope="col">Published Date</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php 
+                        <?php
                         $admin = new Subject();
-                        $data = $admin->displaysubjects();
+                        $data = $admin->viewConfiguredSyllabus();
                         foreach ($data as $row) {
-                        ?>
-                        <tr>
-                            <td scope="row">#</td>
-                            <td><?php echo $row[1]; ?></td>
-                            <td><?php echo $row[2]; ?></td>
-                            <td><?php echo $row[3]; ?></td>
-                            <td><?php echo $row[4]; ?></td>
-                            <td><?php echo $row[5]; ?></td>
-                            <td><?php echo $row[6]; ?></td>
-                            <td><?php echo $row[7]; ?></td>
-                            <?php if($row[8] != "-"){ ?>
-                            <td><a href="<?php echo $row[8]; ?>" target="_blank">View</a></td>
-                            <?php } else { ?>
-                            <td><?php echo $row[8]; ?></a></td>
-                            <?php } ?>
-                            <?php if($row[9] != "-"){ ?>
-                            <td><a href="<?php echo $row[9]; ?>" target="_blank">View</a></td>
-                            <?php } else { ?>
-                            <td><?php echo $row[9]; ?></a></td>
-                            <?php } ?>
-                            <td><?php echo $row[10]; ?></td>
-                            <td><?php echo $row[11]; ?></td>
-                            <td><?php echo $row[12]; ?></td>
-                            <td><?php echo $row[13]; ?></td>
-                            <td><?php echo $row[14]; ?></td>
-                            <td>
-                                <a class="btn btn-sm btn-outline-success border-0" href="editsubject.php?id=<?php echo $row[0]; ?>"><i class="fas fa-edit"></i></a>
-                                <button class="btn btn-sm btn-outline-danger border-0 btn-delete" id="<?php echo $row[0]; ?>"><i class="fas fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                        <?php } ?>
+                            ?>
+                            <tr>
+                                <td scope="row">#</td>
+                                <td><?php echo $row[1]; ?></td>
+                                <td><?php echo $row[2]; ?></td>
+                                <td><?php
+                                    if ($row[3] == 0) {
+                                        echo 'Integrated M.Sc.IT';
+                                    } else if ($row[3] == 1) {
+                                        echo 'B.Sc.IT';
+                                    } else if ($row[3] == 2) {
+                                        echo 'M.Sc.IT';
+                                    } else if ($row[3] == 3) {
+                                        echo 'Integrated M.Sc.IT, B.Sc.IT';
+                                    } else if ($row[3] == 4) {
+                                        echo 'Integrated M.Sc.IT, M.Sc.IT';
+                                    }
+                                    ?></td>
+                                <td><?php echo $row[4]; ?></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-success border-0 btn-publish" id="<?php echo $row[0]; ?>"> <i class="fas fa-check"> Publish</i> </button>
+                                    <button class="btn btn-sm btn-outline-danger border-0 btn-delete" id="<?php echo $row[0]; ?>"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+<?php } ?>
                     </tbody>
                 </table>
             </div>
@@ -95,7 +79,7 @@
                     <button type="button" class="fas fa-times bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure want to delete this Subject?
+                    Are you sure want to delete this Configuration?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -104,7 +88,27 @@
             </div>
         </div>
     </div>
+    <!-- Publish Modal -->
+    <div class="modal fade" id="publishmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Alert</h5>
+                    <button type="button" class="fas fa-times bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure want to publish this Configuration?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="ajaxpublish">Publish</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
+        let block = "";
+        let id = "";
         $(document).ready(function () {
             $('.table').DataTable();
         });
@@ -113,17 +117,41 @@
             $('#deletemodal').modal('toggle');
             block = this.parentElement.parentElement;
         });
+        $(".btn-publish").click(function () {
+            id = this.id;
+            $('#publishmodal').modal('toggle');
+            block = this.parentElement.parentElement;
+        });
+        $("#ajaxpublish").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "ajaxops.php",
+                data: {
+                    id: id,
+                    action: "publishconfig"
+                },
+                success: function (result) {
+                    if (result == "done") {
+                        displaymessage("success", "Success!", "Configuration Published successfully!");
+                        let date = new Date();
+                        block.children[4].innerHTML = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+                    } else {
+                        displaymessage("error", "Error!", "Something went wrong!");
+                    }
+                }
+            });
+        });
         $("#ajaxdelete").click(function () {
             $.ajax({
                 type: "POST",
                 url: "ajaxops.php",
                 data: {
                     id: id,
-                    action: "deletesubject"
+                    action: "deleteconfig"
                 },
                 success: function (result) {
                     if (result == "done") {
-                        displaymessage("success", "Success!", "Subject deleted successfully!");
+                        displaymessage("success", "Success!", "Configuration deleted successfully!");
                         block.remove();
                     } else {
                         displaymessage("error", "Error!", "Something went wrong!");
@@ -131,6 +159,9 @@
                 }
             });
         });
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
     </script>
-    
-    <?php require("footer.php"); ?>
+
+<?php require("footer.php"); ?>

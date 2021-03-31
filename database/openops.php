@@ -201,7 +201,6 @@ function getStudentData($id) {
     return $status;
 }
 
-
 function updateProfile($id, $name, $contact, $gender) {
     $objcon = new connection();
     $con = $objcon->connect();
@@ -279,6 +278,7 @@ function displayAnnouncements() {
     $objcon->disconnect();
     return $status;
 }
+
 function checkStudentPassword($pass, $id) {
     $objcon = new connection();
     $con = $objcon->connect();
@@ -295,6 +295,7 @@ function checkStudentPassword($pass, $id) {
     $objcon->disconnect();
     return $status;
 }
+
 function ChangeStudentPassword($pass, $id) {
     $objcon = new connection();
     $con = $objcon->connect();
@@ -304,6 +305,101 @@ function ChangeStudentPassword($pass, $id) {
     $status = 0;
     try {
         $status = $stmt->execute(["pass" => $pass, "id" => $id]);
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+    return $status;
+}
+
+function genericTesx1($ayear, $sem, $pid) {
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $status = 0;
+    try {
+        if ($pid == 0) {
+            $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                    . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.AcademicYear = :ayear "
+                    . "and m.Sem = :sem and t.IsElective = '0' and (m.ProgramId ='0' or m.ProgramId = '3' or m.ProgramId = '4')";
+        } else if ($pid == 1) {
+            $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                    . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.AcademicYear = :ayear "
+                    . "and m.Sem = :sem and t.IsElective = '0' and (m.ProgramId ='1' or m.ProgramId = '3')";
+        } else if ($pid == 2) {
+            $sql = "SELECT * from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction t on "
+                    . "m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.AcademicYear = :ayear "
+                    . "and m.Sem = :sem and t.IsElective = '0' and (m.ProgramId ='2' or m.ProgramId = '4')";
+        }
+        $stmt = $con->prepare($sql);
+        $status = $stmt->execute(["ayear" => $ayear, "sem" => $sem]);
+        $status = $stmt->fetchAll(PDO::FETCH_NUM);
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+    return $status;
+}
+
+function getElectiveSubjectsByGroup($ayear, $sem, $groupno) {
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $status = 0;
+    try {
+        $sql = "SELECT *, t.ElectiveGroup from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction "
+                . "t on m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.AcademicYear = "
+                . ":ayear and m.Sem =:sem and t.IsElective = '1' and t.ElectiveGroup = :group";
+        $stmt = $con->prepare($sql);
+        $status = $stmt->execute(["ayear" => $ayear, "sem" => $sem, "group" => $groupno]);
+        $status = $stmt->fetchAll(PDO::FETCH_NUM);
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+    return $status;
+}
+
+function getElectiveGroup($ayear, $sem) {
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $status = 0;
+    try {
+        $sql = "SELECT count(*), t.ElectiveGroup from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction "
+                . "t on m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.AcademicYear = "
+                . ":ayear and m.Sem =:sem and t.IsElective = '1' GROUP BY t.ElectiveGroup";
+        $stmt = $con->prepare($sql);
+        $status = $stmt->execute(["ayear" => $ayear, "sem" => $sem]);
+        $status = $stmt->fetchAll(PDO::FETCH_NUM);
+    } catch (Exception $ex) {
+        return 0;
+    }
+    $objcon->disconnect();
+    return $status;
+}
+
+function genericTesx2($ayear, $sem, $groupno, $pid) {
+    $objcon = new connection();
+    $con = $objcon->connect();
+    $status = 0;
+    try {
+        if ($pid == 0) {
+            $sql = "SELECT *, t.ElectiveGroup from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction "
+                    . "t on m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.AcademicYear = "
+                    . ":ayear and m.Sem =:sem and t.IsElective = '1' and t.ElectiveGroup = :group and (m.ProgramId ='0' or "
+                    . "m.ProgramId = '3' or m.ProgramId = '4')";
+        } else if ($pid == 1) {
+            $sql = "SELECT *, t.ElectiveGroup from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction "
+                    . "t on m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.AcademicYear = "
+                    . ":ayear and m.Sem =:sem and t.IsElective = '1' and t.ElectiveGroup = :group and (m.ProgramId ='1' or "
+                    . "m.ProgramId = '3')";
+        } else if ($pid == 2) {
+            $sql = "SELECT *, t.ElectiveGroup from tbl_syllabus_config_master m INNER JOIN tbl_syllabus_config_transaction "
+                    . "t on m.Id = t.ConfigId INNER JOIN tbl_subjects s on t.SubjectId = s.Id where m.AcademicYear = "
+                    . ":ayear and m.Sem =:sem and t.IsElective = '1' and t.ElectiveGroup = :group and (m.ProgramId ='2' or "
+                    . "m.ProgramId = '4')";
+        }
+        $stmt = $con->prepare($sql);
+        $status = $stmt->execute(["ayear" => $ayear, "sem" => $sem, "group" => $groupno]);
+        $status = $stmt->fetchAll(PDO::FETCH_NUM);
     } catch (Exception $ex) {
         return 0;
     }

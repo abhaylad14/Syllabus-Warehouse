@@ -31,7 +31,7 @@ $data = getStudentData($_SESSION["userId"]);
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container">
 
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="dashboard.php">
                         <img src="../images/bmiitlogo.png" class="img-fluid" height="30" width="30" />
                         Syllabus Warehouse</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,6 +43,9 @@ $data = getStudentData($_SESSION["userId"]);
                         </ul>
                         <span class="d-flex">
                             <ul class="navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link mx-4" id="viewsyllabus" href="viewsyllabus.php"><i class="fas fa-university mx-1"></i> View Syllabus</a>
+                                </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fas fa-user text-light"> <?php echo $data[4]; ?></i>

@@ -251,7 +251,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "error";
         }
     } else if (isset($_POST["action"]) && $_POST["action"] == "updateAnnouncement") {
-        if (!empty($_POST["id"]) && isset($_POST["id"]) && !empty($_POST["title"]) && isset($_POST["title"]) && !empty($_POST["message"]) && isset($_POST["message"]) ) {
+        if (!empty($_POST["id"]) && isset($_POST["id"]) && !empty($_POST["title"]) && isset($_POST["title"]) && !empty($_POST["message"]) && isset($_POST["message"])) {
             $id = $_POST["id"];
             $title = $_POST["title"];
             $message = $_POST["message"];
@@ -264,6 +264,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         } else {
             echo "empty";
+        }
+    } else if (isset($_POST["action"]) && $_POST["action"] == "deleteconfig") {
+        if (!empty($_POST["id"]) && isset($_POST["id"])) {
+            $id = $_POST["id"];
+            $admin = new Subject();
+            $status = $admin->deleteConfig($id);
+            if ($status >= 1) {
+                echo "done";
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "error";
+        }
+    } else if (isset($_POST["action"]) && $_POST["action"] == "publishconfig") {
+        if (!empty($_POST["id"]) && isset($_POST["id"])) {
+            $id = $_POST["id"];
+            $admin = new Subject();
+            $status = $admin->publishConfig($id);
+            if ($status >= 1) {
+                echo "done";
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "error";
         }
     } else {
         echo "error";
