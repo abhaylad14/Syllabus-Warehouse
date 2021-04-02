@@ -158,6 +158,7 @@ $startpoint = 2;
         $writer = new Xlsx($spreadsheet);
         $name = "GeneratedTES/Academic-year wise TES_{$_SESSION['ayear']}.xlsx";
         $writer->save("GeneratedTES/Academic-year wise TES_{$_SESSION['ayear']}.xlsx");
+        
 
 //        echo "<script>location.replace('$name');</script>";
         function convertToZero($val) {

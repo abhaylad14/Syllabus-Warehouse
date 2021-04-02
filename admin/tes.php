@@ -345,7 +345,7 @@
     </script>
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST["gentes1"]) && isset($_POST["ayear"]) && isset($_POST["pid1"])) {
+        if (isset($_POST["gentes1"]) && isset($_POST["ayear"]) && isset($_POST["pid"])) {
             $_SESSION["ayear"] = $_POST["ayear"];
             $_SESSION["pid"] = $_POST["pid"];
             header("Location: tes1.php");
