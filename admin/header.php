@@ -39,7 +39,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <script src="../dist/js/adminlte.min.js"></script>
         <script src="../lobibox-master/dist/js/lobibox.min.js"></script>
         <script src="//cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-        
+
     </head>
     <body class="hold-transition sidebar-mini sidebar-collapse">
         <div class="wrapper">
@@ -96,157 +96,216 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <ul class="nav nav-pills nav-sidebar flex-column nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
                             <!-- Add icons to the links using the .nav-icon class
                                  with font-awesome or any other icon font library -->
-                            <!--                            <li class="nav-item menu-open">
-                                                            <a href="#" class="nav-link active">
-                                                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                                                <p>
-                                                                    Starter Pages
-                                                                    <i class="right fas fa-angle-left"></i>
-                                                                </p>
-                                                            </a>
-                                                            <ul class="nav nav-treeview">
-                                                                <li class="nav-item">
-                                                                    <a href="#" class="nav-link active">
-                                                                        <i class="far fa-circle nav-icon"></i>
-                                                                        <p>Active Page</p>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="nav-item">
-                                                                    <a href="#" class="nav-link">
-                                                                        <i class="far fa-circle nav-icon"></i>
-                                                                        <p>Inactive Page</p>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </li>-->
                             <li class="nav-item">
-                                <a href="addfaculty.php" class="nav-link">
-                                    <i class="nav-icon fas fa-users"></i>
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-user-alt"></i>
                                     <p>
-                                        Add Faculty
+                                        Manage User
+                                        <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="addfaculty.php" class="nav-link">
+                                            <i class="nav-icon fas fa-users"></i>
+                                            <p>
+                                                Add Faculty
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="addstudent.php" class="nav-link">
+                                            <i class="nav-icon fas fa-users"></i>
+                                            <p>
+                                                Add Student
+                                            </p>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a href="managefaculty.php" class="nav-link">
+                                            <i class="nav-icon fas fa-users-cog"></i>
+                                            <p>
+                                                Manage Faculty
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="managestudents.php" class="nav-link">
+                                            <i class="nav-icon fas fa-users-cog"></i>
+                                            <p>
+                                                Manage Students
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="deletedfaculty.php" class="nav-link">
+                                            <i class="nav-icon fas fa-user-shield"></i>
+                                            <p>
+                                                Deleted Faculty
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
+
+
                             <li class="nav-item">
-                                <a href="managefaculty.php" class="nav-link">
-                                    <i class="nav-icon fas fa-users-cog"></i>
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-book-open"></i>
                                     <p>
-                                        Manage Faculty
+                                        Subject Management
+                                        <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="addsubject.php" class="nav-link">
+                                            <i class="nav-icon fas fa-book"></i>
+                                            <p>
+                                                Add Subject
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="managesubject.php" class="nav-link">
+                                            <i class="nav-icon fas fa-book"></i>
+                                            <p>
+                                                Manage Subject
+                                            </p>
+                                        </a>
+                                    </li>
+
+                                </ul>
                             </li>
+
+
                             <li class="nav-item">
-                                <a href="deletedfaculty.php" class="nav-link">
-                                    <i class="nav-icon fas fa-user-shield"></i>
-                                    <p>
-                                        Deleted Faculty
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="addstudent.php" class="nav-link">
-                                    <i class="nav-icon fas fa-users"></i>
-                                    <p>
-                                        Add Student
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="managestudents.php" class="nav-link">
-                                    <i class="nav-icon fas fa-users-cog"></i>
-                                    <p>
-                                        Manage Students
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="addsubject.php" class="nav-link">
-                                    <i class="nav-icon fas fa-book"></i>
-                                    <p>
-                                        Add Subject
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="managesubject.php" class="nav-link">
-                                    <i class="nav-icon fas fa-book"></i>
-                                    <p>
-                                        Manage Subject
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="manageconfiguredsyllabus.php" class="nav-link">
-                                    <i class="nav-icon fas fa-book"></i>
-                                    <p>
-                                        Manage Configured Syllabus
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="configuresyllabus.php" class="nav-link">
+                                <a href="#" class="nav-link">
                                     <i class="nav-icon fas fa-book-reader"></i>
                                     <p>
-                                        Configure Syllabus
+                                        Syllabus Management
+                                        <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="configuresyllabus.php" class="nav-link">
+                                            <i class="nav-icon fas fa-book-reader"></i>
+                                            <p>
+                                                Configure Syllabus
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="manageconfiguredsyllabus.php" class="nav-link">
+                                            <i class="nav-icon fas fa-book"></i>
+                                            <p>
+                                                Manage Configured Syllabus
+                                            </p>
+                                        </a>
+                                    </li>
+
+                                </ul>
                             </li>
+
+
+
                             <li class="nav-item">
-                                <a href="subjectrevision.php" class="nav-link">
-                                    <i class="nav-icon fas fa-cogs"></i>
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-bookmark"></i>
                                     <p>
-                                        Subject Revision
+                                        Revising Subjects
+                                        <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="subjectrevision.php" class="nav-link">
+                                            <i class="nav-icon fas fa-cogs"></i>
+                                            <p>
+                                                Subject Revision
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="assignedsubjects.php" class="nav-link">
+                                            <i class="nav-icon fas fa-cogs"></i>
+                                            <p>
+                                                Assigned Subjects
+                                            </p>
+                                        </a>
+                                    </li>
+
+                                </ul>
                             </li>
+
                             <li class="nav-item">
-                                <a href="assignedsubjects.php" class="nav-link">
-                                    <i class="nav-icon fas fa-cogs"></i>
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-user-circle"></i>
                                     <p>
-                                        Assigned Subjects
+                                        BOS Management
+                                        <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="addbosdetails.php" class="nav-link">
+                                            <i class="nav-icon fas fa-users"></i>
+                                            <p>
+                                                Add BOS Details
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="managebos.php" class="nav-link">
+                                            <i class="nav-icon fas fa-users"></i>
+                                            <p>
+                                                Manage BOS Details
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
+
+
                             <li class="nav-item">
-                                <a href="addbosdetails.php" class="nav-link">
-                                    <i class="nav-icon fas fa-users"></i>
-                                    <p>
-                                        Add BOS Details
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="managebos.php" class="nav-link">
-                                    <i class="nav-icon fas fa-users"></i>
-                                    <p>
-                                        Manage BOS Details
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="announcements.php" class="nav-link">
+                                <a href="#" class="nav-link">
                                     <i class="nav-icon fas fa-bullhorn"></i>
                                     <p>
                                         Announcements
+                                        <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="announcements.php" class="nav-link">
+                                            <i class="nav-icon fas fa-bullhorn"></i>
+                                            <p>
+                                                View Announcements
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="createannouncement.php" class="nav-link">
+                                            <i class="nav-icon fas fa-bullhorn"></i>
+                                            <p>
+                                                Create Announcement
+                                            </p>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a href="viewannouncements.php" class="nav-link">
+                                            <i class="nav-icon fas fa-bullhorn"></i>
+                                            <p>
+                                                Manage Announcements
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="nav-item">
-                                <a href="createannouncement.php" class="nav-link">
-                                    <i class="nav-icon fas fa-bullhorn"></i>
-                                    <p>
-                                        Create Announcement
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="viewannouncements.php" class="nav-link">
-                                    <i class="nav-icon fas fa-bullhorn"></i>
-                                    <p>
-                                        View Announcements
-                                    </p>
-                                </a>
-                            </li>
+
                             <li class="nav-item">
                                 <a href="reports.php" class="nav-link">
                                     <i class="nav-icon fas fa-file-alt"></i>
