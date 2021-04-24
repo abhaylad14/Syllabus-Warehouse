@@ -106,6 +106,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="viewsyllabus.php" class="nav-link">
+                                    <i class="nav-icon fas fa-book"></i>
+                                    <p>
+                                        View Syllabus
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="createannouncement.php" class="nav-link">
+                                    <i class="nav-icon fas fa-bullhorn"></i>
+                                    <p>
+                                        Create Announcement
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="viewannouncements.php" class="nav-link">
+                                    <i class="nav-icon fas fa-bullhorn"></i>
+                                    <p>
+                                        My Announcements
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="announcements.php" class="nav-link">
+                                    <i class="nav-icon fas fa-bullhorn"></i>
+                                    <p>
+                                        View Announcements
+                                    </p>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->

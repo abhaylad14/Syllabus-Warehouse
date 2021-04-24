@@ -1,6 +1,6 @@
-<?php 
+<?php
 session_start();
-if(!$_SESSION["userId"] || $_SESSION["userType"] != 3){
+if (!$_SESSION["userId"] || $_SESSION["userType"] != 3) {
     header("Location: ../index.php");
 }
 ?>
@@ -98,14 +98,46 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <ul class="nav nav-pills nav-sidebar flex-column nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
                             <!-- Add icons to the links using the .nav-icon class
                                  with font-awesome or any other icon font library -->
-                                                        <li class="nav-item">
-                                                            <a href="subjectrevision.php" class="nav-link">
-                                                                <i class="nav-icon fas fa-cogs"></i>
-                                                                <p>
-                                                                    Subject Revision
-                                                                </p>
-                                                            </a>
-                                                        </li>
+                            <li class="nav-item">
+                                <a href="subjectrevision.php" class="nav-link">
+                                    <i class="nav-icon fas fa-cogs"></i>
+                                    <p>
+                                        Subject Revision
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="viewsyllabus.php" class="nav-link">
+                                    <i class="nav-icon fas fa-book"></i>
+                                    <p>
+                                        View Syllabus
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="createannouncement.php" class="nav-link">
+                                    <i class="nav-icon fas fa-bullhorn"></i>
+                                    <p>
+                                        Create Announcement
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="viewannouncements.php" class="nav-link">
+                                    <i class="nav-icon fas fa-bullhorn"></i>
+                                    <p>
+                                        My Announcements
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="announcements.php" class="nav-link">
+                                    <i class="nav-icon fas fa-bullhorn"></i>
+                                    <p>
+                                        Announcements
+                                    </p>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->
