@@ -87,6 +87,7 @@
                                     }
                                     ?></td>
                                 <td>
+                                    <button id='<?php echo $row[0]; ?>' class='btn btn-outline-success btn-sm fas fa-eye border-0 btn-view'></button>
                                     <button id="<?php echo $row[0]; ?>" class='btn btn-outline-warning btn-sm fas fa-edit border-0 btn-edit'></button>
                                     <button id="<?php echo $row[0]; ?>" class='btn btn-outline-danger btn-sm fas fa-trash-alt border-0 btn-delete'></button>
                                 </td>
@@ -230,6 +231,20 @@
             </div>
         </div>
     </div> 
+    <!-- View Modal -->
+    <div class="modal fade" id="viewmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Remarks</h5>
+                    <button type="button" class="fas fa-times bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="data">
+
+                </div>
+            </div>
+        </div>
+    </div>
     <?php
 
     function savesfile($sfile, $now) {
@@ -476,6 +491,26 @@
                 alert("Please upload a ZIP file only");
                 $('#teszip').val("");
             }
+        });
+        $(".btn-view").click(function () {
+            let id = this.id;
+            $.ajax({
+                type: "POST",
+                url: "ajaxops.php",
+                data: {
+                    id: id,
+                    action: "viewremarks"
+                },
+                success: function (result) {
+                    result = JSON.parse(result);
+                    let html = "";
+                    for (let i = 0; i < result.length; i++) {
+                            html += `<i class="fas fa-arrow-right ml-4"></i> ${result[i]}<br>`;
+                    }
+                    $("#data").html(html);
+                }
+            });
+            $('#viewmodal').modal('toggle');
         });
     </script>
     <?php require("footer.php") ?>

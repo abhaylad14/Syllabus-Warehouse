@@ -164,7 +164,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "error";
         }
-    } else if (isset($_POST["action"]) && $_POST["action"] == "updateBOS") {
+        
+    }
+    else if (isset($_POST["action"]) && $_POST["action"] == "viewremarks") {
+        if (!empty($_POST["id"]) && isset($_POST["id"])) {
+            $id = $_POST["id"];
+            $admin = new Subject();
+            $status = $admin->viewRemarks($id);
+            if ($status >= 1) {
+                $json = json_encode($status);
+                echo $json;
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "error";
+        }
+        
+    }
+    else if (isset($_POST["action"]) && $_POST["action"] == "updateBOS") {
         if (!empty($_POST["id"]) && isset($_POST["id"]) && !empty($_POST["name"]) && isset($_POST["name"]) &&
                 !empty($_POST["venue"]) && isset($_POST["venue"]) && !empty($_POST["date"]) && isset($_POST["date"])) {
             $id = $_POST["id"];

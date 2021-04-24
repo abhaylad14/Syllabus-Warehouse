@@ -58,6 +58,12 @@
                             <input type="file" class="form-control" id="teszip" name="teszip" accept=".zip, .rar" >
                         </div>
                     </div>
+                    <div class="row mt-2 justify-content-center">
+                        <div class="col-sm-8">
+                            <label for="remarks" class="form-label">Remarks</label>
+                            <textarea class="form-control" id="remarks" name="remarks" placeholder="Enter important details here"></textarea>
+                        </div>
+                    </div>
                     <div class="row mt-3 justify-content-center">
                         <button type="submit" name="btnsubmit" class="btn btn-primary">Submit</button>
                     </div>
@@ -165,6 +171,7 @@
                 $mvenue = trim($_POST["mvenue"]);
                 $mdate = trim($_POST["mdate"]);
 
+                $remarks = $_POST["remarks"];
                 $magenda = $_FILES["magenda"];
                 $szip = $_FILES["szip"];
                 $teszip = $_FILES["teszip"];
@@ -193,7 +200,7 @@
                 } else {
                     $minutes = "";
                 }
-                $status = $admin->addBOS($mname, $mvenue, $mdate, $magenda, $szip, $teszip,$minutes);
+                $status = $admin->addBOS($mname, $mvenue, $mdate, $magenda, $szip, $teszip,$minutes,$remarks);
                 if ($status == 1) {
                     displaymessage("success", "BOS details Added!", "BOS details has been added successfully!");
                 } else {

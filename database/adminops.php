@@ -494,6 +494,7 @@ class Subject {
         $objcon->disconnect();
         return $status;
     }
+    
 
     public function ViewSubjectList1Append($data) {
         $objcon = new connection();
@@ -642,15 +643,29 @@ class Subject {
         return $status;
     }
 
-    public function addBOS($mname, $mvenue, $mdate, $magenda, $szip, $teszip, $minutes) {
+    public function viewRemarks($id) {
         $objcon = new connection();
         $con = $objcon->connect();
-        $sql = "insert into tbl_bos(MeetingName,MeetingVenue,MeetingDate,MeetingAgenda,Minutes,SyllabusZip,TesZip) "
-                . "values(:mname,:mvenue,:mdate,:magenda,:minutes,:szip,:teszip)";
+        try {
+            $sql = "select Remark from tbl_bos where Id = :id";
+            $stmt = $con->prepare($sql);
+            $stmt->execute(["id" => $id]);
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
+    public function addBOS($mname, $mvenue, $mdate, $magenda, $szip, $teszip, $minutes, $remarks) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        $sql = "insert into tbl_bos(MeetingName,MeetingVenue,MeetingDate,MeetingAgenda,Minutes,SyllabusZip,TesZip,Remark) "
+                . "values(:mname,:mvenue,:mdate,:magenda,:minutes,:szip,:teszip,:remark)";
         $stmt = $con->prepare($sql);
         try {
             $status = $stmt->execute(["mname" => $mname, "mvenue" => $mvenue, "mdate" => $mdate, "magenda" => $magenda,
-                "szip" => $szip, "teszip" => $teszip, "minutes" => $minutes]);
+                "szip" => $szip, "teszip" => $teszip, "minutes" => $minutes, "remark"=>$remarks]);
         } catch (Exception $ex) {
             $status = 0;
         }
