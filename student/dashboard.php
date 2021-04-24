@@ -4,7 +4,7 @@
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <button class="nav-link bg-transparent active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-announcement" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
                 <i class="fas fa-bullhorn"></i> Announcements</button>
-            <button class="nav-link bg-transparent" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button>
+            <!--<button class="nav-link bg-transparent" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button>-->
             <button class="nav-link bg-transparent" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
                 <i class="fas fa-user-cog"></i> Profile</button>
 

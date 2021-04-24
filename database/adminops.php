@@ -328,7 +328,7 @@ class Subject {
     public function uploadSubjectRevision($sid, $sfile) {
         $objcon = new connection();
         $con = $objcon->connect();
-        $sql = "update tbl_syllabus_config_assign set DocText = :sfile where SubjectId = :sid";
+        $sql = "update tbl_syllabus_config_assign set DocText = :sfile, Status='0' where Subject = :sid";
         $stmt = $con->prepare($sql);
         try {
             $status = $stmt->execute(["sid" => $sid, "sfile" => $sfile]);
@@ -379,24 +379,24 @@ class Subject {
         return $status;
     }
 
-    public function assignSubject($subid, $facid, $leader) {
+    public function assignSubject($subject, $facid, $leader) {
         $objcon = new connection();
         $con = $objcon->connect();
         try {
-            $sql = "select count(*) from tbl_syllabus_config_assign where SubjectId = :subid and VerifyDate is null";
+            $sql = "select count(*) from tbl_syllabus_config_assign where Subject = :sub and VerifyDate is null";
             $stmt = $con->prepare($sql);
-            $status = $stmt->execute(["subid" => $subid]);
+            $status = $stmt->execute(["sub" => $subject]);
             $count = $stmt->fetchColumn();
             if ($count == 0) {
-                $sql = "insert into tbl_syllabus_config_assign (SubjectId, UserId,AssignDate) values(:subid, :facid,CURDATE())";
+                $sql = "insert into tbl_syllabus_config_assign (Subject, UserId,AssignDate) values(:sub, :facid,CURDATE())";
                 $stmt = $con->prepare($sql);
                 for ($i = 0; $i < count($facid); $i++) {
-                    $status = $stmt->execute(["subid" => $subid, "facid" => $facid[$i]]);
+                    $status = $stmt->execute(["sub" => $subject, "facid" => $facid[$i]]);
                 }
                 if ($status == 1) {
-                    $sql = "select Id from tbl_syllabus_config_assign where SubjectId = :subid and UserId = :facid";
+                    $sql = "select Id from tbl_syllabus_config_assign where Subject = :sub and UserId = :facid";
                     $stmt = $con->prepare($sql);
-                    $status = $stmt->execute(["subid" => $subid, "facid" => $leader]);
+                    $status = $stmt->execute(["sub" => $subject, "facid" => $leader]);
                     $result = $stmt->fetchColumn();
                     $sql = "update tbl_syllabus_config_assign set Isleader = '1' where Id = :id";
                     $stmt = $con->prepare($sql);
@@ -448,10 +448,10 @@ class Subject {
     public function viewAssignedSubjects() {
         $objcon = new connection();
         $con = $objcon->connect();
+        $status = 0;
         try {
-            $sql = "select a.Id, s.SubjectCode, s.SubjectName, s.EffectiveYear, u.FullName, a.AssignDate, a.VerifyDate, "
-                    . "a.Status, a.DocText, a.SubjectId from tbl_syllabus_config_assign a INNER JOIN tbl_subjects s on a.SubjectId = s.Id INNER JOIN "
-                    . "tbl_users u on a.UserId = u.Id where a.Isleader = '1' order by AssignDate";
+            $sql = "select a.Id, a.Subject, u.FullName, a.AssignDate, a.VerifyDate, a.Status, a.DocText from "
+                    . "tbl_syllabus_config_assign a INNER JOIN tbl_users u on a.UserId = u.Id where a.Isleader = '1' order by AssignDate";
             $stmt = $con->prepare($sql);
             $stmt->execute();
             $status = $stmt->fetchAll(PDO::FETCH_NUM);
@@ -465,9 +465,10 @@ class Subject {
     public function viewAssignedSubjectsFacultyWise($id) {
         $objcon = new connection();
         $con = $objcon->connect();
+        $status = 0;
         try {
-            $sql = "select a.Id, s.SubjectCode, s.SubjectName, s.EffectiveYear, a.Isleader, a.AssignDate, a.VerifyDate, "
-                    . "a.Status, a.DocText, a.SubjectId, a.Comments from tbl_syllabus_config_assign a INNER JOIN tbl_subjects s on a.SubjectId = s.Id INNER JOIN "
+            $sql = "select a.Id, a.Subject, a.Isleader, a.AssignDate, a.VerifyDate, "
+                    . "a.Status, a.DocText, a.Comments from tbl_syllabus_config_assign a INNER JOIN "
                     . "tbl_users u on a.UserId = u.Id where a.UserId = :id order by AssignDate";
             $stmt = $con->prepare($sql);
             $stmt->execute(["id" => $id]);
@@ -483,7 +484,7 @@ class Subject {
         $objcon = new connection();
         $con = $objcon->connect();
         try {
-            $sql = "select u.FullName from tbl_users u INNER JOIN tbl_syllabus_config_assign a on a.UserId = u.Id where SubjectId = :subid";
+            $sql = "select u.FullName from tbl_users u INNER JOIN tbl_syllabus_config_assign a on a.UserId = u.Id where Subject = :subid";
             $stmt = $con->prepare($sql);
             $stmt->execute(["subid" => $subid]);
             $status = $stmt->fetchAll(PDO::FETCH_NUM);

@@ -24,19 +24,31 @@
         <div class="card col-sm-6 mx-auto">
             <div class="card-body">
                 <form method="post">
+                    <div class="row g-3 mb-2">
+                        <div class="col-sm-1"><input type="radio" id="rbtn1" name="selection"/></div>
+                        <div class="col">
+                            <label for="inpsub" class="form-label">Enter Subject</label>
+                            <input type="text" id="inpsub" class="form-control" maxlength="100" name="subject" required>
+                        </div>
+                    </div>
                     <div class="row g-3 mb-4">
                         <div class="col">
-                            <label for="selectsub" class="form-label">Select Subject</label>
-                            <select id="selectsub" name="selectsub" class="form-control" required>
-                                <option value="" selected disabled>--- Select Subject ---</option>
-                                <?php
-                                $sub = new Subject();
-                                $result = $sub->displaysubjects();
-                                foreach ($result as $row) {
-                                    ?>
-                                    <option value="<?php echo $row[0]; ?>"><?php echo $row[1]; ?> - <?php echo $row[2]; ?> - <?php echo $row[3]; ?></option>
-                                <?php } ?>
-                            </select>
+                            <div class="row">
+                                <div class="col-sm-1"><input type="radio" id="rbtn2" name="selection" /></div>
+                                <div class="col">
+                                    <label for="selectsub" class="form-label">Select Subject</label>
+                                    <select id="selectsub" name="subject" class="form-control" required>
+                                        <option value="" selected disabled>--- Select Subject ---</option>
+                                        <?php
+                                        $sub = new Subject();
+                                        $result = $sub->displaysubjects();
+                                        foreach ($result as $row) {
+                                            ?>
+                                            <option value="<?php echo $row[0]; ?>"><?php echo $row[1]; ?> - <?php echo $row[2]; ?> - <?php echo $row[3]; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-sm-2">
                             <label for="selectnum" class="form-label">Members</label>
@@ -87,39 +99,36 @@
         </div>
     </div>
     <!-- /.content -->
-    <?php 
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        if(isset($_POST["btnsubmit"])){
-            if(isset($_POST["selectsub"]) && isset($_POST["chkfaculty"]) && isset($_POST["isleader"])){
-                $subid = $_POST["selectsub"];
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST["btnsubmit"])) {
+            if (isset($_POST["subject"]) && isset($_POST["chkfaculty"]) && isset($_POST["isleader"])) {
+                $subject = $_POST["subject"];
                 $facid = $_POST["chkfaculty"];
-                $isleader = $_POST["isleader"]; 
+                $isleader = $_POST["isleader"];
                 $admin = new Subject();
-                $status = $admin->assignSubject($subid, $facid, $isleader);
-                if($status == 1){
+                $status = $admin->assignSubject($subject, $facid, $isleader);
+                if ($status == 1) {
                     displaymessage("success", "Subject Assigned", "Subject has been assigned!");
-                }
-                else if($status == 2){
+                } else if ($status == 2) {
                     displaymessage("error", "Assigned already", "This subject has been already added for revision");
-                }
-                else{
+                } else {
                     displaymessage("error", "Error!", "Something went wrong!");
                 }
-            }
-            else if(isset($_POST["selectsub"]) && isset($_POST["chkfaculty"]) && !isset($_POST["isleader"])){
+            } else if (isset($_POST["selectsub"]) && isset($_POST["chkfaculty"]) && !isset($_POST["isleader"])) {
                 displaymessage("error", "No leader is selected", "Please select a leader");
-            }
-            else{
+            } else {
                 displaymessage("error", "Invalid Form", "Please fill in required details");
             }
-        }
-        else{
+        } else {
             displaymessage("error", "Invalid Request", "");
         }
     }
     ?>
     <script>
         $(document).ready(function () {
+            document.getElementById("rbtn1").checked = true;
+            document.getElementById("selectsub").disabled = true;
             $('.table').DataTable({
                 "scrollY": "200px",
                 "scrollCollapse": true,
@@ -150,5 +159,20 @@
                 $("#btnsubmit").prop('disabled', true);
             }
         });
+
+        let rbtn1 = document.getElementById("rbtn1");
+        let rbtn2 = document.getElementById("rbtn2");
+        $("#rbtn1, #rbtn2").change(function(){
+        if (rbtn1.checked){
+        document.getElementById("selectsub").disabled = true;
+                document.getElementById("inpsub").disabled = false;
+        }
+        else if (rbtn2.checked){
+        document.getElementById("selectsub").disabled = false;
+                document.getElementById("inpsub").disabled = true;
+        }
+        }
+        );
+
     </script>
     <?php require './footer.php'; ?>

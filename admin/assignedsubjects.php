@@ -27,9 +27,7 @@
                     <thead class="table-secondary">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Subject Code</th>
                             <th scope="col">Subject Name</th>
-                            <th scope="col">Year</th>
                             <th scope="col">Leader</th> 
                             <th scope="col">Assigned Date</th>
                             <th scope="col">Verify Date</th>
@@ -49,33 +47,31 @@
                                 <td><?php echo $row[1]; ?></td>
                                 <td><?php echo $row[2]; ?></td>
                                 <td><?php echo $row[3]; ?></td>
-                                <td><?php echo $row[4]; ?></td>
-                                <td><?php echo $row[5]; ?></td>
                                 <td><?php
-                                    if ($row[6] == "") {
+                                    if ($row[4] == "") {
                                         echo "-";
                                     } else {
-                                        echo $row[6];
+                                        echo $row[4];
                                     }
                                     ?></td>
                                 <td><?php
-                                    if ($row[7] == 0) {
+                                    if ($row[5] == 0) {
                                         echo '<span class="badge bg-secondary">Pending</span>';
-                                    } else if ($row[7] == 1) {
+                                    } else if ($row[5] == 1) {
                                         echo '<span class="badge bg-success">Accepted</span>';
-                                    } else if ($row[7] == 2) {
+                                    } else if ($row[5] == 2) {
                                         echo '<span class="badge bg-danger">Rejected</span>';
                                     }
                                     ?></td>
                                 <td><?php
-                                    if ($row[8] == "") {
+                                    if ($row[6] == "") {
                                         echo "-";
                                     } else {
-                                        echo "<a href='$row[8]'>View</a>";
+                                        echo "<a href='$row[6]'>View</a>";
                                     }
                                     ?></td>
                                 <td>
-                                    <button id='<?php echo $row[9]; ?>' class='btn btn-outline-success btn-sm fas fa-eye border-0 btn-view'></button>
+                                    <button id='<?php echo $row[1]; ?>' class='btn btn-outline-success btn-sm fas fa-eye border-0 btn-view'></button>
                                 </td>
                             </tr>
                         <?php } ?>

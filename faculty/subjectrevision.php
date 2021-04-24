@@ -32,49 +32,49 @@
                     <table>
                         <tr>
                             <td><strong>Subject: </strong></td>
-                            <td><?php echo " " . $row[1] . " - " . $row[2] . " - " . $row[3] ?></td>
+                            <td><?php echo " " . $row[1]  ?></td>
                         </tr><tr>
                             <td><strong>Status: </strong></td>
                             <td><?php
-                                if ($row[7] == 0) {
+                                if ($row[5] == 0) {
                                     echo '<span class="badge bg-secondary">Pending</span>';
-                                } else if ($row[7] == 1) {
+                                } else if ($row[5] == 1) {
                                     echo '<span class="badge bg-success">Accepted</span>';
-                                } else if ($row[7] == 2) {
+                                } else if ($row[5] == 2) {
                                     echo '<span class="badge bg-danger">Rejected</span>';
                                 }
                                 ?></td>
                         </tr><tr>
                             <td><strong>File: </strong></td>
                             <td id="newfile"><?php
-                                if ($row[8] == "") {
+                                if ($row[6] == "") {
                                     echo 'Not Uploaded';
                                 } else {
-                                    echo "<a href='$row[8]'>View</a>";
+                                    echo "<a href='$row[6]'>View</a>";
                                 }
                                 ?></td>
                         </tr>
                         <tr>
                             <td><strong>Assign Date:</strong></td>
-                            <td><?php echo $row[5] ?></td>
+                            <td><?php echo $row[3] ?></td>
                         </tr>
                         <?php
-                        if ($row[4] == 1 && $row[7] != 1) {
-                            echo "<tr><form method='post' enctype='multipart/form-data'><td><strong>Upload File: <input type='hidden' name='sid' value='$row[9]' /></td>"
-                            . "<td><input id='$row[9]' class='sfile' type='file' accept='.doc, .docx' class='form-controlcol-sm-2' name='sfile' required>"
+                        if ($row[2] == 1 && $row[5] != 1) {
+                            echo "<tr><form method='post' enctype='multipart/form-data'><td><strong>Upload File: <input type='hidden' name='sid' value='$row[1]' /></td>"
+                            . "<td><input id='$row[1]' class='sfile' type='file' accept='.doc, .docx' class='form-controlcol-sm-2' name='sfile' required>"
                             . "<input type='submit'class='btn btn-sm btn-outline-primary' name='btnsubmit' value='Submit'></form></td></tr>";
                         } else {
-                            if ($row[6] != "") {
+                            if ($row[4] != "") {
                                 echo "<tr><td><strong>Verified Date:</strong></td>"
-                                . "<td>$row[6]</td></tr>";
+                                . "<td>$row[4]</td></tr>";
                             } else {
                                 echo "<tr><td><strong>Verified Date:</strong></td>"
                                 . "<td>Not Verified</td></tr>";
                             }
                         }
-                        if ($row[10] != "") {
+                        if ($row[7] != "") {
                             echo "<tr><td><strong>Comments:</strong></td>"
-                            . "<td>$row[10]</td></tr>";
+                            . "<td>$row[7]</td></tr>";
                         }
                         ?>
                     </table>
