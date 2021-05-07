@@ -39,23 +39,24 @@ require '../vendor/autoload.php';
                                 <img class="img-fluid" height="100" width="100" id="pp" src="../images/userdefault.png" >
                             </div>
                             <label for="profile" class="form-label mt-2">Profile Picture</label>
+                            <span class="text-muted">(Optional)</span>
                             <input type="file" class="form-control" id="profile" value="" name="profile" >
                         </div>
                     </div>
                     <div class="form-row mt-2">
                         <div class="col-sm-6">
                             <label for="name" class="form-label">Full name</label>
-                            <input type="text" class="form-control" maxlength="30" pattern="^[ A-Za-z]+$" id="name" name="name" required>
+                            <input type="text" class="form-control" title="Full name must contain only alphabets" maxlength="30" pattern="^[ A-Za-z]+$" id="name" name="name" required>
                         </div>
                         <div class="col-sm-6">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                            <input type="email" class="form-control" title="Enter a valid email address" id="email" name="email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
                         </div>
                     </div>
                     <div class="form-row mt-2">
                         <div class="col-sm-6">
                             <label for="cnum" class="form-label">Contact No</label>
-                            <input type="text" class="form-control" id="cnum" name="cnum" pattern="^[6789][0-9]{9}$" maxlength="10">
+                            <input type="text" class="form-control" placeholder="(Optional)" title="Enter a valid contact number" id="cnum" name="cnum" pattern="^[6789][0-9]{9}$" maxlength="10">
                         </div>
                         <div class="col-sm-6 mt-2">
                             <br>

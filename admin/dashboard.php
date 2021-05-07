@@ -74,7 +74,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">Reports</span>
-                        <span class="info-box-number">0</span>
+                        <span class="info-box-number">6</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>

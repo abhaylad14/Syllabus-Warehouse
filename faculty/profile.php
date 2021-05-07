@@ -145,7 +145,7 @@
             if ((($_FILES["imgprofile"]["type"] == "image/jpeg") || ($_FILES["imgprofile"]["type"] == "image/jpg") || ($_FILES["imgprofile"]["type"] == "image/png")) && in_array($extension, $allowedExts)) {
                 if ($_FILES["imgprofile"]["size"] < 200000) {
                     $profile = $now->getTimestamp() . "." . $extension;
-                    
+
                     $status = updateProfilePicture($_SESSION["userId"], $profile);
                     if ($status == 1) {
                         displaymessage("success", "Profile Picture changed!", "Your profile picture have been updated successfully!");
@@ -195,35 +195,41 @@
                 }
             });
         });
+        let pat = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
         $("#btnsubmit").click(function () {
-            $.ajax({
-                type: "POST",
-                url: "../openajax.php",
-                data: {
-                    opass: $("#opass").val(),
-                    pass1: $("#pass1").val(),
-                    pass2: $("#pass2").val(),
-                    action: "changepassword"
-                },
-                success: function (result) {
-                    result = result.trim();
-                    if (result == "done") {
-                        displaymessage("success", "Success!", "Your password is successfully updated!");
-                    } else if (result == "error") {
-                        displaymessage("error", "Error!", "Something went wrong!");
-                    } else if (result == "err2") {
-                        displaymessage("error", "Password does not match!", "Password and Re-Enter Password are not same!");
-                    } else if (result == "err3") {
-                        displaymessage("error", "Current Password does not match!", "Please enter a valid current Password!");
-                    } else {
-                        displaymessage("error", "Empty Form!", "Please enter required details!");
-                    }
-                    $("#opass").val('');
-                    $("#pass1").val('');
-                    $("#pass2").val('');
+            if (pat.test($("#pass1").val()) && pat.test($("#pass2").val())) {
+                $.ajax({
+                    type: "POST",
+                    url: "../openajax.php",
+                    data: {
+                        opass: $("#opass").val(),
+                        pass1: $("#pass1").val(),
+                        pass2: $("#pass2").val(),
+                        action: "changepassword"
+                    },
+                    success: function (result) {
+                        result = result.trim();
+                        if (result == "done") {
+                            displaymessage("success", "Success!", "Your password is successfully updated!");
+                        } else if (result == "error") {
+                            displaymessage("error", "Error!", "Something went wrong!");
+                        } else if (result == "err2") {
+                            displaymessage("error", "Password does not match!", "Password and Re-Enter Password are not same!");
+                        } else if (result == "err3") {
+                            displaymessage("error", "Current Password does not match!", "Please enter a valid current Password!");
+                        } else {
+                            displaymessage("error", "Empty Form!", "Please enter required details!");
+                        }
+                        $("#opass").val('');
+                        $("#pass1").val('');
+                        $("#pass2").val('');
 
-                }
-            });
+                    }
+                });
+            } else {
+                displaymessage("error", "Use a strong password", "Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters");
+            }
+
         });
         function readURL(input) {
             if (input.files && input.files[0]) {

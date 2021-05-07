@@ -33,7 +33,8 @@ require("header.php");
                         </div>
                         <div class="col-sm-6">
                             <label for="subname" class="form-label">Subject Name</label>
-                            <input type="text" class="form-control" id="subname" name="subname" maxlength="100" pattern="^[A-Z a-z0-9]+$" required>
+                            <input type="text" class="form-control" id="subname" name="subname" maxlength="100" placeholder="Enter Subject Name"
+                                   title="Only alphanumeric characters are allowed" pattern="^[A-Z a-z0-9]+$" required>
                         </div>
                         <div class="col">
                             <label for="eyear" class="form-label">Effective Year</label>
@@ -42,11 +43,11 @@ require("header.php");
                     </div>
                     <div class="form-row mt-3">
                         <div class="col-sm-4">
-                            <label for="sfile" class="form-label">Syllabus File Docx</label>
+                            <label for="sfile" class="form-label">Syllabus Word(Docx) File (Optional)</label>
                             <input type="file" class="form-control" id="sfile" name="sfile" accept=".doc, .docx">
                         </div>
                         <div class="col-sm-4">
-                            <label for="pfile" class="form-label">Syllabus File PDF</label>
+                            <label for="pfile" class="form-label">Syllabus File PDF (Optional)</label>
                             <input type="file" class="form-control" id="pfile" name="pfile" accept=".PDF, .pdf">
                         </div>
                     </div>
@@ -66,19 +67,19 @@ require("header.php");
                             <div class="form-row mt-2">
                                 <div class="col-sm-2">
                                     <label for="tcredit" class="form-label">Theory Credit</label>
-                                    <input type="text" class="form-control" id="tcredit" pattern="^[0-2]*[ 0-9\-]$" maxlength="2" name="tcredit1" >
+                                    <input type="text" class="form-control" id="tcredit" title="Invalid input" pattern="^[0-2]*[ 0-9\-]$" maxlength="2" name="tcredit1" >
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="thour" class="form-label">Theory Hours</label>
-                                    <input type="text" class="form-control" id="thour" pattern="^[0-2]*[ 0-9\-]$" maxlength="2" name="thour1" >
+                                    <input type="text" class="form-control" id="thour" title="Invalid input" pattern="^[0-2]*[ 0-9\-]$" maxlength="2" name="thour1" >
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="tmarksint" class="form-label">Theory Marks(Internal)</label>
-                                    <input type="text" class="form-control" id="tmarksint" pattern="^[ 0-9\-]+$" maxlength="3" name="tmarksint1">
+                                    <input type="text" class="form-control" id="tmarksint" title="Invalid input" pattern="^[ 0-9\-]+$" maxlength="3" name="tmarksint1">
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="tmarksext" class="form-label">Theory Marks(External)</label>
-                                    <input type="text" class="form-control" id="tmarksext" maxlength="3" pattern="^[ 0-9\-]+$" name="tmarksext1">
+                                    <input type="text" class="form-control" id="tmarksext" title="Invalid input" maxlength="3" pattern="^[ 0-9\-]+$" name="tmarksext1">
                                 </div>
                                 <div class="col-sm-2 mt-2">
                                     <br/>
@@ -90,11 +91,11 @@ require("header.php");
                             <div class="form-row mt-2">
                                 <div class="col-sm-4">
                                     <label for="pcredit" class="form-label">Practical Credit</label>
-                                    <input type="text" class="form-control" id="pcredit" pattern="^[0-2]*[0-9]$" maxlength="2" name="pcredit2">
+                                    <input type="text" class="form-control" id="pcredit" title="Invalid input" pattern="^[0-2]*[0-9]$" maxlength="2" name="pcredit2">
                                 </div>
                                 <div class="col-sm-4">
                                     <label for="phour" class="form-label">Practical Hours</label>
-                                    <input type="text" class="form-control" id="phour" pattern="^[0-2]*[0-9]$" maxlength="2" name="phour2" >
+                                    <input type="text" class="form-control" id="phour" title="Invalid input" pattern="^[0-2]*[0-9]$" maxlength="2" name="phour2" >
                                 </div>
                             </div>
                             <div class="col mt-3">
@@ -112,7 +113,7 @@ require("header.php");
                                             <div class="form-row">
                                                 <div class="col-sm-4">
                                                     <label for="ciemarks" class="form-label">Cie marks</label>
-                                                    <input type="number" class="form-control" id="ciemarks" pattern="^[0-9]+$" maxlength="3" name="ciemarks2">
+                                                    <input type="number" class="form-control" id="ciemarks" title="Invalid input" pattern="^[0-9]+$" maxlength="3" name="ciemarks2">
                                                 </div>
                                                 <div class="col-sm-4 mt-2">
                                                     <br/>
@@ -124,11 +125,11 @@ require("header.php");
                                             <div class="form-row">
                                                 <div class="col-sm-4">
                                                     <label for="cieint" class="form-label">Internal marks</label>
-                                                    <input type="text" class="form-control" id="cieint" pattern="^[0-9]+$" maxlength="3" name="cieint3" >
+                                                    <input type="text" class="form-control" id="cieint" title="Invalid input" pattern="^[0-9]+$" maxlength="3" name="cieint3" >
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <label for="cieint" class="form-label">External marks</label>
-                                                    <input type="text" class="form-control" id="cieext" pattern="^[0-9]+$" maxlength="3" name="cieext3" >
+                                                    <input type="text" class="form-control" id="cieext" title="Invalid input" pattern="^[0-9]+$" maxlength="3" name="cieext3" >
                                                 </div>
                                                 <div class="col-sm-4 mt-2">
                                                     <br/>
@@ -144,29 +145,29 @@ require("header.php");
                             <div class="form-row mt-2">
                                 <div class="col-sm-2">
                                     <label for="tcredit" class="form-label">Theory Credit</label>
-                                    <input type="text" class="form-control" id="tcredit" pattern="^[0-2]*[0-9]$" maxlength="2" name="tcredit4">
+                                    <input type="text" class="form-control" id="tcredit" title="Invalid input" pattern="^[0-2]*[0-9]$" maxlength="2" name="tcredit4">
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="thour" class="form-label">Theory Hours</label>
-                                    <input type="text" class="form-control" id="thour" pattern="^[0-2]*[0-9]$" maxlength="2" name="thour4">
+                                    <input type="text" class="form-control" id="thour" title="Invalid input" pattern="^[0-2]*[0-9]$" maxlength="2" name="thour4">
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="tmarksint" class="form-label">Theory Marks(Internal)</label>
-                                    <input type="text" class="form-control" id="tmarksint" pattern="^[0-9]+$" maxlength="3" name="tmarksint4">
+                                    <input type="text" class="form-control" id="tmarksint" title="Invalid input" pattern="^[0-9]+$" maxlength="3" name="tmarksint4">
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="tmarksext" class="form-label">Theory Marks(External)</label>
-                                    <input type="text" class="form-control" id="tmarksext" pattern="^[0-9]+$" maxlength="3" name="tmarksext4">
+                                    <input type="text" class="form-control" id="tmarksext" title="Invalid input" pattern="^[0-9]+$" maxlength="3" name="tmarksext4">
                                 </div>
                             </div>
                             <div class="form-row mt-2">
                                 <div class="col-sm-2">
                                     <label for="pcredit" class="form-label">Practical Credit</label>
-                                    <input type="text" class="form-control" id="pcredit" pattern="^[0-9]+$" maxlength="2" name="pcredit4">
+                                    <input type="text" class="form-control" id="pcredit" title="Invalid input" pattern="^[0-9]+$" maxlength="2" name="pcredit4">
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="phour" class="form-label">Practical Hours</label>
-                                    <input type="text" class="form-control" id="phour" pattern="^[0-9]+$" maxlength="2" name="phour4">
+                                    <input type="text" class="form-control" id="phour" title="Invalid input" pattern="^[0-9]+$" maxlength="2" name="phour4">
                                 </div>
                                 <div class="col mt-3">
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -182,7 +183,7 @@ require("header.php");
                                             <div class="form-row">
                                                 <div class="col-sm-3">
                                                     <label for="ciemarks" class="form-label">Cie marks</label>
-                                                    <input type="text" class="form-control" id="ciemarks" pattern="^[0-9]+$" maxlength="3" name="ciemarks4">
+                                                    <input type="text" class="form-control" id="ciemarks" title="Invalid input" pattern="^[0-9]+$" maxlength="3" name="ciemarks4">
                                                 </div>
                                                 <div class="col-sm-3 mt-2">
                                                     <br/>
@@ -194,11 +195,11 @@ require("header.php");
                                             <div class="form-row">
                                                 <div class="col-sm-3">
                                                     <label for="cieint5" class="form-label">Internal marks</label>
-                                                    <input type="text" class="form-control" id="cieint5" pattern="^[0-9]+$" maxlength="3" name="cieint5">
+                                                    <input type="text" class="form-control" id="cieint5" title="Invalid input" pattern="^[0-9]+$" maxlength="3" name="cieint5">
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label for="cieext5" class="form-label">External marks</label>
-                                                    <input type="text" class="form-control" id="cieext5" pattern="^[0-9]+$" maxlength="3" name="cieext5" >
+                                                    <input type="text" class="form-control" id="cieext5" title="Invalid input" pattern="^[0-9]+$" maxlength="3" name="cieext5" >
                                                 </div>
                                                 <div class="col-sm-3 mt-2">
                                                     <br/>

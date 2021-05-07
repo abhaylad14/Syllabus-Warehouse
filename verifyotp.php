@@ -13,21 +13,23 @@ if ($_SESSION["otp"] == "") {
                 <button type="button" class="fas fa-times bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="post">
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="pass1" class="form-label">New Password</label>
-                    <input type="password" class="form-control" id="pass1" name="pass1" placeholder="Enter your password" required maxlength="30">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="pass1" class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="pass1" name="pass1" placeholder="Enter your password" required maxlength="30" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                               title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="pass2" class="form-label">Re-Enter New Password</label>
+                        <input type="password" class="form-control" id="pass2" name="pass2" placeholder="Re-Enter your password" required maxlength="30" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                                title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" >
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="pass2" class="form-label">Re-Enter New Password</label>
-                    <input type="password" class="form-control" id="pass2" name="pass2" placeholder="Re-Enter your password" required maxlength="30">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" name="btnsubmit" class="btn btn-primary">Submit</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" name="btnsubmit" class="btn btn-primary">Submit</button>
-            </div>
-                </form>
+            </form>
         </div>
     </div>
 </div>
@@ -68,29 +70,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             displaymessage("error", "Empty Form!", "Please enter your OTP");
         }
-    }
-    else if(isset($_POST["btnsubmit"])){
-        if(!empty($_POST["pass1"]) && isset($_POST["pass1"]) && !empty($_POST["pass2"]) && isset($_POST["pass2"])){
+    } else if (isset($_POST["btnsubmit"])) {
+        if (!empty($_POST["pass1"]) && isset($_POST["pass1"]) && !empty($_POST["pass2"]) && isset($_POST["pass2"])) {
             $pass1 = $_POST["pass1"];
             $pass2 = $_POST["pass2"];
-            if($pass1 == $pass2){
-                $status = resetPassword($_SESSION["email"],$pass1);
-                if($status == 1){
+            if ($pass1 == $pass2) {
+                $status = resetPassword($_SESSION["email"], $pass1);
+                if ($status == 1) {
                     header("Location: index.php");
-                }
-                else{
+                } else {
                     displaymessage("error", "Error!", "Something went wrong!");
                 }
-            }
-            else{
+            } else {
                 displaymessage("error", "Password does not match!", "Password and Re-Enter Password are not same");
             }
-        }
-        else{
+        } else {
             displaymessage("error", "Empty Form!", "Please enter required details");
         }
-    }
-    else {
+    } else {
         displaymessage("error", "Error", "Invalid form submission");
     }
 }

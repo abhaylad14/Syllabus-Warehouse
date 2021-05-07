@@ -494,7 +494,20 @@ class Subject {
         $objcon->disconnect();
         return $status;
     }
-    
+    public function viewSyllabusX($subid) {
+        $objcon = new connection();
+        $con = $objcon->connect();
+        try {
+            $sql = "select s.SubjectName from tbl_subjects s INNER JOIN tbl_syllabus_config_transaction t on s.Id = t.SubjectId INNER JOIN tbl_syllabus_config_master m on m.id = t.ConfigId where m.Id = :subid";
+            $stmt = $con->prepare($sql);
+            $stmt->execute(["subid" => $subid]);
+            $status = $stmt->fetchAll(PDO::FETCH_NUM);
+        } catch (Exception $ex) {
+            $status = 0;
+        }
+        $objcon->disconnect();
+        return $status;
+    }
 
     public function ViewSubjectList1Append($data) {
         $objcon = new connection();

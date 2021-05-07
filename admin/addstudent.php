@@ -49,15 +49,16 @@ require '../vendor/autoload.php';
                     <div class="form-row">
                         <div class="col-md-4">
                             <label for="enro" class="form-label">Enrollment Number:</label>
-                            <input type="text" maxlength="15"  class="form-control" name="enro" id="enro">
+                            <input type="text" maxlength="15" pattern="^[0-9]+$" title="Enrollment number must conatain digits only"  class="form-control" name="enro" id="enro">
                         </div>
                         <div class="col-md-4">
                             <label for="name" class="form-label">Name:</label>
-                            <input type="text" class="form-control" name="name" id="name">
+                            <input type="text" class="form-control" name="name" id="name" title="Name must contain only alphabets" pattern="^[ A-Za-z]+$">
                         </div>
                         <div class="col-md-4">
                             <label for="email" class="form-label">Email:</label>
-                            <input type="email" class="form-control" name="email" id="email">
+                            <input type="email" class="form-control" name="email" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                   title="Enter a valid Email">
                         </div>
                         <div class="col text-center">
                             <br>

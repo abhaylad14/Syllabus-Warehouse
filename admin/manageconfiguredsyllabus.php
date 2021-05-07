@@ -59,7 +59,10 @@
                                     ?></td>
                                 <td><?php echo $row[4]; ?></td>
                                 <td>
+                                    <button class="btn btn-sm btn-outline-warning border-0 btn-view" id="<?php echo $row[0]; ?>"> <i class="fas fa-eye"></i> </button>
+                                    <?php if($row[4] == ""){ ?>
                                     <button class="btn btn-sm btn-outline-success border-0 btn-publish" id="<?php echo $row[0]; ?>"> <i class="fas fa-check"> Publish</i> </button>
+                                    <?php } ?>
                                     <button class="btn btn-sm btn-outline-danger border-0 btn-delete" id="<?php echo $row[0]; ?>"><i class="fas fa-trash-alt"></i></button>
                                 </td>
                             </tr>
@@ -102,6 +105,20 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="ajaxpublish">Publish</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- View Modal -->
+    <div class="modal fade" id="viewmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Subjects</h5>
+                    <button type="button" class="fas fa-times bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="data">
+
                 </div>
             </div>
         </div>
@@ -161,6 +178,26 @@
         });
         $(document).ready(function () {
             $('.table').DataTable();
+        });
+        $(".btn-view").click(function () {
+            let id = this.id;
+            $.ajax({
+                type: "POST",
+                url: "ajaxops.php",
+                data: {
+                    id: id,
+                    action: "viewSyllabusX"
+                },
+                success: function (result) {
+                    result = JSON.parse(result);
+                    let html = "";
+                    for (let i = 0; i < result.length; i++) {
+                            html += `<i class="fas fa-arrow-right ml-4"></i> ${result[i]}<br>`;
+                    }
+                    $("#data").html(html);
+                }
+            });
+            $('#viewmodal').modal('toggle');
         });
     </script>
 

@@ -34,7 +34,7 @@
             <div class="card-body mx-auto">
                 <div>
                     Click here to Backup TES(Google Drive): 
-                    <a class="btn btn-sm btn-outline-success" target="_blank" href="http://localhost:3  000/upload">Backup TES</a>
+                    <a class="btn btn-sm btn-outline-success" target="_blank" href="http://localhost:3000/upload">Backup TES</a>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
                     <div class="form-row">
                         <label>Choose Backup File: </label>
                         <div>
-                            <input type="file" class="form-control ml-2" name="backup_file" class="input-file" />
+                            <input type="file" class="form-control ml-2" accept=".sql" name="backup_file" class="input-file" />
                         </div>
                     </div>
                     <div class="text-center">
